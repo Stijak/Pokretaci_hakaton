@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx
+xmlns="http://www.topografix.com/GPX/1/1"
+ version="1.1"
+ creator="James Reed"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+	<wpt lat="35.296019" lon="-120.657032">
+		<name>Point 01</name>
+	</wpt>
+	<wpt lat="35.296108" lon="-120.656662">
+		<name>Point 02</name>
+	</wpt>
+	<wpt lat="35.297439" lon="-120.658464">
+		<name>Point 03</name>
+	</wpt>
+	<wpt lat="35.296949" lon="-120.659752">
+		<name>Point 04</name>
+	</wpt>
+	<wpt lat="35.297824" lon="-120.660653">
+		<name>Point 05</name>
+	</wpt>
+	<wpt lat="35.297194" lon="-120.662155">
+		<name>Point 06</name>
+	</wpt>
+	<wpt lat="35.297649" lon="-120.663013">
+		<name>Point 07</name>
+	</wpt>
+	<wpt lat="35.296388" lon="-120.664988">
+		<name>Point 08</name>
+	</wpt>
+	<wpt lat="35.296388" lon="-120.666275">
+		<name>Point 09</name>
+	</wpt>
+	<wpt lat="35.302623" lon="-120.66134">
+		<name>Point 10</name>
+	</wpt>
+	<wpt lat="35.302658" lon="-120.659237">
+		<name>Point 11</name>
+	</wpt>
+	<wpt lat="35.301117" lon="-120.657864">
+		<name>Point 12</name>
+	</wpt>
+	<wpt lat="35.300276" lon="-120.657949">
+		<name>Point 13</name>
+	</wpt>
+	<wpt lat="35.300171" lon="-120.657177">
+		<name>Point 14</name>
+	</wpt>
+	<wpt lat="35.29912" lon="-120.656362">
+		<name>Point 15</name>
+	</wpt>
+	<wpt lat="35.297089" lon="-120.653443">
+		<name>Point 16</name>
+	</wpt>
+	<wpt lat="35.296038" lon="-120.6531">
+		<name>Point 17</name>
+	</wpt>
+
+
+	<trk>
+		<name>Lab4 Test Path</name>
+		<trkseg>
+			<trkpt lat="35.296019" lon="-120.657032">
+			</trkpt>
+			<trkpt lat="35.296108" lon="-120.656662">
+			</trkpt>
+			<trkpt lat="35.297439" lon="-120.658464">
+			</trkpt>
+			<trkpt lat="35.296949" lon="-120.659752">
+			</trkpt>
+			<trkpt lat="35.297824" lon="-120.660653">
+			</trkpt>
+			<trkpt lat="35.297194" lon="-120.662155">
+			</trkpt>
+			<trkpt lat="35.297649" lon="-120.663013">
+			</trkpt>
+			<trkpt lat="35.296388" lon="-120.664988">
+			</trkpt>
+			<trkpt lat="35.296388" lon="-120.666275">
+			</trkpt>
+			<trkpt lat="35.302623" lon="-120.66134">
+			</trkpt>
+			<trkpt lat="35.302658" lon="-120.659237">
+			</trkpt>
+			<trkpt lat="35.301117" lon="-120.657864">
+			</trkpt>
+			<trkpt lat="35.300276" lon="-120.657949">
+			</trkpt>
+			<trkpt lat="35.300171" lon="-120.657177">
+			</trkpt>
+			<trkpt lat="35.29912" lon="-120.656362">
+			</trkpt>
+			<trkpt lat="35.297089" lon="-120.653443">
+			</trkpt>
+			<trkpt lat="35.296038" lon="-120.6531">
+			</trkpt>
+		</trkseg>
+	</trk>
+
+</gpx>
