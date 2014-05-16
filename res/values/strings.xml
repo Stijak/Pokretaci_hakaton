@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Pokretači demo</string>
-    <string name="actionbar_title">WalkAbout</string>
-    
-    <!--  MenuItem titles -->
-    <string name="menuTitle_startRecording">Start</string>
+    <string name="actionbar_title">Pokretači demo</string>
+
+    <!-- MenuItem titles -->
+    <!--
+         <string name="menuTitle_startRecording">Start</string>
     <string name="menuTitle_stopRecording">Stop</string>
     <string name="menuTitle_load">Load</string>
     <string name="menuTitle_save">Save</string>
     <string name="menuTitle_takePicture">Take Picture</string>
     <string name="menuTitle_enableGPS">Enable GPS</string>
  
-    <!-- Picture taking strings -->
     <string name="pictureFail">Picture Not Taken…</string>
     <string name="pictureSuccess">Picture Taken</string>
     
-    <!-- Load/Save strings-->
     <string name="latLngPathFileName">walkabout.dat</string>
     <string name="saveSuccess">Saved.</string>
     <string name="saveFailed">Save Failed…</string>
@@ -23,7 +23,8 @@
     <string name="loadSuccess">Loaded.</string>
     <string name="loadFailed">Load Failed…</string>
     <string name="loadNoFile">Nothing to load…</string>
-    
+    -->
+
     <string-array name="drawer_array">
         <item>O aplikaciji</item>
         <item>Fabrika promena</item>
@@ -32,6 +33,13 @@
         <item>Kategorija 2</item>
         <item>Kategorija 3</item>
     </string-array>
-        <string name="drawer_open">Open navigation drawer</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Problem details -->
+        <string name="page_details">Detalji problema</string>
+        <string name="page_comments">Komentari</string>
+    
+
 </resources>
