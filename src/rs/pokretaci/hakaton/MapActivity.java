@@ -91,6 +91,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		if (m_vwMap == null) {
 			m_vwMap = mapFragment.getMap();
 			m_vwMap.setMyLocationEnabled(true);
+			m_vwMap.setOnInfoWindowClickListener(this);
 		}
 
 	}
@@ -147,7 +148,10 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 					double lat = geo.getDouble("lon");
 					double lon = geo.getDouble("lat");
 					LatLng location = new LatLng(lat, lon);
-					MarkerOptions mo = new MarkerOptions();
+					MarkerOptions mo = new MarkerOptions()
+					.title(title)
+					.snippet(description)
+					.position(location);
 					Marker marker = m_vwMap.addMarker(mo);
 					mMarkerProblemIds.put(marker, name);
 				}
@@ -275,7 +279,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		intent.setClass(this, ProblemDetailsActivity.class);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
-		
+
 	}
 
 	/*@Override
@@ -285,5 +289,5 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		inflater.inflate(R.menu.mainmenu, menu);
 		return true;
 	}
-*/
+	 */
 }

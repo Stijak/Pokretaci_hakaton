@@ -38,7 +38,7 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Problem details -->
-        <string name="page_details">Detalji problema</string>
+        <string name="page_details">Opis</string>
         <string name="page_comments">Komentari</string>
     
 
