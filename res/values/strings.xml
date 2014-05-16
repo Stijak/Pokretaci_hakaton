@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WalkAbout</string>
+    <string name="app_name">Pokretači demo</string>
     <string name="actionbar_title">WalkAbout</string>
     
     <!--  MenuItem titles -->
@@ -23,4 +23,15 @@
     <string name="loadSuccess">Loaded.</string>
     <string name="loadFailed">Load Failed…</string>
     <string name="loadNoFile">Nothing to load…</string>
+    
+    <string-array name="drawer_array">
+        <item>O aplikaciji</item>
+        <item>Fabrika promena</item>
+        <item></item>
+        <item>Kategorija 1</item>
+        <item>Kategorija 2</item>
+        <item>Kategorija 3</item>
+    </string-array>
+        <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>
