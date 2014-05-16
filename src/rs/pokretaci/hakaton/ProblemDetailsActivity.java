@@ -73,10 +73,12 @@ public class ProblemDetailsActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a PlaceholderFragment (defined as a static inner class
-			// below).
-			return null; //TODO return correspondingfragment
+			if (position == 1) {
+				return new DetailsFragment();
+			} else {
+				return new DetailsFragment(); //TODO replace with new fragment
+			}
+		 //TODO return correspondingfragment
 		}
 
 		@Override

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/details_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Naslov problema"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/details_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lorem enim, egestas sit amet neque ac, condimentum auctor nibh. In semper dui id urna interdum mattis non ac massa. Sed sodales lacus a felis fringilla mollis. Donec augue erat, ultrices ultrices mollis quis, dignissim sit amet justo. Phasellus in elit mattis, egestas est rhoncus, lobortis justo. Maecenas ante nisi, lacinia ut condimentum sit amet, fermentum nec lorem. Maecenas lobortis bibendum tellus, in condimentum nisi sodales a. Morbi egestas enim pretium dapibus facilisis. Phasellus orci dolor, fermentum eget tincidunt vel, pulvinar ac libero." />
+    </LinearLayout>
+
+</ScrollView>

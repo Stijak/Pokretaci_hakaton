@@ -61,7 +61,7 @@ import rs.pokretaci.hakaton.R;
  * a traveled path, mark the map with information and take pictures that become
  * associated with the map. 
  */
-public class MapActivity extends Activity {
+public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClickListener {
 	//drawer demo
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -267,6 +267,15 @@ public class MapActivity extends Activity {
 		mapFragment = MapFragment.newInstance(mapOptions);
 		fragmentTransaction.add(R.id.content_frame, mapFragment);
 		fragmentTransaction.commit();
+	}
+
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		Intent intent = new Intent();
+		intent.setClass(this, ProblemDetailsActivity.class);
+		//intent.putExtra("EXTRA_ID", "SOME DATAS");
+		startActivity(intent);
+		
 	}
 
 	/*@Override
