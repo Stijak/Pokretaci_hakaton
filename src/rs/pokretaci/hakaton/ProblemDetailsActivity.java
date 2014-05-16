@@ -97,10 +97,10 @@ for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 
 		@Override
 		public Fragment getItem(int position) {
-			if (position == 1) {
+			if (position == 0) {
 				return new DetailsFragment();
 			} else {
-				return new DetailsFragment(); //TODO replace with new fragment
+				return new CommentsFragment(); //TODO replace with new fragment
 			}
 			//TODO return correspondingfragment
 		}
