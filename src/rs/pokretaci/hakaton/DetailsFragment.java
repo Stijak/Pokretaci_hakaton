@@ -23,7 +23,7 @@ public class DetailsFragment extends Fragment {
 		title = (TextView) view.findViewById(R.id.details_title);
 		description = (TextView) view.findViewById(R.id.details_content);
 		
-		return null;
+		return view;
 	}
 	
 	

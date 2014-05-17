@@ -61,7 +61,16 @@ public class GoalFetcher extends Task {
 			HttpResponse httpResponse = apache.getRequest(url);
 			String JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 			
-			List<Goal> goals = MainParser.parseGoals(JSONresponse);
+			List<Goal> goals;
+			
+			switch(mFetchType) {
+				case Goal.GOAL_FETCH_TYPE.BY_GOAL_ID: 
+					goals = MainParser.parseParticularGoal(JSONresponse);
+					break;
+				default: 
+					goals = MainParser.parseGoals(JSONresponse);
+					break;
+			}
 			
 			
 			
@@ -82,12 +91,14 @@ public class GoalFetcher extends Task {
 		String url = null;
 		
 		switch(mFetchType) {
-		
+			case Goal.GOAL_FETCH_TYPE.ALL_GOALS: 
+				url = Config.GOAL_DATA_BY_ALL;
+				return url;
 			case Goal.GOAL_FETCH_TYPE.BY_GOAL_ID: 
-				url = String.format(Config.GOAL_DATA_BY_ID_URL, mId);
+				url = Config.GOAL_DATA_BY_ID_URL.replace(Config.PARAM, mId);
 				return url;
 			case Goal.GOAL_FETCH_TYPE.BY_USER:
-				url = String.format(Config.GOAL_DATA_FOR_USER_URL, mId);
+				url = Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, mId);
 				return url;
 			case Goal.GOAL_FETCH_TYPE.BY_FILTER:
 				url = Config.GOAL_DATA_BY_FILTER;

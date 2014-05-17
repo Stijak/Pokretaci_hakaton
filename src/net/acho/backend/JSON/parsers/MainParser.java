@@ -17,9 +17,35 @@ public class MainParser {
 	 * Parsira aktiviste
 	 * @param json
 	 * @return
+	 * @throws JSONException 
 	 */
-	public static List<Activist> parseActivists(String json) {
-		return null;
+	public static List<Activist> parseUserProfile(String json) throws JSONException {
+		if(json == null)
+			return null;
+		
+		Activist activist = Activist.getUserProfile();
+		JSONObject tempObject;
+		List<Activist> activists = new ArrayList<Activist>();
+		
+		JSONObject job = new JSONObject(json);
+		tempObject = job.optJSONObject("data");
+		
+		if(tempObject == null)
+			return null;
+		
+		activist.id = tempObject.optJSONObject("_id").getString("$id");
+		
+		activist.first_name = tempObject.optString("name");
+		activist.avatar = tempObject.optString("avatar");
+		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		
+		activist.email = tempObject.optString("email");
+		activist.full_name = tempObject.optString("full_name");
+		
+		return activists;
 	}
 	
 	
@@ -39,7 +65,7 @@ public class MainParser {
 		activist.id = tempObject.getJSONObject("user_id").getString("$id");
 		activist.first_name = tempObject.getString("name");
 		activist.avatar = tempObject.getString("avatar");
-		activist.votes = tempObject.getJSONObject("balance").getInt("votes");
+		activist.votesCount = tempObject.getJSONObject("balance").getInt("votes");
 		
 		return activist;
 		
@@ -62,10 +88,10 @@ public class MainParser {
 		
 		activist.first_name = tempObject.optString("name");
 		activist.avatar = tempObject.optString("avatar");
-		activist.votes = tempObject.optJSONObject("balance").getInt("votes");
-		activist.goals = tempObject.optJSONObject("balance").getInt("goals");
-		activist.support = tempObject.optJSONObject("balance").getInt("support");
-		activist.comments = tempObject.optJSONObject("balance").getInt("comments");
+		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
 		
 		activist.email = tempObject.optString("email");
 		activist.full_name = tempObject.optString("full_name");
@@ -86,15 +112,73 @@ public class MainParser {
 		
 		activist.first_name = tempObject.optString("name");
 		activist.avatar = tempObject.optString("avatar");
-		activist.votes = tempObject.optJSONObject("balance").getInt("votes");
-		activist.goals = tempObject.optJSONObject("balance").getInt("goals");
-		activist.support = tempObject.optJSONObject("balance").getInt("support");
-		activist.comments = tempObject.optJSONObject("balance").getInt("comments");
+		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
 		
 		activist.email = tempObject.optString("email");
 		activist.full_name = tempObject.optString("full_name");
 		
 		return activist;
+	}
+	
+	public static List<Goal> parseParticularGoal(String json) throws JSONException {
+		Goal tmpGoal;
+		JSONObject job, tmpJob;
+		JSONObject geo;
+		JSONArray jar;
+		
+		tmpJob = new JSONObject(json);
+		job = tmpJob.optJSONObject("data");
+		
+		List<Goal> goals = new ArrayList<Goal>();
+		
+		if(job != null) {
+			
+
+	    		tmpGoal =  new Goal();
+	    		
+	    		JSONObject problem = job;
+	    		/*tmpGoal.id = problem.optJSONObject("_id").getString("$id");
+	    		tmpGoal.title = problem.optString("title");
+	    		tmpGoal.description = problem.optString("description");
+	    		geo = problem.optJSONObject("location").optJSONObject("geo");
+	    		tmpGoal.lat = geo.optDouble("lon");
+	    		tmpGoal.lon = geo.optDouble("lat");
+	    		
+	    		if(problem.optJSONObject("parsed_date") != null) {
+	    			tmpGoal.parsed_date = problem.getJSONObject("parsed_date").getString("text");
+	    		}
+	    		
+	    		tmpGoal.created_at = problem.optString("created_at");
+	    		tmpGoal.discussions_count = problem.optInt("discussions_count");
+	    		
+	    		
+	    		tmpGoal.location_name = problem.optJSONObject("location").optString("name");
+	    		tmpGoal.image = problem.optString("image");
+	    		tmpGoal.supporters_count = problem.optInt("supporters_count");
+	    		
+	    		tmpGoal.supportable = problem.getBoolean("supportable");
+	    		tmpGoal.unsupportable = problem.getBoolean("unsupportable");
+	    		tmpGoal.dissaproved = problem.getBoolean("dissaproved");
+	    		tmpGoal.supported = problem.getBoolean("supported");
+	    		
+	    		jar = problem.optJSONArray("topics");
+	    		if(jar != null) {
+		    		for(int x = 0; x < jar.length(); x++ ) {
+		    			tmpGoal.categories.add(jar.getString(x));
+		    		}
+	    		}
+	    		tmpGoal.creator = new Activist();
+	    		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));*/
+	    		goals.add(parseGoal(problem));
+	    		
+	    		return goals;
+		} else {
+			return null;
+		}
+		
 	}
 	
 	
@@ -117,8 +201,9 @@ public class MainParser {
 	    	for (int i = 0; i < array.length(); i++) {
 	    		tmpGoal =  new Goal();
 	    		String name = array.getString(i);
+	    		
 	    		JSONObject problem = job.getJSONObject(name);
-	    		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
+	   /* 		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
 	    		tmpGoal.title = problem.optString("title");
 	    		tmpGoal.description = problem.optString("description");
 	    		geo = problem.optJSONObject("location").optJSONObject("geo");
@@ -137,6 +222,11 @@ public class MainParser {
 	    		tmpGoal.image = problem.optString("image");
 	    		tmpGoal.supporters_count = problem.optInt("supporters_count");
 	    		
+	    		tmpGoal.supportable = problem.getBoolean("supportable");
+	    		tmpGoal.unsupportable = problem.getBoolean("unsupportable");
+	    		tmpGoal.dissaproved = problem.getBoolean("dissaproved");
+	    		tmpGoal.supported = problem.getBoolean("supported");
+	    		
 	    		jar = problem.optJSONArray("topics");
 	    		if(jar != null) {
 		    		for(int x = 0; x<jar.length(); x++ ) {
@@ -144,8 +234,8 @@ public class MainParser {
 		    		}
 	    		}
 	    		tmpGoal.creator = new Activist();
-	    		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));
-	    		goals.add(tmpGoal);
+	    		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));*/
+	    		goals.add(parseGoal(problem));
 	    	} 
 		} else {
 	    		
@@ -155,34 +245,8 @@ public class MainParser {
 		    		tmpGoal =  new Goal();
 		    		//String name = array.getString(i);
 		    		JSONObject problem = tmpJar.getJSONObject(i);
-		    		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
-		    		tmpGoal.title = problem.optString("title");
-		    		tmpGoal.description = problem.optString("description");
-		    		geo = problem.optJSONObject("location").optJSONObject("geo");
-		    		tmpGoal.lat = geo.optDouble("lon");
-		    		tmpGoal.lon = geo.optDouble("lat");
 		    		
-		    		if(problem.optJSONObject("parsed_date") != null) {
-		    			tmpGoal.parsed_date = problem.getJSONObject("parsed_date").getString("text");
-		    		}
-		    		
-		    		tmpGoal.created_at = problem.optString("created_at");
-		    		tmpGoal.discussions_count = problem.optInt("discussions_count");
-		    		
-		    		
-		    		tmpGoal.location_name = problem.optJSONObject("location").optString("name");
-		    		tmpGoal.image = problem.optString("image");
-		    		tmpGoal.supporters_count = problem.optInt("supporters_count");
-		    		
-		    		jar = problem.optJSONArray("topics");
-		    		if(jar != null) {
-			    		for(int x = 0; x<jar.length(); x++ ) {
-			    			tmpGoal.categories.add(jar.getString(x));
-			    		}
-		    		}
-		    		tmpGoal.creator = new Activist();
-		    		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));
-		    		goals.add(tmpGoal);
+		    		goals.add(parseGoal(problem));
 	    	}
 		}
 		
@@ -190,6 +254,124 @@ public class MainParser {
 		
 	}
 
+	
+	public static List<Goal> parseUserProfileGoals(String json) throws JSONException {
+		if(json == null)
+			return null;
+		Goal tmpGoal;
+		JSONObject job, tmpJob;
+		JSONObject geo;
+		JSONArray jar, tmpJar;
+		
+		tmpJob = new JSONObject(json);
+		job = tmpJob.optJSONObject("data");
+		List<Goal> goals = new ArrayList<Goal>();
+		
+		if(job != null) {
+			
+			
+			JSONArray array = job.names();
+	    	for (int i = 0; i < array.length(); i++) {
+	    		tmpGoal =  new Goal();
+	    		String name = array.getString(i);
+	    		
+	    		JSONObject problem = job.getJSONObject(name);
+	   /* 		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
+	    		tmpGoal.title = problem.optString("title");
+	    		tmpGoal.description = problem.optString("description");
+	    		geo = problem.optJSONObject("location").optJSONObject("geo");
+	    		tmpGoal.lat = geo.optDouble("lon");
+	    		tmpGoal.lon = geo.optDouble("lat");
+	    		
+	    		if(problem.optJSONObject("parsed_date") != null) {
+	    			tmpGoal.parsed_date = problem.getJSONObject("parsed_date").getString("text");
+	    		}
+	    		
+	    		tmpGoal.created_at = problem.optString("created_at");
+	    		tmpGoal.discussions_count = problem.optInt("discussions_count");
+	    		
+	    		
+	    		tmpGoal.location_name = problem.optJSONObject("location").optString("name");
+	    		tmpGoal.image = problem.optString("image");
+	    		tmpGoal.supporters_count = problem.optInt("supporters_count");
+	    		
+	    		tmpGoal.supportable = problem.getBoolean("supportable");
+	    		tmpGoal.unsupportable = problem.getBoolean("unsupportable");
+	    		tmpGoal.dissaproved = problem.getBoolean("dissaproved");
+	    		tmpGoal.supported = problem.getBoolean("supported");
+	    		
+	    		jar = problem.optJSONArray("topics");
+	    		if(jar != null) {
+		    		for(int x = 0; x<jar.length(); x++ ) {
+		    			tmpGoal.categories.add(jar.getString(x));
+		    		}
+	    		}
+	    		tmpGoal.creator = new Activist();
+	    		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));*/
+	    		goals.add(parseGoal(problem));
+	    	} 
+		} else {
+	    		
+	    		tmpJar = tmpJob.getJSONArray("data");
+	    		//JSONArray array = job.names();
+		    	for (int i = 0; i < tmpJar.length(); i++) {
+		    		tmpGoal =  new Goal();
+		    		//String name = array.getString(i);
+		    		JSONObject problem = tmpJar.getJSONObject(i);
+		    		
+		    		goals.add(parseGoal(problem));
+	    	}
+		}
+		
+    	return goals;
+		
+	}
+
+	
+	private static Goal parseGoal(JSONObject problem) throws JSONException {
+		JSONObject geo;
+		JSONArray jar, tmpJar;
+		Goal tmpGoal = new Goal();
+		
+		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
+		tmpGoal.title = problem.optString("title");
+		tmpGoal.description = problem.optString("description");
+		geo = problem.optJSONObject("location").optJSONObject("geo");
+		tmpGoal.lat = geo.optDouble("lon");
+		tmpGoal.lon = geo.optDouble("lat");
+		
+		if(problem.optJSONObject("parsed_date") != null) {
+			tmpGoal.parsed_date = problem.getJSONObject("parsed_date").getString("text");
+		}
+		
+		tmpGoal.created_at = problem.optString("created_at");
+		tmpGoal.discussions_count = problem.optInt("discussions_count");
+		
+		
+		tmpGoal.location_name = problem.optJSONObject("location").optString("name");
+		tmpGoal.image = problem.optString("image");
+		tmpGoal.supporters_count = problem.optInt("supporters_count");
+		
+		tmpGoal.supportable = problem.optBoolean("supportable");
+		tmpGoal.unsupportable = problem.optBoolean("unsupportable");
+		tmpGoal.dissaproved = problem.optBoolean("dissaproved");
+		tmpGoal.supported = problem.optBoolean("supported");
+		tmpGoal.editable = problem.optBoolean("editable");
+		
+		
+		jar = problem.optJSONArray("topics");
+		if(jar != null) {
+    		for(int x = 0; x<jar.length(); x++ ) {
+    			tmpGoal.categories.add(jar.getString(x));
+    		}
+		}
+		tmpGoal.creator = new Activist();
+		tmpGoal.creator = parseActivist(problem.optJSONObject("user"));
+		
+		return tmpGoal;
+	}
+	
+	
 	public static List<Comment> parseCommentsForGoal(String json) throws JSONException {
 		JSONObject job, tmpJob;
 		JSONArray jar;
@@ -238,5 +420,90 @@ public class MainParser {
 		return comments;
 		
 	}
+	
+	
+	/*//unsuport
+
+	{"data":{"message":"Problem je vracen na pocetno stanje.","success":true,"auth":{"status":true}},"auth":{"status":true,"logged_in":true}}
+
+	//support
+	{"data":{"success":{"status":true},"auth":{"status":true}},"auth":{"status":true,"logged_in":true}}
+
+	//dissaprove
+	{"data":{"success":"1","auth":{"status":true}},"auth":{"status":true,"logged_in":true}}*/
+	
+	
+	public static final String parseUnsupportGoal(String json) throws JSONException {
+		JSONObject job;
+		
+		if(json == null) 
+			return null;
+		
+		job = new JSONObject(json);
+		job = job.optJSONObject("data");
+		
+		if(job == null) {
+			return null;
+		}
+		
+		boolean status = job.getBoolean("success");
+		
+		if(status) {
+			return job.getString("message");
+		} else {
+			return null;
+		}
+		
+		
+		
+	}
+	
+	public static final String parseSupportGoal(String json) throws JSONException {
+		JSONObject job;
+		
+		if(json == null) 
+			return null;
+		
+		job = new JSONObject(json);
+		job = job.optJSONObject("data");
+		
+		if(job == null) {
+			return null;
+		}
+		
+		boolean status = job.getJSONObject("success").getBoolean("status");
+		
+		if(status) {
+			return "Uspešno!";
+		} else {
+			return null;
+		}
+		
+		
+		}
+	
+	public static final String parseFlagGoal(String json) throws JSONException {
+		JSONObject job;
+		
+		if(json == null) 
+			return null;
+		
+		job = new JSONObject(json);
+		job = job.optJSONObject("data");
+		
+		if(job == null) {
+			return null;
+		}
+		
+		int status = job.getInt("success");
+		
+		if(status == 1) {
+			return "Uspešno!";
+		} else {
+			return null;
+		}
+	}
+
+
 	
 }

@@ -37,17 +37,34 @@ public class MainActivity extends Activity implements TaskListener {
 	    				getApplicationContext()
 	    				));
 	    
-	    
-	     String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
 	     //Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
+	     String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
+	    
+	     Task goalByUser =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_USER, "530d342628add9a7cf000000");
+	     goalByUser.executeTask(getApplicationContext(), this);
+	     
 	     Task googleLogin = new GoogleLogin(email, MainActivity.this);
 	     googleLogin.executeTask(getApplicationContext(), this);
 	     
-	    /* Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, "goal id");
+	     Activist a = Activist.getUserProfile();
+	     //Dohvati sve
+	     Task allGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, null);
+	     allGoals.executeTask(getApplicationContext(), this);
+	    
+	    /* //Trending filter
+	     Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
+	     trending.executeTask(getApplicationContext(), this);
+	     
+	     //DOhvati problem po ID-u
+	     Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, "53714ce47b83fad91b000000");
 	     goalById.executeTask(getApplicationContext(), this);
 	     
-	     Task goalByUser =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_USER, "user id");
-	     goalById.executeTask(getApplicationContext(), this);*/
+	     
+
+	     
+	     //DOhvati probleme za korisnika
+	     Task goalByUser =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_USER, "530d342628add9a7cf000000");
+	     goalById.executeTask(getApplicationContext(), this);
 	     
 	     Task newestGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.NEWEST);
 	     newestGoals.executeTask(getApplicationContext(), this);
@@ -59,13 +76,11 @@ public class MainActivity extends Activity implements TaskListener {
 	     
 	     Task discussed =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.MOST_DISCUSSED);
 	     discussed.executeTask(getApplicationContext(), this);
+	     */
 	     
-	     
-	     Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
 	     
 //	     Task radius =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_RADIUS, ne_lat, ne_lon, sw_lat, sw_lon);
-//	     trending.executeTask(getApplicationContext(), this);
-	     
+//	     trending.executeTask(getApplicationContext(), this);  
 	     
     }
 
@@ -92,6 +107,7 @@ public class MainActivity extends Activity implements TaskListener {
 
 
 
+	@SuppressWarnings({ "unused", "unchecked" })
 	@Override
 	public void onResponse(ServerResponseObject taskResponse) {
 		
@@ -123,8 +139,6 @@ public class MainActivity extends Activity implements TaskListener {
 					//Od ovog exceptiona mozemo da se oporavimo
 					startActivityForResult(ue.getIntent(), GoogleLogin.GOOGLE_AUTH_REQUEST_CODE);
 				} 
-				
-				
 			}
 		} else {
 			//Boga pitaj sta se desilo :) ..ovde ne bi trebao nikad da udje ali cisto nek mu iskace error

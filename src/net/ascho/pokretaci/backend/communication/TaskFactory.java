@@ -1,8 +1,10 @@
 package net.ascho.pokretaci.backend.communication;
 
 import net.ascho.pokretaci.backend.executors.goals.GoalFetcher;
+import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
 import net.ascho.pokretaci.beans.Goal;
+import net.ascho.pokretaci.beans.Goal.GOAL_FETCH_TYPE;
 import android.app.Activity;
 
 public final class TaskFactory {
@@ -25,7 +27,7 @@ public final class TaskFactory {
 	}
 	
 	/**
-	 * Dohvati Goals po user id ili goal id
+	 * Dohvati Goals po user id ili goal id. FetchType je {@link Goal.GOAL_FETCH_TYPE}
 	 * @param fetchType
 	 * @param id
 	 * @return
@@ -63,16 +65,27 @@ public final class TaskFactory {
 	/*private static final Task facebookLooginTask() {
 		return null;
 	}*/
-	
-	private static final Task reportProblemTask() {
-		return null;
+	private static final Task editGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL, goal);
 	}
 	
-	private static final Task commentProblemTask() {
-		return null;
+	private static final Task newGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.NEW_GOAL, goal);
+	}
+	
+	private static final Task reportGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.FLAG_GOAL, goal);
+	}
+	
+	private static final Task commentGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
 	}
 
-	private static final Task supportProblemTask() {
-		return null;
+	private static final Task supportGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL, goal);
+	}
+	
+	private static final Task unsupportGoalTask(Goal goal) {
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
 	}
 }

@@ -108,7 +108,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initLocationData();
 		initLayout();
 		initDrawer();
 
@@ -202,12 +201,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		}
 	}
 
-	/**
-	 * Initializes all Location-related data.
-	 */
-	private void initLocationData() {
-		// TODO
-	}
 
 	private void initDrawer() {
 		mTitle = mDrawerTitle = getTitle();

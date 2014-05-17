@@ -169,6 +169,8 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 			Goal goal = (Goal) taskResponse.getData().get(0);
 			DetailsFragment df = (DetailsFragment) mSectionsPagerAdapter.getItem(0);
 			df.setContent(goal);
+			CommentsFragment cf = (CommentsFragment) mSectionsPagerAdapter.getItem(1);
+			cf.setComments(goal.getComments());
 			
 		}
 

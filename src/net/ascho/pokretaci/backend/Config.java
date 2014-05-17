@@ -23,13 +23,14 @@ public class Config {
 	public static final String USER_INFO_URL = BASE_URL + "api/activists/" + PARAM;
 	public static final String GOAL_DATA_FOR_USER_URL = BASE_URL + "api/activists/" + PARAM + "/goals";
 	
+	public static final String GOAL_DATA_BY_ALL = BASE_URL + "api/goals/all";
 	public static final String GOAL_DATA_BY_ID_URL = BASE_URL + "api/goals/" + PARAM;
 	public static final String GOAL_DATA_BY_FILTER = BASE_URL + "api/goals/filter/";
 	public static final String GOAL_DATA_BY_FILTER_CATEGORY = BASE_URL + "api/goals/filter/";
 	public static final String GOAL_ACTIVITIES_URL = BASE_URL + "api/goals/" + PARAM + "/activities";
 	public static final String GOAL_COMMENTS_URL = BASE_URL + "";
 	
-	public static final String GOAL_DATA_BY_RADIUS = BASE_URL + "api/locations?ne_lat=PARAM&ne_lng=PARAM&sw_lat=PARAM&sw_lng=PARAM";
+	public static final String GOAL_DATA_BY_RADIUS = BASE_URL + "api/locations?ne_lat=" + PARAM + "&ne_lng=" + PARAM + "&sw_lat=" + PARAM + "&sw_lng=" + PARAM;
 	
 	
 	public static final class GOAL_FILTERS_URL {
@@ -39,7 +40,13 @@ public class Config {
 		public static final String MOST_DISCUSSED = "most_discussed";
 	}
 	
-	public static final String GOAL_ACTION_URL = BASE_URL + "";
+	public static final String GOAL_SUPPORT_INTERACTION = BASE_URL + "api/goals/" + PARAM + "/support";
+	public static final String GOAL_UNSUPPORT_INTERACTION = BASE_URL + "api/goals/" + PARAM + "/unsupport";
+	public static final String GOAL_REPORT_INTERACTION = BASE_URL + "api/goals/" + PARAM + "/disapprove";
+	public static final String GOAL_EDIT_INTERACTION = BASE_URL + "api/goals/" + PARAM;
+	public static final String GOAL_NEW_GOAL_INTERACTION = BASE_URL + "api/goals";
+	
+	
 	public static final String COMMENT_ACTION_URL = BASE_URL + "";
 	
 	

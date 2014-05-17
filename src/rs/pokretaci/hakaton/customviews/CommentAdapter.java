@@ -2,6 +2,7 @@ package rs.pokretaci.hakaton.customviews;
 
 import java.util.List;
 
+import net.ascho.pokretaci.beans.Comment;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,9 @@ import android.widget.BaseAdapter;
 
 public class CommentAdapter extends BaseAdapter {
 	Context context;
-	List<String> comments; //promjeniti u goal
+	List<Comment> comments; //promjeniti u goal
 	
-	public CommentAdapter(Context context, List<String> comments) { //TODO promjeniti u goal
+	public CommentAdapter(Context context, List<Comment> comments) { //TODO promjeniti u goal
 		this.context = context;
 		this.comments = comments;
 	}

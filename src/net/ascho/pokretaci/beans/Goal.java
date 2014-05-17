@@ -28,7 +28,31 @@ public class Goal {
 	public Activist creator;
 	public List<Comment> comments;
 	
+	public boolean supportable;
+	public boolean unsupportable;
+	public boolean supported;
+	public boolean dissaproved;
+	public boolean editable;
 	
+	public List<Comment> getComments() {
+		return comments;
+	}
+	
+	public boolean canUserSupport() {
+		return (supportable && !supported);
+	}
+	
+	public boolean canUserUnsupport() {
+		return (unsupportable && supported);
+	}
+	
+	public boolean canUserDissaprove() {
+		return (!dissaproved);
+	}
+	
+	public boolean canUserEdit() {
+		return editable;
+	}
 	//Konstante, tipovi, filteri
 	
 	/**
@@ -37,6 +61,8 @@ public class Goal {
 	 *
 	 */
 	public static final class GOAL_FETCH_TYPE {
+		
+		public static final int ALL_GOALS = 77;
 		/**
 		 * Dovata problem na osnovu id-a
 		 */
@@ -53,7 +79,7 @@ public class Goal {
 		/**
 		 * Dovata problem po odredjenom filtru
 		 */
-		public static final int BY_FILTER =5;
+		public static final int BY_FILTER = 5;
 	}
 	
 	/**
@@ -87,5 +113,13 @@ public class Goal {
 	
 	public static final class GOAL_CATEGORY {
 		
+	}
+	
+	public static final class GOAL_INTERACTION_TYPE {
+		public static final int SUPPORT_GOAL = 1;
+		public static final int UNSUPPORT_GOAL = 2;
+		public static final int FLAG_GOAL = 3;
+		public static final int EDIT_GOAL = 4;
+		public static final int NEW_GOAL = 5;
 	}
 }

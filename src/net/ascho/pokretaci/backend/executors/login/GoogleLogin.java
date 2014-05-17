@@ -16,6 +16,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.cookie.Cookie;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -63,8 +64,14 @@ public class GoogleLogin extends LoginTask {
 		TransportObject tob;
 	//	try {
 			//Acquire token
-			if(checkIfAlreadyLoggedIn()) {
-				return null;
+			if(checkIfAlreadyLoggedIn()) { //Vec je ulogovan
+				ServerResponseObject sro = new ServerResponseObject();
+				List<Activist> activists = new ArrayList<Activist>();
+				getUserProfile();
+				activists.add(Activist.getUserProfile());
+				List<Object> lob = new ArrayList<Object>(activists);
+				sro.setData(lob);
+				return sro;
 			} else {
 				mToken = GoogleAuthUtil.getToken(getContext(), mEmail, mScope);
 				return login();
@@ -114,7 +121,7 @@ public class GoogleLogin extends LoginTask {
 			return false;
 	}
 	
-	private ServerResponseObject login() throws IOException, GooglePlayServicesAvailabilityException, GoogleAuthException {
+	private ServerResponseObject login() throws IOException, GooglePlayServicesAvailabilityException, GoogleAuthException, JSONException {
 		
 		ApacheClient apache = ApacheClient.getInstance();
 		String getUrl = Config.LOGIN_BASE_URL.replace(Config.PARAM, mToken);
@@ -137,6 +144,7 @@ public class GoogleLogin extends LoginTask {
 		List<Activist> activists = new ArrayList<Activist>();
 		
 		if(checkIfAlreadyLoggedIn()) {
+			getUserProfile();
 			activists.add(Activist.getUserProfile());
 		} else {
 			activists.add(null);
@@ -186,7 +194,17 @@ public class GoogleLogin extends LoginTask {
 		
 	}
 	
-
+	public void getUserProfile() throws ClientProtocolException, IOException, JSONException {
+		ApacheClient apache = ApacheClient.getInstance();
+		HttpResponse httpResponse = apache.getRequest(Config.USER_INFO_URL.replace(Config.PARAM, Activist.getUserProfile().id));
+		String JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
+		
+		MainParser.parseUserProfile(JSONresponse);
+		/*httpResponse = apache.getRequest(Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, Activist.getUserProfile().id));
+		JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());*/
+		
+	//	Activist.getUserProfile().goals = MainParser.parseGoals(JSONresponse);
+	}
     
     
     

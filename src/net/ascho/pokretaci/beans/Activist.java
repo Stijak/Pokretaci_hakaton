@@ -1,6 +1,6 @@
 package net.ascho.pokretaci.beans;
 
-import net.ascho.pokretaci.backend.communication.ApacheClient;
+import java.util.List;
 
 public class Activist {
 	
@@ -24,8 +24,13 @@ public class Activist {
 				email,
 				avatar;
 	public Pois POIS;
-	public int comments, goals, votes, support;
+	public int commentsCount, goalsCount, votesCount, supportCount;
+	public List<Goal> goals;
 	
+	
+	public List<Goal> getUserGoals() {
+		return goals;
+	}
 	/**
 	 * Trougao koji predstavlja korisnikovu "okolinu", parovi(lat,lon) su tacke smestene u 3 lat i 3 lon vrednosti u 2 niza
 	 * @author Bojan
