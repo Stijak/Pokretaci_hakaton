@@ -42,7 +42,7 @@
                     android:id="@+id/profile_stats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prijavljenih problema: 7\r\nPodržanih problema: 2\r\nKomentara: 3" />
+                    android:text="Prijavljenih problema:\r\nPodržanih problema:" />
             </LinearLayout>
         </LinearLayout>
 

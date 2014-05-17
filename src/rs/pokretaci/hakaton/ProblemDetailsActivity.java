@@ -47,7 +47,7 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 		Intent callingIntent = this.getIntent();
 		
 		if (callingIntent != null) {
-			String goalId = callingIntent.getStringExtra(MapActivity.GOAL_ID_EXTRA);
+			String goalId = callingIntent.getStringExtra(MapActivity.ID_EXTRA);
 			if (goalId != null) {
 				Task newestGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, goalId);
 				newestGoals.executeTask(getApplicationContext(), this);

@@ -1,6 +1,7 @@
 package rs.pokretaci.hakaton;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -8,9 +9,31 @@ import java.util.Locale;
 
 
 
+
+
+
+
+
+
+import net.ascho.pokretaci.backend.beans.ServerResponseObject;
+import net.ascho.pokretaci.backend.communication.Task;
+import net.ascho.pokretaci.backend.communication.TaskFactory;
+import net.ascho.pokretaci.backend.communication.TaskListener;
+import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
+import net.ascho.pokretaci.beans.Activist;
+import net.ascho.pokretaci.beans.Goal;
+
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -19,14 +42,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.widget.TextView;
 import rs.pokretaci.hakaton.R;
 
-public class ProfileActivity extends FragmentActivity implements ActionBar.TabListener {
+public class ProfileActivity extends FragmentActivity implements ActionBar.TabListener, TaskListener {
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private TextView mProfileStats;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +71,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		//mSectionsPagerAdapter = new TabsAdapter(this, mViewPager);
 		mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
+
 		//Bind the tabs to the ViewPager
 		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setViewPager(mViewPager);
@@ -55,7 +82,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 				actionBar.setSelectedNavigationItem(position);
 			}
 		});*/
-		
+
 		//final ActionBar actionBar = getActionBar();
 		/*mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
@@ -64,8 +91,8 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 			}
 		});*/
 
-// For each of the sections in the app, add a tab to the action bar.
-/*for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+		// For each of the sections in the app, add a tab to the action bar.
+		/*for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 	// Create a tab with text corresponding to the page title defined by
 	// the adapter. Also specify this Activity object, which implements
 	// the TabListener interface, as the callback (listener) for when
@@ -85,6 +112,14 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		/*if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}*/
+
+		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+		all.executeTask(getApplicationContext(), this);
+		
+		Intent intent = getIntent();
+		TextView text = (TextView) findViewById(R.id.profile_name);
+		text.setText(intent.getStringExtra(MapActivity.FULL_NAME_EXTRA));
+		mProfileStats = (TextView) findViewById(R.id.profile_stats);
 	}
 
 	@Override
@@ -105,18 +140,18 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 	 * tab changes.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		GoalsListFragment[] fragments = new GoalsListFragment[2];
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
-		public Fragment getItem(int position) {
-			if (position == 0) {
-				return new CommentsFragment();
-			} else {
-				return new CommentsFragment(); //TODO replace with new fragment
+		public GoalsListFragment getItem(int position) {
+			if (fragments[position] == null) {
+				fragments[position] = new GoalsListFragment();
 			}
+			return fragments[position];
 			//TODO return correspondingfragment
 		}
 
@@ -141,18 +176,51 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
-		
+
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void onResponse(ServerResponseObject taskResponse) {
+
+		if(taskResponse != null) { //Nije doslo do neocekivanog sranja
+			if(taskResponse.isResponseValid()) { //Nije doslo do exception-a
+				List list = taskResponse.getData();
+				List<Goal> ownedGoals = new ArrayList<Goal>();
+				List<Goal> supportedGoals = new ArrayList<Goal>();
+				List<Goal> goals = (List<Goal>) list;
+				for (Goal goal: goals) {
+					if (goal.owned) ownedGoals.add(goal);
+					if (goal.supported) supportedGoals.add(goal);
+				}
+				mSectionsPagerAdapter.getItem(0).setGoals(ownedGoals);
+				mSectionsPagerAdapter.getItem(1).setGoals(supportedGoals);
+				mProfileStats.setText(String.format(getString(R.string.profile_stats), ownedGoals.size(), supportedGoals.size()));
+			} else {
+				//Doslo je do exception, mozes da dohvatis gresku sa
+				taskResponse.getExceptionMsg(); // i dalje sta dizajner kaze :P
+
+				//Ali ako je bio google login task poveravaj sledece
+				Exception e = taskResponse.getException();
+
+
+				Log.d("rs.pokretaci.hakaton", "Nepoznata excepcija " + e.toString());
+			}
+		} else {
+			Log.d("rs.pokretaci.hakaton", "TaskResponse je null");
+		}
+
+
 	}
 }

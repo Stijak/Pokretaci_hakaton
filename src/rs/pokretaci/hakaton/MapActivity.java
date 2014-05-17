@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,6 +51,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -73,16 +76,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 
 import rs.pokretaci.hakaton.R;
+import rs.pokretaci.hakaton.customviews.ExpendableDrawerAdapter;
+import rs.pokretaci.hakaton.customviews.PokretaciInfoWindowAdapter;
 
 /**
  * Activity that contains an interactive Google Map fragment. Users can record
  * a traveled path, mark the map with information and take pictures that become
  * associated with the map. 
  */
-public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClickListener, TaskListener {
+public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClickListener, TaskListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 	//drawer demo
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
+	private ExpandableListView mDrawerList2;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ArrayList<String> mGroupItem = new ArrayList<String>();
 	private ArrayList<Object> mChildItem = new ArrayList<Object>();
@@ -90,10 +96,11 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mDrawwerList;
+	private Activist mMyProfile;
 
 	/** The interactive Google Map fragment. */
 	private GoogleMap m_vwMap;
-	private HashMap<Marker, String> mMarkerProblemIds = new HashMap<Marker, String>();
+	private HashMap<Marker, Goal> mMarkerProblemIds = new HashMap<Marker, Goal>();
 
 
 	private MapFragment mapFragment;
@@ -105,17 +112,19 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private static final int ENABLE_GPS_REQUEST_CODE = 1;
 	private static final int PICTURE_REQUEST_CODE = 2;
 	
-	protected final static String GOAL_ID_EXTRA = "GOAL_ID_EXTRA";
+	protected final static String ID_EXTRA = "ID_EXTRA";
+	protected final static String FULL_NAME_EXTRA = "FULL_NAME_EXTRA";
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		initLayout();
-		initDrawer();
+		initDrawer2();
 
 		//new DownloadLocationsTask().execute();
-		Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
-		trending.executeTask(getApplicationContext(), this);
+		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+		all.executeTask(getApplicationContext(), this);
 
 		ApacheClient.getInstance().setCookieStore(
 				CookieManager.getInstance().restoreCookiesFromSharedPreferences(
@@ -127,6 +136,10 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		Task googleLogin = new GoogleLogin(email, MapActivity.this);
 		googleLogin.executeTask(getApplicationContext(), this);
 	}
+	
+	public Goal getRelevantGoal(Marker marker) {
+		return mMarkerProblemIds.get(marker);
+	}
 
 	@Override
 	protected void onStart() {
@@ -135,10 +148,41 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 			m_vwMap = mapFragment.getMap();
 			m_vwMap.setMyLocationEnabled(true);
 			m_vwMap.setOnInfoWindowClickListener(this);
+			PokretaciInfoWindowAdapter adapter = new PokretaciInfoWindowAdapter(this);
+			m_vwMap.setInfoWindowAdapter(adapter);
 		}
 
 	}
+	
+	public void setGroupData() {
+		mGroupItem.addAll(Arrays.asList(this.getResources().getStringArray(R.array.drawer_array)));
+	}
 
+	public void setChildGroupData() {
+		/**
+		 * Add Data For TecthNology
+		 */
+		ArrayList<String> child = new ArrayList<String>();
+
+		mChildItem.add(child);
+
+		/**
+		 * Add Data For Mobile
+		 */
+		child = new ArrayList<String>();
+		child.addAll(Arrays.asList(this.getResources().getStringArray(R.array.drawer_array_child_category)));
+		mChildItem.add(child);
+		/**
+		 * Add Data For Manufacture
+		 */
+		child = new ArrayList<String>();
+		mChildItem.add(child);
+		/**
+		 * Add Data For Extras
+		 */
+		child = new ArrayList<String>();
+		mChildItem.add(child);
+	}
 
 
 	private void initDrawer() {
@@ -180,6 +224,38 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		//mDrawerList.setOnItemClickListener(listener); //TODO
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
+	
+	private void initDrawer2() {
+		setGroupData();
+		setChildGroupData();
+		mTitle = mDrawerTitle = getTitle();
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+		mDrawerList2 = (ExpandableListView) findViewById(R.id.left_drawer);
+
+		mDrawerList2.setAdapter(new ExpendableDrawerAdapter(this, mGroupItem, mChildItem));
+
+		mDrawerList2.setOnChildClickListener(this);
+		mDrawerList2.setOnGroupClickListener(this);
+
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+		 R.drawable.ic_drawer, R.string.drawer_open,
+		 R.string.drawer_close) {
+		 public void onDrawerClosed(View view) {
+		 //getActionBar().setSubtitle("open");
+		 }
+		
+		 /** Called when a drawer has settled in a completely open state. */
+		 public void onDrawerOpened(View drawerView) {
+		 //getActionBar().setSubtitle("close");
+		 }
+		
+		 };
+		
+		 mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+	}
+
 
 	/* Called whenever we call invalidateOptionsMenu() */
 	@Override
@@ -240,7 +316,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	public void onInfoWindowClick(Marker marker) {
 		Intent intent = new Intent();
 		intent.setClass(this, ProblemDetailsActivity.class);
-		intent.putExtra(GOAL_ID_EXTRA, mMarkerProblemIds.get(marker));
+		intent.putExtra(ID_EXTRA, mMarkerProblemIds.get(marker).id);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
 
@@ -261,34 +337,20 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				List list = taskResponse.getData();
 				if (list.get(0) instanceof Activist) { //login task
 					Log.d("rs.pokretaci.hakaton", "Uspješno ulogovani");
+					mMyProfile = (Activist) list.get(0);
 				} else {
 					List<Goal> goals = (List<Goal>) list;
 					for (Goal goal: goals) {
-						/*
-						 * String name = array.getString(i);
-					JSONObject problem = data.getJSONObject(name);
-					String title = problem.getString("title");
-					String description = problem.getString("description");
-					JSONObject geo = problem.getJSONObject("location").getJSONObject("geo");
-					double lat = geo.getDouble("lon");
-					double lon = geo.getDouble("lat");
-					LatLng location = new LatLng(lat, lon);
-					MarkerOptions mo = new MarkerOptions()
-					.title(title)
-					.snippet(description)
-					.position(location);
-					Marker marker = m_vwMap.addMarker(mo);
-					mMarkerProblemIds.put(marker, name);
-						 */
 						String id = goal.id;
 						String title = goal.title;
+						String authorName = goal.creator.full_name;
 						String description = goal.description;
 						double longitude = goal.lon;
 						double latitude = goal.lat;
 						LatLng location = new LatLng(latitude, longitude);
-						MarkerOptions mo = new MarkerOptions().title(title).snippet(description).position(location);
+						MarkerOptions mo = new MarkerOptions().title(title).snippet(authorName).position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.new_goal_pin));//u zavisnosti od vrste pina
 						Marker marker = m_vwMap.addMarker(mo);
-						mMarkerProblemIds.put(marker, id);
+						mMarkerProblemIds.put(marker, goal);
 					}
 				}
 			} else {
@@ -320,6 +382,35 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		}
 
 
+	}
+
+	@Override
+	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+		switch (groupPosition) {
+        case 1:  getMyProfile();
+                 break;
+        case 2: 
+                 break;
+        case 3:  ;
+        		 break;
+        default: 
+		}
+		return false;
+	}
+	
+	private void getMyProfile() {
+		Intent intent = new Intent();
+		intent.setClass(this, ProfileActivity.class);
+		intent.putExtra(ID_EXTRA, mMyProfile.id);
+		intent.putExtra(FULL_NAME_EXTRA, mMyProfile.full_name);
+		//intent.putExtra("EXTRA_ID", "SOME DATAS");
+		startActivity(intent);
+	}
+
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		
+		return false;
 	}
 
 	/*@Override

@@ -2,6 +2,7 @@ package rs.pokretaci.hakaton.customviews;
 
 import java.util.ArrayList;
 
+import rs.pokretaci.hakaton.R;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -35,7 +36,8 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return null;
+		ArrayList<String> childArray = (ArrayList<String>) Childtem.get(groupPosition);
+		return childArray.get(childPosition);
 	}
 
 	@Override
@@ -43,16 +45,17 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 		return 0;
 	}
 
+	
+	
 	@Override
 	public View getChildView(int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		tempChild = (ArrayList<String>) Childtem.get(groupPosition);
-		TextView text = null;
 		if (convertView == null) {
-			convertView = new TextView(context);
+			convertView = (TextView) ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element, parent, false);
 		}
-		text = (TextView) convertView;
-		text.setText(">"+tempChild.get(childPosition));
+		TextView text = (TextView) convertView;
+		text.setText("   "+tempChild.get(childPosition));
 //		convertView.setOnClickListener(new OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
@@ -60,7 +63,17 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 //						Toast.LENGTH_SHORT).show();
 //			}
 //		});
-		convertView.setTag(tempChild.get(childPosition));
+		text.setTag(tempChild.get(childPosition));
+		return text;
+	}
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded,
+			View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			convertView = (TextView) ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element, parent, false);
+		}
+		((TextView) convertView).setText(groupItem.get(groupPosition)); 
+		convertView.setTag(groupItem.get(groupPosition));
 		return convertView;
 	}
 
@@ -96,16 +109,7 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 		return 0;
 	}
 
-	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = new TextView(context);
-		}
-		((TextView) convertView).setText(groupItem.get(groupPosition)); 
-		convertView.setTag(groupItem.get(groupPosition));
-		return convertView;
-	}
+
 
 	@Override
 	public boolean hasStableIds() {
@@ -114,7 +118,7 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return false;
+		return true;
 	}
 
 }

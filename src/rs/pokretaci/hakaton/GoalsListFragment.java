@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.ascho.pokretaci.beans.Comment;
+import net.ascho.pokretaci.beans.Goal;
 import rs.pokretaci.hakaton.customviews.CommentAdapter;
+import rs.pokretaci.hakaton.customviews.GoalsAdapter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -16,24 +18,24 @@ import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 
 
-public class CommentsFragment extends ListFragment {
-	private CommentAdapter mCommentAdapter;
-	private List<Comment> mComments = new ArrayList<Comment>();
+public class GoalsListFragment extends ListFragment {
+	private GoalsAdapter mGoalsAdapter;
+	private List<Goal> mGoals = new ArrayList<Goal>();
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCommentAdapter = new CommentAdapter(this.getActivity(), mComments);
-		this.setListAdapter(mCommentAdapter);
+		mGoalsAdapter = new GoalsAdapter(this.getActivity(), mGoals);
+		this.setListAdapter(mGoalsAdapter);
 		//this.setListAdapter(new ArrayAdapter(this.getActivity(), R.layout.comment_item, EXAMPLE_DATA));
 		//this.setEmptyText("No comments");
 	}
 	
-	public void setComments(List<Comment> list) {
-		mComments.clear();
-		mComments.addAll(list);
-		mCommentAdapter.notifyDataSetChanged();
+	public void setGoals(List<Goal> list) {
+		mGoals.clear();
+		mGoals.addAll(list);
+		mGoalsAdapter.notifyDataSetChanged();
 	}
 	
 	/*@Override

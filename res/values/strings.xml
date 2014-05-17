@@ -26,12 +26,17 @@
     -->
 
     <string-array name="drawer_array">
-        <item>O aplikaciji</item>
-        <item>Fabrika promena</item>
-        <item></item>
-        <item>Kategorija 1</item>
-        <item>Kategorija 2</item>
-        <item>Kategorija 3</item>
+        <item>O nama</item>
+        <item>Kategorije problema</item>
+        <item>Moj profil</item>
+        <item>Izloguj se</item>
+    </string-array>
+    
+    <string-array name="drawer_array_child_category">
+        <item>Svi problemi</item>
+        <item>Najpopularniji</item>
+        <item>Najnoviji</item>
+        <item>Najviše diskutovani</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -44,6 +49,8 @@
         <!-- ProfileActivity -->
         <string name="submited_problems">Prijavljeni problemi</string>
         <string name="supported_problems">Podržani problemi</string>
+        
+        <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
     
 
 </resources>
