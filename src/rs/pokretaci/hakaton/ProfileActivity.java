@@ -54,6 +54,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private TextView mProfileStats;
+	private String mUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		Intent intent = getIntent();
 		TextView text = (TextView) findViewById(R.id.profile_name);
 		text.setText(intent.getStringExtra(MapActivity.FULL_NAME_EXTRA));
+		mUserId = intent.getStringExtra(MapActivity.ID_EXTRA);
 		mProfileStats = (TextView) findViewById(R.id.profile_stats);
 	}
 
@@ -201,7 +203,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 				List<Goal> supportedGoals = new ArrayList<Goal>();
 				List<Goal> goals = (List<Goal>) list;
 				for (Goal goal: goals) {
-					if (goal.owned) ownedGoals.add(goal);
+					if (goal.creator.id == mUserId) ownedGoals.add(goal);
 					if (goal.supported) supportedGoals.add(goal);
 				}
 				mSectionsPagerAdapter.getItem(0).setGoals(ownedGoals);

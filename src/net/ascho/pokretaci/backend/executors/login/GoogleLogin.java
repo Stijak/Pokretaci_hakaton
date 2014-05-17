@@ -200,10 +200,10 @@ public class GoogleLogin extends LoginTask {
 		String JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 		
 		MainParser.parseUserProfile(JSONresponse);
-		/*httpResponse = apache.getRequest(Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, Activist.getUserProfile().id));
-		JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());*/
+		httpResponse = apache.getRequest(Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, Activist.getUserProfile().id));
+		JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 		
-	//	Activist.getUserProfile().goals = MainParser.parseGoals(JSONresponse);
+		Activist.getUserProfile().goals = MainParser.parseGoals(JSONresponse);
 	}
     
     

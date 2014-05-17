@@ -53,6 +53,31 @@ public class Goal {
 	public boolean canUserEdit() {
 		return editable;
 	}
+	
+	/**
+	 * {@link GOAL_STATES} : <br>
+	 * GOAL_STATES.NEW_GOAL = 1 <br>
+	 * GOAL_STATES.SUPPORTED_GOAL = 2 <br>
+	 * GOAL_STATES.USER_GOAL = 3 <br>
+	 * GOAL_STATES.RESOLVED_GOAL = 4
+	 * @return
+	 */
+	public int mapPinType() {
+		if(state == null) {
+			return GOAL_STATES.NEW_GOAL; 
+		}
+		if(state.compareTo("resolved") == 0) {
+			return Goal.GOAL_STATES.RESOLVED_GOAL;
+		}
+		if(supported && creator.id == Activist.getUserProfile().id) {
+			return GOAL_STATES.USER_GOAL;
+		} else if(supported) {
+			return GOAL_STATES.SUPPORTED_GOAL;
+		} else {
+			return GOAL_STATES.NEW_GOAL;
+		}
+		
+	}
 	//Konstante, tipovi, filteri
 	
 	/**
@@ -121,5 +146,17 @@ public class Goal {
 		public static final int FLAG_GOAL = 3;
 		public static final int EDIT_GOAL = 4;
 		public static final int NEW_GOAL = 5;
+	}
+	
+	/**
+	 * Stanja problema - pinovi na mapi
+	 * @author Bojan
+	 *
+	 */
+	public static final class GOAL_STATES {
+		public static final int NEW_GOAL = 1;
+		public static final int SUPPORTED_GOAL = 2;
+		public static final int USER_GOAL = 3;
+		public static final int RESOLVED_GOAL = 4;
 	}
 }

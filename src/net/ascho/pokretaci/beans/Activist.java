@@ -12,6 +12,7 @@ public class Activist {
     	synchronized (syncObj) {
 			if (UserProfile == null) {
 				UserProfile = new Activist();
+				UserProfile.id = "-1";
 			}
             return UserProfile;
 		}

@@ -65,27 +65,27 @@ public final class TaskFactory {
 	/*private static final Task facebookLooginTask() {
 		return null;
 	}*/
-	private static final Task editGoalTask(Goal goal) {
+	public static final Task editGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL, goal);
 	}
 	
-	private static final Task newGoalTask(Goal goal) {
+	public static final Task newGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.NEW_GOAL, goal);
 	}
 	
-	private static final Task reportGoalTask(Goal goal) {
+	public static final Task reportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.FLAG_GOAL, goal);
 	}
 	
-	private static final Task commentGoalTask(Goal goal) {
+	public static final Task commentGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
 	}
 
-	private static final Task supportGoalTask(Goal goal) {
+	public static final Task supportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL, goal);
 	}
 	
-	private static final Task unsupportGoalTask(Goal goal) {
+	public static final Task unsupportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
 	}
 }

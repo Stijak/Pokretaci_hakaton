@@ -1,7 +1,9 @@
 package net.ascho.pokretaci.backend.beans;
-import net.ascho.pokretaci.beans.*;
-import java.util.ArrayList;
 import java.util.List;
+
+import net.ascho.pokretaci.beans.Activist;
+import net.ascho.pokretaci.beans.Comment;
+import net.ascho.pokretaci.beans.Goal;
 
 /**
  * Omotac oko isparsiranih JSON podataka koji su stigli kao odgovor od servera na neku akciju.
@@ -37,13 +39,13 @@ public class ServerResponseObject {
 	}
 	
 	
-	/**
+/*	*//**
 	 * @param responseCode
-	 */
+	 *//*
 	public ServerResponseObject(int responseCode) {
 		mResponseCode = responseCode;
 		mException = null;
-	}
+	}*/
 	
 	/**
 	 * Ako je doslo do exception-a
@@ -60,13 +62,18 @@ public class ServerResponseObject {
 	}
 	
 	/**
-	 * Vraca 
+	 * Vraca podatke koje treba kastovati u odgovarajuci format
 	 * @return
 	 */
 	public List<Object> getData() {
 		return mData;
 	}
 	
+	public Class<? extends Object> getDataType() {
+		
+		
+		return Comment.class;
+	}
 	
 	/**
 	 * Da li je server odgovorio u validnom formatu, to jest da nije doslo do neke neocekivane greske, Exception-a itd...
@@ -76,13 +83,13 @@ public class ServerResponseObject {
 		return mResponseCode != EXCEPTION;
 	}
 	
-	/**
+/*	*//**
 	 * Response code
 	 * @return
-	 */
+	 *//*
 	public int getResponseCode() {
 		return mResponseCode;
-	}
+	}*/
 	
 	/**
 	 * Exception ako ga je bilo

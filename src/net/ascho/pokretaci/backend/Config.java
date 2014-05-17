@@ -21,7 +21,7 @@ public class Config {
 	 * $param = user_id
 	 */
 	public static final String USER_INFO_URL = BASE_URL + "api/activists/" + PARAM;
-	public static final String GOAL_DATA_FOR_USER_URL = BASE_URL + "api/activists/" + PARAM + "/goals";
+	public static final String GOAL_DATA_FOR_USER_URL = BASE_URL + "api/activists/" + PARAM + "/goals?type=support";
 	
 	public static final String GOAL_DATA_BY_ALL = BASE_URL + "api/goals/all";
 	public static final String GOAL_DATA_BY_ID_URL = BASE_URL + "api/goals/" + PARAM;

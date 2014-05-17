@@ -1,28 +1,27 @@
 package net.ascho.pokretaci;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.ApacheClient;
 import net.ascho.pokretaci.backend.communication.Task;
-import net.ascho.pokretaci.backend.communication.TaskFactory;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.cookies.CookieManager;
+import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
 import net.ascho.pokretaci.backend.util.Util;
-import net.ascho.pokretaci.beans.Activist;
 import net.ascho.pokretaci.beans.Goal;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class MainActivity extends Activity implements TaskListener {
     protected AccountManager accountManager;
@@ -40,16 +39,33 @@ public class MainActivity extends Activity implements TaskListener {
 	     //Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
 	     String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
 	    
-	     Task goalByUser =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_USER, "530d342628add9a7cf000000");
-	     goalByUser.executeTask(getApplicationContext(), this);
+	    
 	     
 	     Task googleLogin = new GoogleLogin(email, MainActivity.this);
 	     googleLogin.executeTask(getApplicationContext(), this);
 	     
-	     Activist a = Activist.getUserProfile();
-	     //Dohvati sve
-	     Task allGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, null);
-	     allGoals.executeTask(getApplicationContext(), this);
+	     Goal mGoal = new Goal();
+	     
+	     mGoal.id = "5377d3f67b83fa5167000000";
+	     mGoal.title = "android novi cilj 5 update STVARNO";
+	     mGoal.description = "android description 5 update stvarno radi op";
+	     mGoal.lat = 19.463063;
+	     mGoal.lon = 44.591535;
+	     mGoal.location_name = "android lokacija77 update";
+	     mGoal.image = null;
+	     mGoal.categories = new ArrayList<String>();
+	     mGoal.categories.add("ruglo");
+	     Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL, mGoal);
+	     newGoal.executeTask(getApplicationContext(), this);
+	  /*   Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, null);
+	     goalById.executeTask(getApplicationContext(), this);*/
+	     
+	     
+/*	     	Goal g =new Goal();
+	     	g.id = "53714ce47b83fad91b000000";
+	        Task t1 = TaskFactory.reportGoalTask(g);
+			t1.executeTask(getApplicationContext(), this);*/
+	  
 	    
 	    /* //Trending filter
 	     Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
@@ -113,11 +129,25 @@ public class MainActivity extends Activity implements TaskListener {
 		
 		if(taskResponse != null) { //Nije doslo do neocekivanog sranja
 			if(taskResponse.isResponseValid()) { //Nije doslo do exception-a
+				
+				
 				List list = taskResponse.getData();
 				List<Goal> goals = (List<Goal>) list; //npr ako je Task dohvatao Goals
 				
-				Activist a = Activist.getUserProfile();
-				Log.d("dsad", "dasdsa");
+				
+				Goal g = goals.get(0);
+				
+				
+			/*	for(Goal g: goals) {
+					if(g.comments != null) {
+						for(Comment c: g.comments) {
+					
+						Log.d(g.title, c.content);
+					}
+					}
+					
+				}*/
+				
 			} else {
 				//Doslo je do exception, mozes da dohvatis gresku sa
 				taskResponse.getExceptionMsg(); // i dalje sta dizajner kaze :P

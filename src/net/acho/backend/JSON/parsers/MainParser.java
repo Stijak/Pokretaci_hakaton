@@ -37,10 +37,13 @@ public class MainParser {
 		
 		activist.first_name = tempObject.optString("name");
 		activist.avatar = tempObject.optString("avatar");
-		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
-		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
-		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
-		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		
+		if(tempObject.optJSONObject("balance") != null) {
+			activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+			activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+			activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+			activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		}
 		
 		activist.email = tempObject.optString("email");
 		activist.full_name = tempObject.optString("full_name");
@@ -88,10 +91,13 @@ public class MainParser {
 		
 		activist.first_name = tempObject.optString("name");
 		activist.avatar = tempObject.optString("avatar");
-		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
-		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
-		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
-		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		
+		if(tempObject.optJSONObject("balance") != null) {
+			activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+			activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+			activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+			activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		}
 		
 		activist.email = tempObject.optString("email");
 		activist.full_name = tempObject.optString("full_name");
@@ -112,10 +118,14 @@ public class MainParser {
 		
 		activist.first_name = tempObject.optString("name");
 		activist.avatar = tempObject.optString("avatar");
-		activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
-		activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
-		activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
-		activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		
+		if(tempObject.optJSONObject("balance") != null) {
+			activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
+			activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
+			activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
+			activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+		}
+		
 		
 		activist.email = tempObject.optString("email");
 		activist.full_name = tempObject.optString("full_name");
@@ -328,7 +338,7 @@ public class MainParser {
 	}
 
 	
-	private static Goal parseGoal(JSONObject problem) throws JSONException {
+	public static Goal parseGoal(JSONObject problem) throws JSONException {
 		JSONObject geo;
 		JSONArray jar, tmpJar;
 		Goal tmpGoal = new Goal();
