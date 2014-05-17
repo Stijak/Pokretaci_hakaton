@@ -8,6 +8,18 @@ import java.util.Locale;
 
 
 
+
+
+
+
+
+
+import net.ascho.pokretaci.backend.beans.ServerResponseObject;
+import net.ascho.pokretaci.backend.communication.Task;
+import net.ascho.pokretaci.backend.communication.TaskFactory;
+import net.ascho.pokretaci.backend.communication.TaskListener;
+import net.ascho.pokretaci.beans.Goal;
+
 import com.astuetz.PagerSlidingTabStrip;
 
 import android.app.ActionBar;
@@ -19,18 +31,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import rs.pokretaci.hakaton.R;
 
-public class ProblemDetailsActivity extends FragmentActivity implements ActionBar.TabListener {
+public class ProblemDetailsActivity extends FragmentActivity implements ActionBar.TabListener, TaskListener {
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Intent callingIntent = this.getIntent();
+		
+		if (callingIntent != null) {
+			String goalId = callingIntent.getStringExtra(MapActivity.GOAL_ID_EXTRA);
+			if (goalId != null) {
+				Task newestGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, goalId);
+				newestGoals.executeTask(getApplicationContext(), this);
+			}
+		}
 
 		//mViewPager = new ViewPager(this);
 		//mViewPager.setId(R.id.pager);
@@ -41,12 +63,12 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 		//mSectionsPagerAdapter = new TabsAdapter(this, mViewPager);
 		mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
+
 		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setViewPager(mViewPager);
-		
+
 		//final ActionBar actionBar = getActionBar();
-	/*	mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		/*	mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
@@ -62,7 +84,7 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
         mSectionsPagerAdapter.addTab(bar.newTab().setText("Cursor"),
                 CursorFragment.class, null);*/
 
-		
+
 	}
 
 	@Override
@@ -83,17 +105,24 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 	 * tab changes.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		private Fragment[] fragments = new Fragment[2];
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
-		public Fragment getItem(int position) {
+		public Fragment getItem(int position) { //nevidjeno zakukuljeno - ali ovo pisem poslije 24 sata nespavanja
+			if (fragments[position] != null) {
+				return fragments[position];
+			}
 			if (position == 0) {
-				return new DetailsFragment();
+
+				fragments[0] = new DetailsFragment();
+				return fragments[0];
 			} else {
-				return new CommentsFragment(); //TODO replace with new fragment
+				fragments[1] = new CommentsFragment();			
+				return fragments[1]; 
 			}
 			//TODO return correspondingfragment
 		}
@@ -119,18 +148,30 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
-		
+
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void onResponse(ServerResponseObject taskResponse) {
+		if (taskResponse != null && taskResponse.isResponseValid()) {
+			Goal goal = (Goal) taskResponse.getData().get(0);
+			DetailsFragment df = (DetailsFragment) mSectionsPagerAdapter.getItem(0);
+			df.setContent(goal);
+			
+		}
+
+
 	}
 }

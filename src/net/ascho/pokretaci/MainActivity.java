@@ -62,7 +62,6 @@ public class MainActivity extends Activity implements TaskListener {
 	     
 	     
 	     Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
-	     trending.executeTask(getApplicationContext(), this);
 	     
 //	     Task radius =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_RADIUS, ne_lat, ne_lon, sw_lat, sw_lon);
 //	     trending.executeTask(getApplicationContext(), this);
@@ -124,6 +123,8 @@ public class MainActivity extends Activity implements TaskListener {
 					//Od ovog exceptiona mozemo da se oporavimo
 					startActivityForResult(ue.getIntent(), GoogleLogin.GOOGLE_AUTH_REQUEST_CODE);
 				} 
+				
+				
 			}
 		} else {
 			//Boga pitaj sta se desilo :) ..ovde ne bi trebao nikad da udje ali cisto nek mu iskace error
