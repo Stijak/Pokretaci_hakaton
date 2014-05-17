@@ -276,7 +276,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public void onInfoWindowClick(Marker arg0) {
 		Intent intent = new Intent();
-		intent.setClass(this, ProfileActivity.class);
+		intent.setClass(this, ProblemDetailsActivity.class);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
 

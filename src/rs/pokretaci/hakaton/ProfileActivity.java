@@ -7,6 +7,9 @@ import java.util.Locale;
 
 
 
+
+import com.astuetz.PagerSlidingTabStrip;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -34,25 +37,35 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		setContentView(R.layout.profile);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
-		final ActionBar bar = getActionBar();
-		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		bar.setDisplayShowTitleEnabled(false);
-		bar.setDisplayShowHomeEnabled(false);
-		//bar.setDisplayOptions(0, ActionBar);
+		//final ActionBar bar = getActionBar();
+		//bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		//bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
 		//mSectionsPagerAdapter = new TabsAdapter(this, mViewPager);
 		mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		final ActionBar actionBar = getActionBar();
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		
+		//Bind the tabs to the ViewPager
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		tabs.setViewPager(mViewPager);
+		//tabs.add
+		/*tabs.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
 			}
-		});
+		});*/
+		
+		//final ActionBar actionBar = getActionBar();
+		/*mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				//actionBar.setSelectedNavigationItem(position);
+			}
+		});*/
 
 // For each of the sections in the app, add a tab to the action bar.
-for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+/*for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 	// Create a tab with text corresponding to the page title defined by
 	// the adapter. Also specify this Activity object, which implements
 	// the TabListener interface, as the callback (listener) for when
@@ -60,7 +73,7 @@ for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 	actionBar.addTab(actionBar.newTab()
 			.setText(mSectionsPagerAdapter.getPageTitle(i))
 			.setTabListener(this));
-}
+}*/
 
 		/*mSectionsPagerAdapter.addTab(bar.newTab().setText("Simple"),
                 CountingFragment.class, null);
@@ -69,9 +82,9 @@ for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
         mSectionsPagerAdapter.addTab(bar.newTab().setText("Cursor"),
                 CursorFragment.class, null);*/
 
-		if (savedInstanceState != null) {
+		/*if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
-		}
+		}*/
 	}
 
 	@Override
