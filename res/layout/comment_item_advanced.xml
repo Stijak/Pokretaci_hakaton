@@ -10,7 +10,8 @@
         android:id="@+id/image"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginRight="5dp"/>
+        android:src="@drawable/no_icon"
+        android:layout_marginRight="10dp"/>
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"

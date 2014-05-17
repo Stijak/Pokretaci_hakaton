@@ -40,6 +40,10 @@
     <!-- Problem details -->
         <string name="page_details">Opis</string>
         <string name="page_comments">Komentari</string>
+        
+        <!-- ProfileActivity -->
+        <string name="submited_problems">Prijavljeni problemi</string>
+        <string name="supported_problems">Podržani problemi</string>
     
 
 </resources>

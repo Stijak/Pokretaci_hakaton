@@ -1,5 +1,8 @@
 package rs.pokretaci.hakaton;
 
+import java.util.Arrays;
+
+import rs.pokretaci.hakaton.customviews.CommentAdapter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.SimpleAdapter;
 
 
 public class CommentsFragment extends ListFragment {
+	private CommentAdapter mCommentAdapter;
 	
 	private final String[] EXAMPLE_DATA = new String[] {
             "Phasellus vel porta lacus. Cras fermentum lectus nec orci pulvinar ornare. Morbi scelerisque, diam in pharetra gravida, ligula ante sodales urna, mollis iaculis nisi nisi id arcu. Aliquam molestie nisl vel fermentum fringilla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut aliquam luctus lectus. Vivamus tempor convallis dui, quis.",
@@ -30,7 +34,9 @@ public class CommentsFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setListAdapter(new ArrayAdapter(this.getActivity(), R.layout.comment_item, EXAMPLE_DATA));
+		mCommentAdapter = new CommentAdapter(this.getActivity(), Arrays.asList(EXAMPLE_DATA));
+		this.setListAdapter(mCommentAdapter);
+		//this.setListAdapter(new ArrayAdapter(this.getActivity(), R.layout.comment_item, EXAMPLE_DATA));
 		//this.setEmptyText("No comments");
 	}
 	
