@@ -84,6 +84,8 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private ArrayList<String> mGroupItem = new ArrayList<String>();
+	private ArrayList<Object> mChildItem = new ArrayList<Object>();
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
@@ -137,69 +139,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 	}
 
-	private class DownloadLocationsTask extends AsyncTask<Void, Void, JSONObject> {
-		@Override
-		protected JSONObject doInBackground(Void... voids) {
-			StringBuilder builder = new StringBuilder();
-			HttpClient client = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet("http://www.pokretaci.rs/api/goals/filter/trending?limit=50");
-			try {
-				HttpResponse response = client.execute(httpGet);
-				StatusLine statusLine = response.getStatusLine();
-				int statusCode = statusLine.getStatusCode();
-				if (statusCode == 200) {
-					HttpEntity entity = response.getEntity();
-					InputStream content = entity.getContent();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-					String line;
-					while ((line = reader.readLine()) != null) {
-						builder.append(line);
-					}
-				} else {
-					Log.e(MapActivity.class.toString(), "Failed to download file");
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				return new JSONObject(builder.toString());
-			} catch (JSONException e) {
-				e.printStackTrace();
-				return null;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject object) {
-			JSONObject data;
-			try {
-				data = object.getJSONObject("data");
-				JSONArray array = data.names();
-				for (int i = 0; i < array.length(); i++) {
-					String name = array.getString(i);
-					JSONObject problem = data.getJSONObject(name);
-					String title = problem.getString("title");
-					String description = problem.getString("description");
-					JSONObject geo = problem.getJSONObject("location").getJSONObject("geo");
-					double lat = geo.getDouble("lon");
-					double lon = geo.getDouble("lat");
-					LatLng location = new LatLng(lat, lon);
-					MarkerOptions mo = new MarkerOptions()
-					.title(title)
-					.snippet(description)
-					.position(location);
-					Marker marker = m_vwMap.addMarker(mo);
-					mMarkerProblemIds.put(marker, name);
-				}
-			} catch (JSONException e) {
-				
-				e.printStackTrace();
-			}
-		}
-	}
 
 
 	private void initDrawer() {
@@ -323,7 +262,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				if (list.get(0) instanceof Activist) { //login task
 					Log.d("rs.pokretaci.hakaton", "Uspješno ulogovani");
 				} else {
-					//TODO Dobili smo neke Goulove
 					List<Goal> goals = (List<Goal>) list;
 					for (Goal goal: goals) {
 						/*
