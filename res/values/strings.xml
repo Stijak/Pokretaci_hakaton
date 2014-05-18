@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Pokretači demo</string>
-    <string name="actionbar_title">Pokretači demo</string>
+    <string name="app_name">Pokretači</string>
+    <string name="actionbar_title">Pokretači</string>
 
     <!-- MenuItem titles -->
     <!--
@@ -24,17 +24,16 @@
     <string name="loadFailed">Load Failed…</string>
     <string name="loadNoFile">Nothing to load…</string>
     -->
-    
-    <string name="welcome_message">BUDI POKRETAČ, A NE PASIVNI POSMATRAČ!\r\n\r\nOvaj sajt i app su nastali kao inicijativa Srbije u pokretu da pomogne građanima da REŠE PROBLEM u svom okruženju, organizovanjem zajednice koju taj problem pogađa.\r\n
-Što veći broj građana preuzme odgovornost da napravi akciju koja će proizvesti makar malu promenu u zajednici, Srbija će biti bolje mesto za život.</string>
-<string name="resi_problem">REŠI PROBLEM</string>
+
+    <string name="welcome_message">BUDI POKRETAČ, A NE PASIVNI POSMATRAČ!\r\n\r\nOvaj sajt i app su nastali kao inicijativa Srbije u pokretu da pomogne građanima da REŠE PROBLEM u svom okruženju, organizovanjem zajednice koju taj problem pogađa.\r\nŠto veći broj građana preuzme odgovornost da napravi akciju koja će proizvesti makar malu promenu u zajednici, Srbija će biti bolje mesto za život.</string>
+    <string name="resi_problem">REŠI PROBLEM</string>
+
     <string-array name="drawer_array">
         <item>O nama</item>
         <item>Kategorije problema</item>
         <item>Moj profil</item>
         <item>Izloguj se</item>
     </string-array>
-    
     <string-array name="drawer_array_child_category">
         <item>Svi problemi</item>
         <item>Najpopularniji</item>
@@ -46,15 +45,34 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Problem details -->
-        <string name="page_details">Opis</string>
-        <string name="page_comments">Komentari</string>
-        
-        <!-- ProfileActivity -->
-        <string name="submited_problems">Prijavljeni problemi</string>
-        <string name="supported_problems">Podržani problemi</string>
-        
-        <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
-        
-    
+    <string name="page_details">Opis</string>
+    <string name="page_comments">Komentari</string>
+
+    <!-- ProfileActivity -->
+    <string name="submited_problems">Prijavljeni problemi</string>
+    <string name="supported_problems">Podržani problemi</string>
+    <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
+
+    <!-- Submit Problem -->
+    <string name="address">Adresa</string>
+    <string name="address_details">Unesi naziv ulice, pijace, parka</string>
+    <string name="problem_name">Naziv inicijative</string>
+    <string name="problem_name_details">Daj kratak naziv inicijativi za rešavanje problema</string>
+    <string name="problem_description">Opis problema</string>
+    <string name="problem_description_details">Opiši problem što je preciznije moguće u nekoliko rečenica</string>
+    <string name="problem_people">Ko su vaši ljudi</string>
+    <string name="problem_people_details">Ko će imati koristi od rešenja ovog problema?</string>
+    <string name="select_problem_categories">Odredi vrstu problema</string>
+    <string name="cables">Žice i cevi</string>
+    <string name="trafic">Saobraćaj</string>
+    <string name="construction">Gradnja</string>
+    <string name="improvement">Unapređenje</string>
+    <string name="flora_and_fauna">Flora i Fauna</string>
+    <string name="sport">Sport</string>
+    <string name="vandalism">Vandalizam</string>
+    <string name="criminal">Kriminal</string>
+    <string name="immoral">Nemoral</string>
+    <string name="ugly">Ruglo</string>
+    <string name="dangerous">Opasno</string>
 
 </resources>

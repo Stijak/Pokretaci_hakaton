@@ -119,9 +119,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private static final int ENABLE_GPS_REQUEST_CODE = 1;
 	private static final int PICTURE_REQUEST_CODE = 2;
 	
-	protected final static String ID_EXTRA = "ID_EXTRA";
-	protected final static String FULL_NAME_EXTRA = "FULL_NAME_EXTRA";
-	protected final static String AVATAR_EXTRA = "AVATAR_EXTRA";
+	public final static String ID_EXTRA = "ID_EXTRA";
+	public final static String FULL_NAME_EXTRA = "FULL_NAME_EXTRA";
+	public final static String AVATAR_EXTRA = "AVATAR_EXTRA";
 
 	
 
@@ -161,6 +161,11 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		return mMarkerProblemIds.get(marker);
 	}
 
+	public void solveProblem(View v) {
+		Intent i = new Intent(this, SubmitProblem.class);
+		startActivity(i); 
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -169,7 +174,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 			m_vwMap.setMyLocationEnabled(true);
 			m_vwMap.setOnInfoWindowClickListener(this);
 			PokretaciInfoWindowAdapter adapter = new PokretaciInfoWindowAdapter(this);
-			m_vwMap.setInfoWindowAdapter(adapter);
+			//m_vwMap.setInfoWindowAdapter(adapter);
 		}
 
 	}
@@ -220,7 +225,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setHomeButtonEnabled(false);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -417,6 +422,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		mWelcomeMessage.setVisibility(View.VISIBLE);
 		mWelcomeMessage.invalidate();
 		break;
+		case 1: return false;
 		case 2: getMyProfile();
 		break;
 		case 3:  ;
