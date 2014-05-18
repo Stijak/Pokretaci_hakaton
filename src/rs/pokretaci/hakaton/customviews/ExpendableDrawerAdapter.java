@@ -52,9 +52,9 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		tempChild = (ArrayList<String>) Childtem.get(groupPosition);
 		if (convertView == null) {
-			convertView = (TextView) ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element, parent, false);
+			convertView =  ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element_child, parent, false);
 		}
-		TextView text = (TextView) convertView;
+		TextView text =  (TextView) convertView.findViewById(R.id.text);
 		text.setText("   "+tempChild.get(childPosition));
 //		convertView.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -63,18 +63,20 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 //						Toast.LENGTH_SHORT).show();
 //			}
 //		});
-		text.setTag(tempChild.get(childPosition));
-		text.setBackgroundColor(0x00999999);
-		text.invalidate();
-		return text;
+		//text.setTag(tempChild.get(childPosition));
+		convertView.setTag(tempChild.get(childPosition));
+		//text.setBackgroundColor(0x00999999);
+		//text.invalidate();
+		return convertView;
 	}
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = (TextView) ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element, parent, false);
+			convertView = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_element, parent, false);
 		}
-		((TextView) convertView).setText(groupItem.get(groupPosition)); 
+		TextView text = (TextView) convertView.findViewById(R.id.text);
+		text.setText(groupItem.get(groupPosition)); 
 		convertView.setTag(groupItem.get(groupPosition));
 		return convertView;
 	}

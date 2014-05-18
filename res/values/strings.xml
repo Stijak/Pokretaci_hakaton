@@ -32,13 +32,11 @@
         <item>O nama</item>
         <item>Kategorije problema</item>
         <item>Moj profil</item>
-        <item>Izloguj se</item>
     </string-array>
     <string-array name="drawer_array_child_category">
         <item>Svi problemi</item>
         <item>Najpopularniji</item>
         <item>Najnoviji</item>
-        <item>Najviše diskutovani</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -66,7 +64,7 @@
     <string name="cables">Žice i cevi</string>
     <string name="trafic">Saobraćaj</string>
     <string name="construction">Gradnja</string>
-    <string name="improvement">Unapređenje</string>
+    <string name="improvement">Unapr.</string>
     <string name="flora_and_fauna">Flora i Fauna</string>
     <string name="sport">Sport</string>
     <string name="vandalism">Vandalizam</string>
@@ -74,5 +72,7 @@
     <string name="immoral">Nemoral</string>
     <string name="ugly">Ruglo</string>
     <string name="dangerous">Opasno</string>
+    <string name="submiting">Upload u toku</string>
+    <string name="submit_sucess">Program je uspešno submitovan na server</string>
 
 </resources>
