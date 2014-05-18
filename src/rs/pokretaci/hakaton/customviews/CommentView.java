@@ -33,7 +33,7 @@ public class CommentView extends LinearLayout {
 		mText.setText(comment.content);
 		Activist activist = comment.commenter;
 		mAuthorDate.setText(activist.full_name + " | " + comment.parsed_date);
-		if (activist.avatar != null) Picasso.with(mContext).load(activist.avatar).into(mImage);
+		if (activist.avatar != null) Picasso.with(mContext).load(activist.avatar).placeholder(R.drawable.avatar).into(mImage);
 	}
 
 }

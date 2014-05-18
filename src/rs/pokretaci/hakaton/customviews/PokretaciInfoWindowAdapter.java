@@ -6,6 +6,7 @@ import rs.pokretaci.hakaton.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,9 +15,11 @@ import com.google.android.gms.maps.model.Marker;
 
 public class PokretaciInfoWindowAdapter implements InfoWindowAdapter {
 	private MapActivity mMapActivity;
+	private ViewGroup mParent;
 	
 	public PokretaciInfoWindowAdapter(MapActivity mapActivity) {
 		mMapActivity = mapActivity;
+		mParent = (ViewGroup) mapActivity.findViewById(R.id.content_frame);
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class PokretaciInfoWindowAdapter implements InfoWindowAdapter {
 		String title = goal.title;
 		String author = goal.creator.full_name;
 		int numSupporters = goal.supporters_count;
-		LinearLayout parentView = (LinearLayout) ((LayoutInflater)mMapActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.info_window_adapter, null, false);
+		LinearLayout parentView = (LinearLayout) ((LayoutInflater)mMapActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.info_window_adapter, mParent, false);
 		TextView text = (TextView) parentView.findViewById(R.id.title);
 		text.setText(title);
 		text = (TextView) parentView.findViewById(R.id.author);

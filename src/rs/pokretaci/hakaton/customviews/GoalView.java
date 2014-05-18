@@ -38,7 +38,7 @@ public class GoalView extends LinearLayout {
 		mDate.setText(goal.created_at);
 		mTitle.setText(goal.title);
 		mNumSupporters.setText(Integer.toString(goal.supporters_count));
-		if (goal.image != null) Picasso.with(mContext).load(goal.image).into(mImage);
+		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(mContext).load(goal.location_image).resize(500, 200).centerCrop().into(mImage);
 	}
 
 }

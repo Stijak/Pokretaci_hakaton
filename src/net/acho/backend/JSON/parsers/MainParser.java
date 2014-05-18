@@ -346,7 +346,9 @@ public class MainParser {
 		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
 		tmpGoal.title = problem.optString("title");
 		tmpGoal.description = problem.optString("description");
-		geo = problem.optJSONObject("location").optJSONObject("geo");
+		JSONObject location = problem.optJSONObject("location");
+		geo = location.optJSONObject("geo");
+		tmpGoal.location_image = location.optString("image");
 		tmpGoal.lat = geo.optDouble("lon");
 		tmpGoal.lon = geo.optDouble("lat");
 		
@@ -365,7 +367,7 @@ public class MainParser {
 		tmpGoal.supportable = problem.optBoolean("supportable");
 		tmpGoal.unsupportable = problem.optBoolean("unsupportable");
 		tmpGoal.dissaproved = problem.optBoolean("dissaproved");
-		tmpGoal.supported = problem.optBoolean("supported");
+		tmpGoal.supported = problem.optBoolean("supports");
 		tmpGoal.editable = problem.optBoolean("editable");
 		
 		

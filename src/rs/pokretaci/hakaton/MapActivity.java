@@ -387,9 +387,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		switch (groupPosition) {
-        case 1:  getMyProfile();
+        case 1:  
                  break;
-        case 2: 
+        case 2: getMyProfile();
                  break;
         case 3:  ;
         		 break;
@@ -401,8 +401,8 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private void getMyProfile() {
 		Intent intent = new Intent();
 		intent.setClass(this, ProfileActivity.class);
-		intent.putExtra(ID_EXTRA, mMyProfile.id);
-		intent.putExtra(FULL_NAME_EXTRA, mMyProfile.full_name);
+		intent.putExtra(ID_EXTRA, Activist.getUserProfile().id);
+		intent.putExtra(FULL_NAME_EXTRA, Activist.getUserProfile().full_name);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
 	}

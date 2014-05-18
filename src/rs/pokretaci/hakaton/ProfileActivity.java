@@ -15,6 +15,8 @@ import java.util.Locale;
 
 
 
+
+
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskFactory;
@@ -31,6 +33,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -47,6 +50,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import rs.pokretaci.hakaton.R;
 
@@ -122,6 +126,8 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		text.setText(intent.getStringExtra(MapActivity.FULL_NAME_EXTRA));
 		mUserId = intent.getStringExtra(MapActivity.ID_EXTRA);
 		mProfileStats = (TextView) findViewById(R.id.profile_stats);
+		ImageView profileImage = (ImageView) findViewById(R.id.image);
+		if (Activist.getUserProfile().avatar != null) Picasso.with(this).load(Activist.getUserProfile().avatar).into(profileImage);
 	}
 
 	@Override
@@ -203,7 +209,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 				List<Goal> supportedGoals = new ArrayList<Goal>();
 				List<Goal> goals = (List<Goal>) list;
 				for (Goal goal: goals) {
-					if (goal.creator.id == mUserId) ownedGoals.add(goal);
+					if (goal.creator.id.equals(mUserId)) ownedGoals.add(goal);
 					if (goal.supported) supportedGoals.add(goal);
 				}
 				mSectionsPagerAdapter.getItem(0).setGoals(ownedGoals);

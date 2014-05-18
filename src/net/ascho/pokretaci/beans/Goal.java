@@ -12,7 +12,8 @@ public class Goal {
 			state,
 			status,
 			title,
-			image;
+			image,
+			location_image;
 	/**
 	 * Parsiran datum u formatu : pre 7 min....
 	 */
