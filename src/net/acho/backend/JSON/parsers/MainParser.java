@@ -351,6 +351,8 @@ public class MainParser {
 		tmpGoal.location_image = location.optString("image");
 		tmpGoal.lat = geo.optDouble("lon");
 		tmpGoal.lon = geo.optDouble("lat");
+
+		tmpGoal.supported = problem.optBoolean("supports");
 		
 		if(problem.optJSONObject("parsed_date") != null) {
 			tmpGoal.parsed_date = problem.getJSONObject("parsed_date").getString("text");
@@ -358,16 +360,16 @@ public class MainParser {
 		
 		tmpGoal.created_at = problem.optString("created_at");
 		tmpGoal.discussions_count = problem.optInt("discussions_count");
-		
+		tmpGoal.state = problem.optString("state");
 		
 		tmpGoal.location_name = problem.optJSONObject("location").optString("name");
-		tmpGoal.image = problem.optString("image");
+		tmpGoal.image = problem.optString("default_image");
 		tmpGoal.supporters_count = problem.optInt("supporters_count");
 		
 		tmpGoal.supportable = problem.optBoolean("supportable");
 		tmpGoal.unsupportable = problem.optBoolean("unsupportable");
 		tmpGoal.dissaproved = problem.optBoolean("dissaproved");
-		tmpGoal.supported = problem.optBoolean("supports");
+		
 		tmpGoal.editable = problem.optBoolean("editable");
 		
 		

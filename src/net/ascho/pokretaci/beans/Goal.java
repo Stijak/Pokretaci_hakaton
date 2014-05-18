@@ -9,11 +9,11 @@ public class Goal {
 			created_at,
 			description,
 			location_name,
+			location_image,
 			state,
 			status,
 			title,
-			image,
-			location_image;
+			image;
 	/**
 	 * Parsiran datum u formatu : pre 7 min....
 	 */
@@ -70,7 +70,7 @@ public class Goal {
 		if(state.compareTo("resolved") == 0) {
 			return Goal.GOAL_STATES.RESOLVED_GOAL;
 		}
-		if(supported && creator.id == Activist.getUserProfile().id) {
+		if(creator.id.equals(Activist.getUserProfile().id)) {
 			return GOAL_STATES.USER_GOAL;
 		} else if(supported) {
 			return GOAL_STATES.SUPPORTED_GOAL;
