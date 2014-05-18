@@ -24,7 +24,10 @@
     <string name="loadFailed">Load Failed…</string>
     <string name="loadNoFile">Nothing to load…</string>
     -->
-
+    
+    <string name="welcome_message">BUDI POKRETAČ, A NE PASIVNI POSMATRAČ!\r\n\r\nOvaj sajt i app su nastali kao inicijativa Srbije u pokretu da pomogne građanima da REŠE PROBLEM u svom okruženju, organizovanjem zajednice koju taj problem pogađa.\r\n
+Što veći broj građana preuzme odgovornost da napravi akciju koja će proizvesti makar malu promenu u zajednici, Srbija će biti bolje mesto za život.</string>
+<string name="resi_problem">REŠI PROBLEM</string>
     <string-array name="drawer_array">
         <item>O nama</item>
         <item>Kategorije problema</item>
@@ -51,6 +54,7 @@
         <string name="supported_problems">Podržani problemi</string>
         
         <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
+        
     
 
 </resources>

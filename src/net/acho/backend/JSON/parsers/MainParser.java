@@ -199,7 +199,7 @@ public class MainParser {
 		JSONObject job, tmpJob;
 		JSONObject geo;
 		JSONArray jar, tmpJar;
-		
+		if (json.contains("</div>")) json = (json.split("</div>")[1]);
 		tmpJob = new JSONObject(json);
 		job = tmpJob.optJSONObject("data");
 		List<Goal> goals = new ArrayList<Goal>();

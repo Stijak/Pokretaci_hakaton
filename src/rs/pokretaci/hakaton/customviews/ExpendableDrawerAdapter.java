@@ -64,6 +64,8 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 //			}
 //		});
 		text.setTag(tempChild.get(childPosition));
+		text.setBackgroundColor(0x00999999);
+		text.invalidate();
 		return text;
 	}
 	@Override

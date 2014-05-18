@@ -49,10 +49,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -90,6 +94,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private ListView mDrawerList;
 	private ExpandableListView mDrawerList2;
 	private ActionBarDrawerToggle mDrawerToggle;
+	//private TextView mWelcomeMessage;
+	
+	
 	private ArrayList<String> mGroupItem = new ArrayList<String>();
 	private ArrayList<Object> mChildItem = new ArrayList<Object>();
 
@@ -114,14 +121,21 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	
 	protected final static String ID_EXTRA = "ID_EXTRA";
 	protected final static String FULL_NAME_EXTRA = "FULL_NAME_EXTRA";
+	protected final static String AVATAR_EXTRA = "AVATAR_EXTRA";
+
 	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.map_layout);
+		//mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
+		//mWelcomeMessage.setClickable(true);
 		initLayout();
 		initDrawer2();
-
+		String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
+		Task googleLogin = new GoogleLogin(email, MapActivity.this);
+		googleLogin.executeTask(getApplicationContext(), this);
 		//new DownloadLocationsTask().execute();
 		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
 		all.executeTask(getApplicationContext(), this);
@@ -131,11 +145,17 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 						getApplicationContext()
 						));
 
-		String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
+		
 		//Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
-		Task googleLogin = new GoogleLogin(email, MapActivity.this);
-		googleLogin.executeTask(getApplicationContext(), this);
+
 	}
+	
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		TextView mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
+		mWelcomeMessage.setVisibility(View.GONE);
+		mWelcomeMessage.invalidate();
+		return super.dispatchTouchEvent(event);
+		}
 	
 	public Goal getRelevantGoal(Marker marker) {
 		return mMarkerProblemIds.get(marker);
@@ -230,7 +250,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		setChildGroupData();
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 		mDrawerList2 = (ExpandableListView) findViewById(R.id.left_drawer);
 
 		mDrawerList2.setAdapter(new ExpendableDrawerAdapter(this, mGroupItem, mChildItem));
@@ -335,14 +354,17 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		if(taskResponse != null) { //Nije doslo do neocekivanog sranja
 			if(taskResponse.isResponseValid()) { //Nije doslo do exception-a
 				List list = taskResponse.getData();
+				if (list.size() == 0) return;
 				if (list.get(0) instanceof Activist) { //login task
 					Log.d("rs.pokretaci.hakaton", "Uspješno ulogovani");
 					mMyProfile = (Activist) list.get(0);
 				} else {
 					List<Goal> goals = (List<Goal>) list;
 					for (Goal goal: goals) {
+						if (goal == null) break;
 						String id = goal.id;
 						String title = goal.title;
+						if (goal.creator == null) break;
 						String authorName = goal.creator.full_name;
 						String description = goal.description;
 						double longitude = goal.lon;
@@ -391,15 +413,18 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		switch (groupPosition) {
-        case 1:  
-                 break;
-        case 2: getMyProfile();
-                 break;
-        case 3:  ;
-        		 break;
-        default: 
+		case 0:TextView mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);  
+		mWelcomeMessage.setVisibility(View.VISIBLE);
+		mWelcomeMessage.invalidate();
+		break;
+		case 2: getMyProfile();
+		break;
+		case 3:  ;
+		break;
+		default: 
 		}
-		return false;
+		mDrawerLayout.closeDrawers();
+		return true;
 	}
 	
 	private void getMyProfile() {
@@ -407,14 +432,29 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		intent.setClass(this, ProfileActivity.class);
 		intent.putExtra(ID_EXTRA, Activist.getUserProfile().id);
 		intent.putExtra(FULL_NAME_EXTRA, Activist.getUserProfile().full_name);
+		intent.putExtra(AVATAR_EXTRA, Activist.getUserProfile().avatar);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
 	}
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		
-		return false;
+		m_vwMap.clear();
+		if (childPosition == 0) {
+			Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+			all.executeTask(getApplicationContext(), this);
+		} else if (childPosition == 1) {
+			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
+			trending.executeTask(getApplicationContext(), this);
+		} else if (childPosition == 2) {
+			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.NEWEST);
+			trending.executeTask(getApplicationContext(), this);
+		} else if (childPosition ==3) {
+			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.MOST_DISCUSSED);
+			trending.executeTask(getApplicationContext(), this);
+		}
+		mDrawerLayout.closeDrawers();
+		return true;
 	}
 
 	/*@Override
