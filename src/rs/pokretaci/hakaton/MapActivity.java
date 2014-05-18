@@ -348,7 +348,11 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 						double longitude = goal.lon;
 						double latitude = goal.lat;
 						LatLng location = new LatLng(latitude, longitude);
-						MarkerOptions mo = new MarkerOptions().title(title).snippet(authorName).position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.new_goal_pin));//u zavisnosti od vrste pina
+						int icon = R.drawable.new_goal_pin;
+						if (goal.mapPinType()==Goal.GOAL_STATES.SUPPORTED_GOAL) icon = R.drawable.supported_goal_pin;
+						else if (goal.mapPinType() == Goal.GOAL_STATES.USER_GOAL) icon = R.drawable.user_pin;
+						else if (goal.mapPinType() ==  Goal.GOAL_STATES.RESOLVED_GOAL) icon = R.drawable.resolved_goal_pin;
+						MarkerOptions mo = new MarkerOptions().title(title).snippet(authorName).position(location).icon(BitmapDescriptorFactory.fromResource(icon));//u zavisnosti od vrste pina
 						Marker marker = m_vwMap.addMarker(mo);
 						mMarkerProblemIds.put(marker, goal);
 					}

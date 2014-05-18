@@ -32,7 +32,7 @@ public class CommentsFragment extends ListFragment {
 	
 	public void setComments(List<Comment> list) {
 		mComments.clear();
-		mComments.addAll(list);
+		if (list != null) mComments.addAll(list);
 		mCommentAdapter.notifyDataSetChanged();
 	}
 	

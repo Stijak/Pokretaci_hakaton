@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class GoalView extends LinearLayout {
 	private Context mContext;
-	private ImageView mImage;
+	private ImageView mImageLocation;
 	private TextView mDate;
 	private TextView mTitle;
 	private TextView mNumSupporters;
@@ -26,7 +26,7 @@ public class GoalView extends LinearLayout {
 		mContext = context;
 		((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.goal_item, this, true);
 
-		mImage = (ImageView) findViewById(R.id.image);
+		mImageLocation = (ImageView) findViewById(R.id.image_location);
 		mDate = (TextView) findViewById(R.id.date);
 		mTitle = (TextView) findViewById(R.id.title);
 		mNumSupporters = (TextView) findViewById(R.id.num_supporters);
@@ -38,7 +38,7 @@ public class GoalView extends LinearLayout {
 		mDate.setText(goal.created_at);
 		mTitle.setText(goal.title);
 		mNumSupporters.setText(Integer.toString(goal.supporters_count));
-		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(mContext).load(goal.location_image).resize(500, 200).centerCrop().into(mImage);
+		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(mContext).load(goal.location_image).resize(500, 200).centerCrop().into(mImageLocation);
 	}
 
 }
