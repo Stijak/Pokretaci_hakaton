@@ -43,8 +43,10 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Problem details -->
-    <string name="page_details">Opis</string>
+    <string name="page_details">Pregled problema</string>
     <string name="page_comments">Komentari</string>
+    <string name="support">Podržavam</string>
+    <string name="join">Priključi se</string>
 
     <!-- ProfileActivity -->
     <string name="submited_problems">Prijavljeni problemi</string>
