@@ -1,16 +1,20 @@
 package net.ascho.pokretaci;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.ApacheClient;
 import net.ascho.pokretaci.backend.communication.Task;
+import net.ascho.pokretaci.backend.communication.TaskFactory;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.cookies.CookieManager;
+import net.ascho.pokretaci.backend.executors.goals.CommentInteraction;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
 import net.ascho.pokretaci.backend.util.Util;
+import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -38,7 +42,7 @@ public class MainActivity extends Activity implements TaskListener {
 	    
 	     //Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
 	     String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
-	    
+	     File file = new File("//sdcard//DCIM//2013-05-13_13-52-22.png");
 	    
 	     
 	     Task googleLogin = new GoogleLogin(email, MainActivity.this);
@@ -46,19 +50,25 @@ public class MainActivity extends Activity implements TaskListener {
 	     
 	     Goal mGoal = new Goal();
 	     
-	     mGoal.id = "5377d3f67b83fa5167000000";
-	     mGoal.title = "android novi cilj 5 update STVARNO";
-	     mGoal.description = "android description 5 update stvarno radi op";
+	 //    mGoal.id = "537885897b83fa3e1c000002";
+	   /*  mGoal.title = "Najnoviji test sa DESERTOM";
+	     mGoal.description = "aRadi sa uploadom slike DESERTOM";
+	     mGoal.people = "Mi smo pravi ljudi za vas!";
 	     mGoal.lat = 19.463063;
 	     mGoal.lon = 44.591535;
-	     mGoal.location_name = "android lokacija77 update";
+	     mGoal.location_name = "Radi sa uploadom slike bez slike DESERTOM";
 	     mGoal.image = null;
 	     mGoal.categories = new ArrayList<String>();
 	     mGoal.categories.add("ruglo");
-	     Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL, mGoal);
-	     newGoal.executeTask(getApplicationContext(), this);
-	  /*   Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, null);
-	     goalById.executeTask(getApplicationContext(), this);*/
+	     mGoal.categories.add("vandalizam");
+	     mGoal.categories.add("nemoral");
+	     Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.NEW_GOAL, mGoal);
+	     newGoal.executeTask(getApplicationContext(), this);*/
+	     
+	    /* Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, "5376ce2d7b83fa1a64000000");
+	     goalById.executeTask(getApplicationContext(), this);  */                       
+	     
+	  /*  */
 	     
 	     
 /*	     	Goal g =new Goal();

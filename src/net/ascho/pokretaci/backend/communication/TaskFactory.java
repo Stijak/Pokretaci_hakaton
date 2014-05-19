@@ -1,8 +1,10 @@
 package net.ascho.pokretaci.backend.communication;
 
+import net.ascho.pokretaci.backend.executors.goals.CommentInteraction;
 import net.ascho.pokretaci.backend.executors.goals.GoalFetcher;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
+import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
 import net.ascho.pokretaci.beans.Goal.GOAL_FETCH_TYPE;
 import android.app.Activity;
@@ -77,9 +79,6 @@ public final class TaskFactory {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.FLAG_GOAL, goal);
 	}
 	
-	public static final Task commentGoalTask(Goal goal) {
-		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
-	}
 
 	public static final Task supportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL, goal);
@@ -87,5 +86,9 @@ public final class TaskFactory {
 	
 	public static final Task unsupportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
+	}
+	
+	public static final Task commentGoalTask(Comment comment, String goal_id) {
+		return new CommentInteraction(Comment.COMMENTS_INTERACTION_TYPE.NEW_COMMENT, comment, goal_id);
 	}
 }

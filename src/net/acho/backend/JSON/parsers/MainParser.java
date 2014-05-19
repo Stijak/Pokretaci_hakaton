@@ -199,7 +199,7 @@ public class MainParser {
 		JSONObject job, tmpJob;
 		JSONObject geo;
 		JSONArray jar, tmpJar;
-		if (json.contains("</div>")) json = (json.split("</div>")[1]);
+		
 		tmpJob = new JSONObject(json);
 		job = tmpJob.optJSONObject("data");
 		List<Goal> goals = new ArrayList<Goal>();
@@ -347,10 +347,14 @@ public class MainParser {
 		tmpGoal.title = problem.optString("title");
 		tmpGoal.description = problem.optString("description");
 		JSONObject location = problem.optJSONObject("location");
-		geo = location.optJSONObject("geo");
+		if(location != null) {
+			geo = location.optJSONObject("geo");
+			tmpGoal.lat = geo.optDouble("lon");
+			tmpGoal.lon = geo.optDouble("lat");
+		}
+		
 		tmpGoal.location_image = location.optString("image");
-		tmpGoal.lat = geo.optDouble("lon");
-		tmpGoal.lon = geo.optDouble("lat");
+		
 
 		tmpGoal.supported = problem.optBoolean("supports");
 		
@@ -415,6 +419,10 @@ public class MainParser {
 						// tmpJob.optJSONObject("types").optJSONObject("link").optString("value") != null
 						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").getString("value");
 					}
+					if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
+						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
+						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
+					}
 				
 				}
 				
@@ -422,10 +430,7 @@ public class MainParser {
 				
 					
 				
-				if(tmpJob.optJSONObject("meeting") != null) {
-					tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
-					tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
-				}
+				
 				
 				tempComment.commenter = parseActivist(tmpJob.getJSONObject("user"));
 				comments.add(tempComment);
@@ -435,7 +440,42 @@ public class MainParser {
 		
 	}
 	
-	
+	public static Comment parseComment(String json) throws JSONException {
+		JSONObject tmpJob;
+		Comment tempComment;
+		
+		tmpJob = new JSONObject(json);
+		tmpJob = tmpJob.optJSONObject("data");
+		
+		if(tmpJob == null) 
+			return null;
+		
+		tempComment = new Comment();
+		tempComment.content = tmpJob.getString("content");
+		tempComment.created_at = tmpJob.getString("created_at");
+		tempComment.parsed_date = tmpJob.optJSONObject("parsed_date").getString("text");
+		
+		if(tmpJob.optJSONObject("types") != null) {
+			if(tmpJob.optJSONObject("types").optString("image") != null) {
+				tempComment.image = tmpJob.optJSONObject("types").optString("image");
+			}
+				
+			if(tmpJob.optJSONObject("types").optJSONObject("link") != null) {
+				// tmpJob.optJSONObject("types").optJSONObject("link").optString("value") != null
+				tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").getString("value");
+			}
+			if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
+				tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
+				tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
+			}
+		
+		}
+		
+		
+		tempComment.commenter = parseActivist(tmpJob.getJSONObject("user"));
+			
+		return tempComment;
+	}
 	/*//unsuport
 
 	{"data":{"message":"Problem je vracen na pocetno stanje.","success":true,"auth":{"status":true}},"auth":{"status":true,"logged_in":true}}

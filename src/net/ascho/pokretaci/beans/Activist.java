@@ -28,6 +28,9 @@ public class Activist {
 	public int commentsCount, goalsCount, votesCount, supportCount;
 	public List<Goal> goals;
 	
+	public void setUserGoals(List<Goal> list) {
+		goals = list;
+	}
 	
 	public List<Goal> getUserGoals() {
 		return goals;

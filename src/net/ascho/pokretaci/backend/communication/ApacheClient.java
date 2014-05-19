@@ -77,7 +77,7 @@ public class ApacheClient {
 			
 		}
 		//Default params
-		setTimeout(5000, 5000);
+		setTimeout(5000, 6000);
 		HttpClientParams.setRedirecting(mHttpParams, false);	
 		if (mHttpClient.getParams() != mHttpParams) {
 			mHttpClient.setParams(mHttpParams);

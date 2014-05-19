@@ -1,5 +1,9 @@
 package net.ascho.pokretaci.backend.executors.goals;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +16,15 @@ import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.util.Util;
 import net.ascho.pokretaci.beans.Goal;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
@@ -43,7 +52,7 @@ public class GoalInteraction extends Task {
 		Log.d("odgovor", "goal interaction url: " + url);
 		String JSONresponse;
 		HttpResponse httpResponse;
-		
+		List<Goal> goals = new ArrayList<Goal>();
 		String success = null;
 		
 		switch(mInteraction) {
@@ -68,6 +77,9 @@ public class GoalInteraction extends Task {
 			
 			case Goal.GOAL_INTERACTION_TYPE.NEW_GOAL: 
 			case Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL:
+				
+				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			    builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 				/*
 				 * Radi pri insertu goal-a ali samo sa jednim topicom? Sjebe se pri update.
 				 * 
@@ -79,28 +91,60 @@ public class GoalInteraction extends Task {
 				 
 				 nvps.add(new BasicNameValuePair("title", mGoal.title));
 				 nvps.add(new BasicNameValuePair("description", mGoal.description));
+				 nvps.add(new BasicNameValuePair("people", mGoal.people));
 				 nvps.add(new BasicNameValuePair("location[name]", mGoal.location_name));
 				 nvps.add(new BasicNameValuePair("location[geo][lon]", Double.toString(mGoal.lon)));
 				 nvps.add(new BasicNameValuePair("location[geo][lat]", Double.toString(mGoal.lat)));
-				 if(mGoal.image != null)
-					 nvps.add(new BasicNameValuePair("image", mGoal.image));
-				 if(mGoal.id != null)
+				 if(mGoal.image != null) {
+			/*
+					File file = new File("mGoal.image");
+					
+					StringBuilder buf=new StringBuilder();
+				    InputStream json=getContext().getAssets().open("desert.jpg");
+				   
+					String contentType = Util.getContentType(mGoal.image);
+				    builder.addBinaryBody("image", file, ContentType.create(contentType), file.getName());*/
+				   
+				 }
+				 if(mGoal.id != null) {
 					 nvps.add(new BasicNameValuePair("id", mGoal.id));
-				
-				 
+					 builder.addTextBody("id", mGoal.id);
+				 }
+				 String topics = "";
 					if(mGoal.categories != null) {
 						if(mGoal.categories.size() != 0) {
-							for(String category : mGoal.categories) {
-								nvps.add(new BasicNameValuePair("topics[]", category));
+							for(int i = 0; i < mGoal.categories.size(); i++) {
+								if(i != mGoal.categories.size()-1)
+									topics += mGoal.categories.get(i) + ",";
+								else 
+									topics += mGoal.categories.get(i);
 							}
 						}
 					}
 				
-					httpResponse = apache.postRequest(url, generateGoalHashMap(mGoal));
+					 nvps.add(new BasicNameValuePair("topics", topics));
+					 
+					 //Builder Opcija
+					 builder.addTextBody("title", mGoal.title);
+					 builder.addTextBody("description", mGoal.description);
+					 builder.addTextBody("people", mGoal.people);
+					 builder.addTextBody("location[name]", mGoal.location_name);
+					 builder.addTextBody("location[geo][lon]", Double.toString(mGoal.lon));
+					 builder.addTextBody("location[geo][lat]", Double.toString(mGoal.lat));
+					 
+					 builder.addTextBody("topics", topics);
+					 HttpEntity reqEntity = builder.build();
+					 
+					//httpResponse = apache.postRequest(url, new UrlEncodedFormEntity(nvps));
+					 httpResponse = apache.postRequest(url, reqEntity);
 					JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 					JSONObject job = new JSONObject(JSONresponse);
-					Goal goal = MainParser.parseGoal(job.getJSONObject("data"));	
-					
+					try {
+						Goal goal = MainParser.parseGoal(job.getJSONObject("data"));
+						goals.add(goal);
+					} catch(JSONException e) {
+						success = null;
+					}
 					
 				break;
 			
@@ -108,11 +152,25 @@ public class GoalInteraction extends Task {
 				break;
 		}
 		
+	/*	ActionResponse ac = new ActionResponse();
+		if(success != null) {
+			ac.success = true;
+			ac.message = success;
+		} else {
+			ac.success = false;
+			ac.message = "Akcija nije uspela. Molimo vas pokušajte ponovo.";
+		}
 		
-	//	sob.setData(success);
+		List<ActionResponse> asl = new ArrayList<ActionResponse>();
+		
+		asl.add(ac);*/
 		
 		
-		return null;
+		
+		List<Object> lob = new ArrayList<Object>(goals);
+		sob.setData(lob);
+		
+		return sob;
 	}
 	
 	private HashMap<String, String> generateGoalHashMap(Goal goal) {

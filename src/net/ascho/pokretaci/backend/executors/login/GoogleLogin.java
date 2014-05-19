@@ -11,6 +11,7 @@ import net.ascho.pokretaci.backend.beans.TransportObject;
 import net.ascho.pokretaci.backend.communication.ApacheClient;
 import net.ascho.pokretaci.backend.util.Util;
 import net.ascho.pokretaci.beans.Activist;
+import net.ascho.pokretaci.beans.Goal;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -203,7 +204,17 @@ public class GoogleLogin extends LoginTask {
 		httpResponse = apache.getRequest(Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, Activist.getUserProfile().id));
 		JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 		
-		Activist.getUserProfile().goals = MainParser.parseGoals(JSONresponse);
+		List<Goal> goals = MainParser.parseGoals(JSONresponse);
+		
+		for(Goal g: goals) {
+			int b = g.mapPinType();
+			Log.d("dsadsa", " " + b);
+		}
+		
+		Activist a = Activist.getUserProfile();
+		Activist.getUserProfile().setUserGoals(goals);
+		a = Activist.getUserProfile();
+		String s = "kdosak";
 	}
     
     

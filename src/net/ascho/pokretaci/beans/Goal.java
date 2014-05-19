@@ -13,6 +13,7 @@ public class Goal {
 			state,
 			status,
 			title,
+			people,
 			image;
 	/**
 	 * Parsiran datum u formatu : pre 7 min....

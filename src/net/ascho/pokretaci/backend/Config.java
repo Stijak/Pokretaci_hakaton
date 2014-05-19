@@ -28,7 +28,11 @@ public class Config {
 	public static final String GOAL_DATA_BY_FILTER = BASE_URL + "api/goals/filter/";
 	public static final String GOAL_DATA_BY_FILTER_CATEGORY = BASE_URL + "api/goals/filter/";
 	public static final String GOAL_ACTIVITIES_URL = BASE_URL + "api/goals/" + PARAM + "/activities";
-	public static final String GOAL_COMMENTS_URL = BASE_URL + "";
+	
+	public static final String COMMENT_NEW_COMMENT_INTERACTION_URL = BASE_URL + "/api/discussions/";
+	public static final String COMMENT_LIKE_INTERACTION_URL = BASE_URL + "/api/discussions/"+ PARAM + "/like";
+	public static final String COMMENT_FLAG_INTERACTION_URL = BASE_URL + "/api/discussions/"+ PARAM + "/flag";
+	
 	
 	public static final String GOAL_DATA_BY_RADIUS = BASE_URL + "api/locations?ne_lat=" + PARAM + "&ne_lng=" + PARAM + "&sw_lat=" + PARAM + "&sw_lng=" + PARAM;
 	
@@ -50,5 +54,5 @@ public class Config {
 	public static final String COMMENT_ACTION_URL = BASE_URL + "";
 	
 	
-	public static final int RETRY_DELAY = 500, RETRY_ATTEMPTS = 3, RESPONSE_TIMEOUT = 4000; 
+	public static final int RETRY_DELAY = 300, RETRY_ATTEMPTS = 4, RESPONSE_TIMEOUT = 4000, READ_TIMEOUT = 3000; 
 }
