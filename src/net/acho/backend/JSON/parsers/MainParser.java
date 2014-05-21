@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class MainParser {
 	
 	/**
-	 * Parsira aktiviste
+	 * Parsira korisnikov profil
 	 * @param json
 	 * @return
 	 * @throws JSONException 
@@ -39,10 +39,10 @@ public class MainParser {
 		activist.avatar = tempObject.optString("avatar");
 		
 		if(tempObject.optJSONObject("balance") != null) {
-			activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
-			activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
-			activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
-			activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+			activist.votesCount = tempObject.optJSONObject("balance").optInt("votes");
+			activist.goalsCount = tempObject.optJSONObject("balance").optInt("goals");
+			activist.supportCount = tempObject.optJSONObject("balance").optInt("support");
+			activist.commentsCount = tempObject.optJSONObject("balance").optInt("comments");
 		}
 		
 		activist.email = tempObject.optString("email");
@@ -51,7 +51,13 @@ public class MainParser {
 		return activists;
 	}
 	
-	
+	/**
+	 * Da li je korisnik ulogovan. Nazalost posle ovoga se mora opet dohvatiti korisnikov profil sa interneta jer ovo ne vraca
+	 * sve podatke. *Note: Moze da se prepravi na sajtu da taj url vraca iste podatke kao pri dohvatanju profila
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static Activist parseLoggedIn(String json) throws JSONException {
 		if(json == null)
 			return null;
@@ -65,14 +71,17 @@ public class MainParser {
 		if(tempObject == null)
 			return null;
 		
+		//Ne koristim json opt, ako nema Id ili name itd, doslo je do greske na serveru 
 		activist.id = tempObject.getJSONObject("user_id").getString("$id");
 		activist.first_name = tempObject.getString("name");
 		activist.avatar = tempObject.getString("avatar");
-		activist.votesCount = tempObject.getJSONObject("balance").getInt("votes");
+		activist.votesCount = tempObject.getJSONObject("balance").optInt("votes");
 		
 		return activist;
 		
 	}
+	
+	
 	
 	public static Activist parseActivist(String json) throws JSONException {
 		if(json == null)
@@ -93,10 +102,10 @@ public class MainParser {
 		activist.avatar = tempObject.optString("avatar");
 		
 		if(tempObject.optJSONObject("balance") != null) {
-			activist.votesCount = tempObject.optJSONObject("balance").getInt("votes");
-			activist.goalsCount = tempObject.optJSONObject("balance").getInt("goals");
-			activist.supportCount = tempObject.optJSONObject("balance").getInt("support");
-			activist.commentsCount = tempObject.optJSONObject("balance").getInt("comments");
+			activist.votesCount = tempObject.optJSONObject("balance").optInt("votes");
+			activist.goalsCount = tempObject.optJSONObject("balance").optInt("goals");
+			activist.supportCount = tempObject.optJSONObject("balance").optInt("support");
+			activist.commentsCount = tempObject.optJSONObject("balance").optInt("comments");
 		}
 		
 		activist.email = tempObject.optString("email");
@@ -133,6 +142,12 @@ public class MainParser {
 		return activist;
 	}
 	
+	/**
+	 * Parsira problem dohvacen po id-u
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<Goal> parseParticularGoal(String json) throws JSONException {
 		Goal tmpGoal;
 		JSONObject job, tmpJob;
@@ -191,7 +206,12 @@ public class MainParser {
 		
 	}
 	
-	
+	/**
+	 * Parsira dohvacene probleme
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<Goal> parseGoals(String json) throws JSONException {
 		if(json == null)
 			return null;
@@ -264,7 +284,12 @@ public class MainParser {
 		
 	}
 
-	
+	/**
+	 * Parsira probleme sa korisnikovog profila
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<Goal> parseUserProfileGoals(String json) throws JSONException {
 		if(json == null)
 			return null;
@@ -337,7 +362,12 @@ public class MainParser {
 		
 	}
 
-	
+	/**
+	 * Parsira jedan problem
+	 * @param problem
+	 * @return
+	 * @throws JSONException
+	 */
 	public static Goal parseGoal(JSONObject problem) throws JSONException {
 		JSONObject geo;
 		JSONArray jar, tmpJar;
@@ -406,9 +436,12 @@ public class MainParser {
 			tmpJob = jar.getJSONObject(i);
 			if(tmpJob.optString("activity_type").compareTo("new_discussion") == 0 ) {
 				tempComment = new Comment();
-				tempComment.content = tmpJob.getString("content");
-				tempComment.created_at = tmpJob.getString("created_at");
-				tempComment.parsed_date = tmpJob.optJSONObject("parsed_date").getString("text");
+				tempComment.content = tmpJob.optString("content");
+				tempComment.created_at = tmpJob.optString("created_at");
+				if(tmpJob.optJSONObject("parsed_date") != null) {
+					tempComment.parsed_date = tmpJob.optJSONObject("parsed_date").optString("text");
+				}
+				
 				
 				if(tmpJob.optJSONObject("types") != null) {
 					if(tmpJob.optJSONObject("types").optString("image") != null) {
@@ -417,11 +450,11 @@ public class MainParser {
 						
 					if(tmpJob.optJSONObject("types").optJSONObject("link") != null) {
 						// tmpJob.optJSONObject("types").optJSONObject("link").optString("value") != null
-						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").getString("value");
+						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").optString("value");
 					}
 					if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
-						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
-						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
+						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("location");
+						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("date");
 					}
 				
 				}
@@ -432,7 +465,7 @@ public class MainParser {
 				
 				
 				
-				tempComment.commenter = parseActivist(tmpJob.getJSONObject("user"));
+				tempComment.commenter = parseActivist(tmpJob.optJSONObject("user"));
 				comments.add(tempComment);
 			}
 		}
@@ -453,7 +486,10 @@ public class MainParser {
 		tempComment = new Comment();
 		tempComment.content = tmpJob.getString("content");
 		tempComment.created_at = tmpJob.getString("created_at");
-		tempComment.parsed_date = tmpJob.optJSONObject("parsed_date").getString("text");
+		if(tmpJob.optJSONObject("parsed_date") != null) {
+			tempComment.parsed_date = tmpJob.optJSONObject("parsed_date").optString("text");
+		}
+		
 		
 		if(tmpJob.optJSONObject("types") != null) {
 			if(tmpJob.optJSONObject("types").optString("image") != null) {
@@ -462,17 +498,18 @@ public class MainParser {
 				
 			if(tmpJob.optJSONObject("types").optJSONObject("link") != null) {
 				// tmpJob.optJSONObject("types").optJSONObject("link").optString("value") != null
-				tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").getString("value");
+				tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").optString("value");
 			}
+			
 			if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
-				tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
-				tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
+				tempComment.meeting_date = tmpJob.optJSONObject("meeting").optString("location");
+				tempComment.meeting_date = tmpJob.optJSONObject("meeting").optString("date");
 			}
 		
 		}
 		
 		
-		tempComment.commenter = parseActivist(tmpJob.getJSONObject("user"));
+		tempComment.commenter = parseActivist(tmpJob.optJSONObject("user"));
 			
 		return tempComment;
 	}
@@ -486,7 +523,12 @@ public class MainParser {
 	//dissaprove
 	{"data":{"success":"1","auth":{"status":true}},"auth":{"status":true,"logged_in":true}}*/
 	
-	
+	/**
+	 * Parsira odgovor pri odpodrzavanju problema
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static final String parseUnsupportGoal(String json) throws JSONException {
 		JSONObject job;
 		
@@ -512,6 +554,13 @@ public class MainParser {
 		
 	}
 	
+	
+	/**
+	 * Parsira odgovor pri podrzavanju problema
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static final String parseSupportGoal(String json) throws JSONException {
 		JSONObject job;
 		
@@ -536,6 +585,12 @@ public class MainParser {
 		
 		}
 	
+	/**
+	 * Parsira odgovor pri flago-ovanju problema
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
 	public static final String parseFlagGoal(String json) throws JSONException {
 		JSONObject job;
 		

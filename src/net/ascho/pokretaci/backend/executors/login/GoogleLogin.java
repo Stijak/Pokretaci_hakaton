@@ -206,15 +206,11 @@ public class GoogleLogin extends LoginTask {
 		
 		List<Goal> goals = MainParser.parseGoals(JSONresponse);
 		
-		for(Goal g: goals) {
-			int b = g.mapPinType();
-			Log.d("dsadsa", " " + b);
-		}
 		
 		Activist a = Activist.getUserProfile();
 		Activist.getUserProfile().setUserGoals(goals);
 		a = Activist.getUserProfile();
-		String s = "kdosak";
+	
 	}
     
     
