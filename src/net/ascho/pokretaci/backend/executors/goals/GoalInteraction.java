@@ -33,11 +33,18 @@ public class GoalInteraction extends Task {
 	
 	private int mInteraction;
 	private Goal mGoal;
-	
+	private String mGoalId;
 	
 	public GoalInteraction(int interactionType, Goal goal) {
 		mInteraction = interactionType;
 		mGoal = goal;
+		if(goal.id != null) 
+			mGoalId = goal.id;
+	}
+	
+	public GoalInteraction(int interactionType, String goal_id) {
+		mInteraction = interactionType;
+		mGoalId = goal_id;
 	}
 	
 	@Override
@@ -204,19 +211,19 @@ public class GoalInteraction extends Task {
 		switch(mInteraction) {
 		
 			case Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL:
-				url = Config.GOAL_SUPPORT_INTERACTION.replace(Config.PARAM, mGoal.id);
+				url = Config.GOAL_SUPPORT_INTERACTION.replace(Config.PARAM, mGoalId);
 				break;
 				
 			case Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL:
-				url = Config.GOAL_UNSUPPORT_INTERACTION.replace(Config.PARAM, mGoal.id);
+				url = Config.GOAL_UNSUPPORT_INTERACTION.replace(Config.PARAM, mGoalId);
 				break;
 			
 			case Goal.GOAL_INTERACTION_TYPE.FLAG_GOAL:
-				url = Config.GOAL_REPORT_INTERACTION.replace(Config.PARAM, mGoal.id);
+				url = Config.GOAL_REPORT_INTERACTION.replace(Config.PARAM, mGoalId);
 				break;
 				
 			case Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL:
-				url = Config.GOAL_EDIT_INTERACTION.replace(Config.PARAM, mGoal.id);
+				url = Config.GOAL_EDIT_INTERACTION.replace(Config.PARAM, mGoalId);
 				break;
 				
 			case Goal.GOAL_INTERACTION_TYPE.NEW_GOAL:

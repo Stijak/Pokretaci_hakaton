@@ -58,10 +58,10 @@ public class Goal {
 	
 	/**
 	 * {@link GOAL_STATES} : <br>
-	 * GOAL_STATES.NEW_GOAL = 1 <br>
-	 * GOAL_STATES.SUPPORTED_GOAL = 2 <br>
-	 * GOAL_STATES.USER_GOAL = 3 <br>
-	 * GOAL_STATES.RESOLVED_GOAL = 4
+	 * Goal.GOAL_STATES.NEW_GOAL = 1 <br>
+	 * Goal.GOAL_STATES.SUPPORTED_GOAL = 2 <br>
+	 * Goal.GOAL_STATES.USER_GOAL = 3 <br>
+	 * Goal.GOAL_STATES.RESOLVED_GOAL = 4
 	 * @return
 	 */
 	public int mapPinType() {
