@@ -453,7 +453,7 @@ public class MainParser {
 						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").optString("value");
 					}
 					if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
-						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("location");
+						tempComment.meeting_location = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("location");
 						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("date");
 					}
 				
