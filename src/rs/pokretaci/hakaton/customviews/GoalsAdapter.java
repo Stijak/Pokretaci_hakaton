@@ -7,7 +7,7 @@ import com.squareup.picasso.Picasso;
 import rs.pokretaci.hakaton.R;
 import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
-import android.content.Context;
+import android.content.Context; 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
