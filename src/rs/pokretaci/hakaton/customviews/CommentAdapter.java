@@ -23,7 +23,7 @@ public class CommentAdapter extends BaseAdapter {
 	Context mContext;
 	List<Comment> mComments; //promjeniti u goal
 	
-	public CommentAdapter(Context context, List<Comment> comments) { //TODO promjeniti u goal
+	public CommentAdapter(Context context, List<Comment> comments) {
 		this.mContext = context;
 		this.mComments = comments;
 	}
@@ -47,8 +47,6 @@ public class CommentAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = ((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item_advanced, parent, false);
-		} else {
-
 		}
 		setView (mContext, convertView, mComments.get(position));
 		return convertView;

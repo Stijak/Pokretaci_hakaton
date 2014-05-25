@@ -54,5 +54,5 @@ public class Config {
 	public static final String COMMENT_ACTION_URL = BASE_URL + "";
 	
 	
-	public static final int RETRY_DELAY = 300, RETRY_ATTEMPTS = 4, RESPONSE_TIMEOUT = 4000, READ_TIMEOUT = 3000; 
+	public static final int RETRY_DELAY = 1000, RETRY_ATTEMPTS = 4, RESPONSE_TIMEOUT = 8000, READ_TIMEOUT = 6000; 
 }
