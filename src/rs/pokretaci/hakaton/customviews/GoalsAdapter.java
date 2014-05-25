@@ -37,7 +37,7 @@ public class GoalsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		GoalView commentView;
 		if (convertView == null) {
-			commentView = new GoalView(mContext, mGoals.get(position));
+			commentView = new GoalView(mContext, parent, mGoals.get(position));
 		} else {
 			commentView = (GoalView) convertView;
 			commentView.setView(mGoals.get(position));

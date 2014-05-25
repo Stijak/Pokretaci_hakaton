@@ -420,8 +420,8 @@ public class MainParser {
 						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").getString("value");
 					}
 					if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
-						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("location");
-						tempComment.meeting_date = tmpJob.optJSONObject("meeting").getString("date");
+						tempComment.meeting_location = tmpJob.optJSONObject("types").optJSONObject("meeting").getString("location");
+						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").getString("date");
 					}
 				
 				}

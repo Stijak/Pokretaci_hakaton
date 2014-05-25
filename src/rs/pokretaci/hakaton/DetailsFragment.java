@@ -41,7 +41,7 @@ public class DetailsFragment extends Fragment {
 	
 	protected void setContent(Goal goal) {
 		mTitle.setText(goal.title);
-		mDescription.setText(goal.description);
+		mDescription.setText(goal.description+"                                                                                  ");
 		if (goal.image != null && !goal.image.equals("")) Picasso.with(getActivity()).load(goal.image).into(mImage);
 		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(getActivity()).load(goal.location_image).resize(500, 200).centerCrop().into(mLocationImage);
 		if (goal.creator.avatar != null && !goal.creator.avatar.equals("")) Picasso.with(getActivity()).load(goal.creator.avatar).placeholder(R.drawable.avatar).into(mAvatarImage);

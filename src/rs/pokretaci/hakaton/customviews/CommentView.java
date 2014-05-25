@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +23,10 @@ public class CommentView extends LinearLayout {
 	private TextView mText;
 	private TextView mAuthorDate;
 
-	public CommentView(final Context context, Comment comment) {
+	public CommentView(final Context context, ViewGroup parent, Comment comment) {
 		super(context);
 		mContext = context;
-		((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_item_advanced, this, true);
+		inflate(context, R.layout.comment_item_advanced, this);
 		
 		mImage = (ImageView) findViewById(R.id.image);
 		mText = (TextView) findViewById(R.id.text);

@@ -9,6 +9,7 @@ import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +22,10 @@ public class GoalView extends LinearLayout {
 	private TextView mNumSupporters;
 	private ImageView mCircle;
 
-	public GoalView(Context context, Goal goal) {
+	public GoalView(Context context, ViewGroup parent, Goal goal) {
 		super(context);
 		mContext = context;
-		((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.goal_item, this, true);
-
+		inflate(context, R.layout.goal_item, this);
 		mImageLocation = (ImageView) findViewById(R.id.image_location);
 		mDate = (TextView) findViewById(R.id.date);
 		mTitle = (TextView) findViewById(R.id.title);

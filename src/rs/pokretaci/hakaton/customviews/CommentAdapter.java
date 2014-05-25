@@ -9,22 +9,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class CommentAdapter extends BaseAdapter {
-	Context context;
-	List<Comment> comments; //promjeniti u goal
+	Context mContext;
+	List<Comment> mComments; //promjeniti u goal
 	
-	public CommentAdapter(Context context, List<Comment> comments) { //TODO promjeniti u goal
-		this.context = context;
-		this.comments = comments;
+	public CommentAdapter(Context context, List<Comment> comments) {
+		this.mContext = context;
+		this.mComments = comments;
 	}
 
 	@Override
 	public int getCount() {
-		return comments.size();
+		return mComments.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return comments.get(position);
+		return mComments.get(position);
 	}
 
 	@Override
@@ -36,10 +36,10 @@ public class CommentAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CommentView commentView;
 		if (convertView == null) {
-			commentView = new CommentView(context, comments.get(position));
+			commentView = new CommentView(mContext, parent, mComments.get(position));
 		} else {
 			commentView = (CommentView) convertView;
-			commentView.setView(comments.get(position));
+			commentView.setView(mComments.get(position));
 		}
 		return commentView;
 	}
