@@ -40,14 +40,26 @@ public class Goal {
 		return comments;
 	}
 	
+	/**
+	 * True u slucaju da problem moze da se podrzi i da ga korisnik nije vec podrzao. Ne proverava da li korisnik ima dovljno glasova
+	 * @return
+	 */
 	public boolean canUserSupport() {
 		return (supportable && !supported);
 	}
 	
+	/**
+	 * Da li problem moze da se odpodrzi i da li ga korisnik vec podrzava
+	 * @return
+	 */
 	public boolean canUserUnsupport() {
 		return (unsupportable && supported);
 	}
 	
+	/**
+	 * Dissaprove je flagovanje problema na sajtu. Da li moze korisnik da flaguje problem
+	 * @return
+	 */
 	public boolean canUserDissaprove() {
 		return (!dissaproved);
 	}

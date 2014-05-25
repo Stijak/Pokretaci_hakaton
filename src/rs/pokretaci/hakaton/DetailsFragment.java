@@ -1,8 +1,10 @@
 package rs.pokretaci.hakaton;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import net.ascho.pokretaci.beans.Goal;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +21,26 @@ public class DetailsFragment extends Fragment {
 	private ImageView mAvatarImage;
 	private TextView mFullName;
 	private TextView mDate;
+	
+	Transformation transformation = new Transformation() {
+
+        @Override public Bitmap transform(Bitmap source) {
+            int targetWidth = mImage.getWidth();
+
+            double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+            int targetHeight = (int) (targetWidth * aspectRatio);
+            Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+            if (result != source) {
+                // Same bitmap is returned if sizes are the same
+                source.recycle();
+            }
+            return result;
+        }
+
+        @Override public String key() {
+            return "transformation" + " desiredWidth";
+        }
+    };
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +65,8 @@ public class DetailsFragment extends Fragment {
 		mTitle.setText(goal.title);
 		mDescription.setText(goal.description+"                                                                                  ");
 		if (goal.image != null && !goal.image.equals("")) Picasso.with(getActivity()).load(goal.image).into(mImage);
-		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(getActivity()).load(goal.location_image).resize(500, 200).centerCrop().into(mLocationImage);
+		if (goal.location_image != null && !goal.location_image.equals("")) Picasso.with(getActivity()).load(goal.location_image).transform(transformation)
+        .into(mLocationImage);
 		if (goal.creator.avatar != null && !goal.creator.avatar.equals("")) Picasso.with(getActivity()).load(goal.creator.avatar).placeholder(R.drawable.avatar).into(mAvatarImage);
 		mFullName.setText(goal.creator.full_name);
 		mDate.setText(goal.created_at);

@@ -71,6 +71,8 @@ public class CommentInteraction extends Task {
 	
 		List<Object> lob = new ArrayList<Object>(comments);
 		sob.setData(lob);
+		sob.setActionSuccess(true);
+		sob.setResponseMessage("Komentar postavljen.");
 		
 		return sob;
 		

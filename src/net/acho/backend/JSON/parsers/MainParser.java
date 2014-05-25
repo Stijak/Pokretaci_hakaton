@@ -402,7 +402,7 @@ public class MainParser {
 		
 		tmpGoal.supportable = problem.optBoolean("supportable");
 		tmpGoal.unsupportable = problem.optBoolean("unsupportable");
-		tmpGoal.dissaproved = problem.optBoolean("dissaproved");
+		tmpGoal.dissaproved = problem.optBoolean("dissaproves");
 		
 		tmpGoal.editable = problem.optBoolean("editable");
 		
@@ -453,11 +453,8 @@ public class MainParser {
 						tempComment.link = tmpJob.optJSONObject("types").optJSONObject("link").optString("value");
 					}
 					if(tmpJob.optJSONObject("types").optJSONObject("meeting") != null) {
-
 						tempComment.meeting_location = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("location");
 						tempComment.meeting_date = tmpJob.optJSONObject("types").optJSONObject("meeting").optString("date");
-
-
 					}
 				
 				}
@@ -548,7 +545,7 @@ public class MainParser {
 		boolean status = job.getBoolean("success");
 		
 		if(status) {
-			return job.getString("message");
+			return "Više ne podržavate ovaj problem";
 		} else {
 			return null;
 		}
@@ -580,7 +577,7 @@ public class MainParser {
 		boolean status = job.getJSONObject("success").getBoolean("status");
 		
 		if(status) {
-			return "Uspe�no!";
+			return "Problem uspešno podržan!";
 		} else {
 			return null;
 		}
@@ -610,7 +607,7 @@ public class MainParser {
 		int status = job.getInt("success");
 		
 		if(status == 1) {
-			return "Uspe�no!";
+			return "Hvala Vam na prijavi, neko od admina će pogledati ovaj problem";
 		} else {
 			return null;
 		}

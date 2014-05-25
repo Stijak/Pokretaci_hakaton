@@ -79,8 +79,10 @@ public class GoalFetcher extends Task {
 				JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 				goals.get(i).comments = MainParser.parseCommentsForGoal(JSONresponse);
 			}
+			
 			List<Object> lob = new ArrayList<Object>(goals);
 			sob.setData(lob);
+			sob.setActionSuccess(true);
 			
 			return sob;
 			

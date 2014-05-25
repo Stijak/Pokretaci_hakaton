@@ -19,6 +19,17 @@ import android.app.Activity;
 		Task testTask4 = TaskFactory.getGoalsByFilter(Goal.GOAL_FILTER.MOST_DISCUSSED);<br>
 		Task testTask5 = TaskFactory.getGoalByID("53788e237b83fa8817000006");<br>
 		Task testTask6 = TaskFactory.geGoalsForUser(mUserId);<br></code>
+		
+ * <br>Primer za interakcju sa problemima:<br><br>
+ * <code>Task like = TaskFactory.supportGoalTask("5381cd507b83fa35b4000006");<br>
+	     Task unlike = TaskFactory.unsupportGoalTask("5381cd507b83fa35b4000006");<br>
+	     Task flag = TaskFactory.reportGoalTask("5381cd507b83fa35b4000006");<br><br>
+	     
+	     Comment com = new Comment();<br>
+	     com.content = "Andorid komentar";<br>
+	     Task commentTask = TaskFactory.commentGoalTask(com, "5381cd507b83fa35b4000006");</code>
+	     <p>New/Edit problema: prosledjujes objekat tipa Goal u kome podesis sva potrebna polja bez goal id. Kada radis edit opet isto samo sada imas i goal id. Ugasio sam za sada upload slika.</p> <code>TaskFactory.newGoalTask(goal);<br>
+	     TaskFactory.editGoalTask(goal);</code>
  * @author bojancv
  *
  */
@@ -192,6 +203,8 @@ public final class TaskFactory {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL, goal);
 	}
 	
+	
+	
 	/**
 	 * Unsuport Goal (prestajem da podrzavam problem)
 	 * @param goal
@@ -200,6 +213,44 @@ public final class TaskFactory {
 	public static final Task unsupportGoalTask(Goal goal) {
 		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
 	}
+	
+	
+	/**
+	 * Flag Goal
+	 * @param goal
+	 * @return
+	 */
+	public static final Task reportGoalTask(String goal_id) {
+		Goal goal = new Goal();
+		goal.id = goal_id;
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.FLAG_GOAL, goal);
+	}
+	
+	/**
+	 * Support Goal (podrzavam problem)
+	 * @param goal
+	 * @return
+	 */
+	public static final Task supportGoalTask(String goal_id) {
+		Goal goal = new Goal();
+		goal.id = goal_id;
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL, goal);
+	}
+	
+	
+	
+	/**
+	 * Unsuport Goal (prestajem da podrzavam problem)
+	 * @param goal
+	 * @return
+	 */
+	public static final Task unsupportGoalTask(String goal_id) {
+		Goal goal = new Goal();
+		goal.id = goal_id;
+		return new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL, goal);
+	}
+	
+	
 	
 	/**
 	 * Comment Goal 

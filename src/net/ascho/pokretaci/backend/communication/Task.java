@@ -90,7 +90,7 @@ public abstract class Task {
 				return (ServerResponseObject) sec.work();
 				
 			} catch (Exception e) {
-				e.printStackTrace();
+			//	e.printStackTrace();
 				return new ServerResponseObject(e);
 			}
 		}

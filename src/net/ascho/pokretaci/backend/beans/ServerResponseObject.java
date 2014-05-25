@@ -31,7 +31,19 @@ public class ServerResponseObject {
 	 */
 	private Exception mException;
 	
+	/**
+	 * Da li je akcija poslata na server uspesno odradjeno 
+	 */
+	private boolean actionSuccess = false;
+	
+	/**
+	 * Tekstualni odgovor servera vezan za akciju, ako ga ima
+	 */
+	private String responseMessage;
+	
 	private List<Object> mData = null; 
+	
+	
 	
 	
 	public ServerResponseObject() {
@@ -69,6 +81,10 @@ public class ServerResponseObject {
 		return mData;
 	}
 	
+	/**
+	 * @deprecated Nije implementirana
+	 * @return
+	 */
 	public Class<? extends Object> getDataType() {
 		
 		
@@ -110,5 +126,30 @@ public class ServerResponseObject {
 			return null;
 		}
 		
+	}
+	
+	
+	public void setActionSuccess(boolean bool) {
+		actionSuccess = bool;
+	}
+	
+	public void setResponseMessage(String msg) {
+		responseMessage = msg;
+	}
+	
+	/**
+	 * Da li je sama akcija na serveru bila uspesno. Kao npr da li je problem podrzan ili mozda nije podrzan jer korisnik nema dovoljno bodova
+	 * @return
+	 */
+	public boolean isActionSuccessful() {
+		return actionSuccess;
+	}
+	
+	/**
+	 * Vraca tekstualnu poruku servera za uradjenu akciju ako je ima. Npr ako je problem podrzan poruka za korisnika da je uspesno pordzan.
+	 * @return
+	 */
+	public String getResonseMessage() {
+		return responseMessage;
 	}
 }

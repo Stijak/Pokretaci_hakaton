@@ -149,6 +149,7 @@ public class GoalInteraction extends Task {
 					try {
 						Goal goal = MainParser.parseGoal(job.getJSONObject("data"));
 						goals.add(goal);
+						success = "Uspešno postavljen problem.";
 					} catch(JSONException e) {
 						success = null;
 					}
@@ -176,6 +177,13 @@ public class GoalInteraction extends Task {
 		
 		List<Object> lob = new ArrayList<Object>(goals);
 		sob.setData(lob);
+		if(success != null) {
+			sob.setActionSuccess(true);
+		} else {
+			sob.setActionSuccess(false);
+			success = "Došlo je do greške prilikom akcije, molimo Vas pokušajte opet.";
+		}
+		sob.setResponseMessage(success);
 		
 		return sob;
 	}

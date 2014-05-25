@@ -71,6 +71,7 @@ public class GoogleLogin extends LoginTask {
 				getUserProfile();
 				activists.add(Activist.getUserProfile());
 				List<Object> lob = new ArrayList<Object>(activists);
+				sro.setActionSuccess(true);
 				sro.setData(lob);
 				return sro;
 			} else {
@@ -146,6 +147,7 @@ public class GoogleLogin extends LoginTask {
 		
 		if(checkIfAlreadyLoggedIn()) {
 			getUserProfile();
+			sro.setActionSuccess(true);
 			activists.add(Activist.getUserProfile());
 		} else {
 			activists.add(null);

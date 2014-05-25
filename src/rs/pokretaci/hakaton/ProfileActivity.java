@@ -128,7 +128,7 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 		mProfileStats = (TextView) findViewById(R.id.profile_stats);
 		ImageView profileImage = (ImageView) findViewById(R.id.image);
 		String avatarExtra = intent.getStringExtra(MapActivity.AVATAR_EXTRA);
-		if (Activist.getUserProfile().avatar != null) Picasso.with(this).load(avatarExtra).into(profileImage);
+		if (Activist.getUserProfile().avatar != null) Picasso.with(this).load(avatarExtra).placeholder(R.drawable.avatar).into(profileImage);
 	}
 
 	@Override
