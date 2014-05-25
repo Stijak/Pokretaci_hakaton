@@ -126,6 +126,10 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ApacheClient.getInstance().setCookieStore(
+				CookieManager.getInstance().restoreCookiesFromSharedPreferences(
+						getApplicationContext()
+						));
 		setContentView(R.layout.map_layout);
 		//mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
 		//mWelcomeMessage.setClickable(true);
@@ -137,14 +141,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		//new DownloadLocationsTask().execute();
 		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
 		all.executeTask(getApplicationContext(), this);
-
-		ApacheClient.getInstance().setCookieStore(
-				CookieManager.getInstance().restoreCookiesFromSharedPreferences(
-						getApplicationContext()
-						));
-
-		
-		//Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
 
 	}
 	
