@@ -55,6 +55,8 @@ public class GoalInteraction extends Task {
 		
 		ServerResponseObject sob = new ServerResponseObject();
 		
+		String tmpMsg = null;
+		
 		String url = buildInteractionUrl();
 		Log.d("odgovor", "goal interaction url: " + url);
 		String JSONresponse;
@@ -83,6 +85,7 @@ public class GoalInteraction extends Task {
 				break;
 			
 			case Goal.GOAL_INTERACTION_TYPE.NEW_GOAL: 
+				mGoal.id = null; //just in case
 			case Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL:
 				
 				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -94,29 +97,36 @@ public class GoalInteraction extends Task {
 				JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 				JSONObject job = new JSONObject(JSONresponse);
 				Goal goal = MainParser.parseGoal(job.getJSONObject("data"));*/
-				 List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+//				 List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+//				 
+//				 nvps.add(new BasicNameValuePair("title", mGoal.title));
+//				 nvps.add(new BasicNameValuePair("description", mGoal.description));
+//				 nvps.add(new BasicNameValuePair("people", mGoal.people));
+//				 nvps.add(new BasicNameValuePair("location[name]", mGoal.location_name));
+//				 nvps.add(new BasicNameValuePair("location[geo][lon]", Double.toString(mGoal.lon)));
+//				 nvps.add(new BasicNameValuePair("location[geo][lat]", Double.toString(mGoal.lat)));
 				 
-				 nvps.add(new BasicNameValuePair("title", mGoal.title));
-				 nvps.add(new BasicNameValuePair("description", mGoal.description));
-				 nvps.add(new BasicNameValuePair("people", mGoal.people));
-				 nvps.add(new BasicNameValuePair("location[name]", mGoal.location_name));
-				 nvps.add(new BasicNameValuePair("location[geo][lon]", Double.toString(mGoal.lon)));
-				 nvps.add(new BasicNameValuePair("location[geo][lat]", Double.toString(mGoal.lat)));
 				 if(mGoal.image != null) {
-			/*
-					File file = new File("mGoal.image");
+					//ako je upitanju url sa servera ne treba nista da se uradi
+					if(!mGoal.image.startsWith("http") && !mGoal.image.startsWith("www")) {
+						File file = new File(mGoal.image);
+						String contentType = Util.getContentType(mGoal.image);
+					    builder.addBinaryBody("image", file, ContentType.create(contentType), file.getName());
+					    Log.d("dkosad", "slika ne pocinje sa http");
+					} else {
+						Log.d("dkosad", "iskulirao");
+					}
 					
-					StringBuilder buf=new StringBuilder();
-				    InputStream json=getContext().getAssets().open("desert.jpg");
-				   
-					String contentType = Util.getContentType(mGoal.image);
-				    builder.addBinaryBody("image", file, ContentType.create(contentType), file.getName());*/
-				   
+//					StringBuilder buf=new StringBuilder();
+//				    InputStream json=getContext().getAssets().open("desert.jpg");
+				//    builder.addBinaryBody("image", json, ContentType.create("jpg"), "desert.jpg");
 				 }
+				 
 				 if(mGoal.id != null) {
-					 nvps.add(new BasicNameValuePair("id", mGoal.id));
+//					 nvps.add(new BasicNameValuePair("id", mGoal.id));
 					 builder.addTextBody("id", mGoal.id);
 				 }
+				 
 				 String topics = "";
 					if(mGoal.categories != null) {
 						if(mGoal.categories.size() != 0) {
@@ -129,27 +139,51 @@ public class GoalInteraction extends Task {
 						}
 					}
 				
-					 nvps.add(new BasicNameValuePair("topics", topics));
+			//		 nvps.add(new BasicNameValuePair("topics", topics));
 					 
 					 //Builder Opcija
-					 builder.addTextBody("title", mGoal.title);
-					 builder.addTextBody("description", mGoal.description);
-					 builder.addTextBody("people", mGoal.people);
-					 builder.addTextBody("location[name]", mGoal.location_name);
-					 builder.addTextBody("location[geo][lon]", Double.toString(mGoal.lon));
-					 builder.addTextBody("location[geo][lat]", Double.toString(mGoal.lat));
+					if(mGoal.title != null) { 
+						builder.addTextBody("title", mGoal.title);
+					}
+					
+					if(mGoal.description != null) {
+						builder.addTextBody("description", mGoal.description);
+					}
+					
+					if(mGoal.people != null) {
+						builder.addTextBody("people", mGoal.people);
+					}
 					 
-					 builder.addTextBody("topics", topics);
+					if(mGoal.location_name != null) {
+						builder.addTextBody("location[name]", mGoal.location_name);
+					}
+					
+					if(mGoal.lon != 0.0d && mGoal.lat != 0.0d) {
+						 builder.addTextBody("location[geo][lon]", Double.toString(mGoal.lon));
+						 builder.addTextBody("location[geo][lat]", Double.toString(mGoal.lat));
+					}
+					
+					 if(!topics.isEmpty()) {
+						 builder.addTextBody("topics", topics);
+					 }
+					
 					 HttpEntity reqEntity = builder.build();
 					 
 					//httpResponse = apache.postRequest(url, new UrlEncodedFormEntity(nvps));
-					 httpResponse = apache.postRequest(url, reqEntity);
+					httpResponse = apache.postRequest(url, reqEntity);
 					JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 					JSONObject job = new JSONObject(JSONresponse);
 					try {
 						Goal goal = MainParser.parseGoal(job.getJSONObject("data"));
-						goals.add(goal);
-						success = "Uspešno postavljen problem.";
+						//Ako je doslo do greske
+						if(goal == null) { //Izvuci specificnu poruku sa servera ako je ima
+							tmpMsg = job.getJSONObject("data").optString("message");
+							success = null;
+						} else {
+							goals.add(goal);
+							success = "Uspešno postavljen problem.";
+						}
+						
 					} catch(JSONException e) {
 						success = null;
 					}
@@ -160,28 +194,20 @@ public class GoalInteraction extends Task {
 				break;
 		}
 		
-	/*	ActionResponse ac = new ActionResponse();
-		if(success != null) {
-			ac.success = true;
-			ac.message = success;
-		} else {
-			ac.success = false;
-			ac.message = "Akcija nije uspela. Molimo vas pokušajte ponovo.";
-		}
-		
-		List<ActionResponse> asl = new ArrayList<ActionResponse>();
-		
-		asl.add(ac);*/
-		
-		
 		
 		List<Object> lob = new ArrayList<Object>(goals);
 		sob.setData(lob);
+		
 		if(success != null) {
 			sob.setActionSuccess(true);
 		} else {
 			sob.setActionSuccess(false);
-			success = "Došlo je do greške prilikom akcije, molimo Vas pokušajte opet.";
+			
+			if(tmpMsg == null) {
+				success = "Došlo je do greške prilikom akcije, molimo Vas pokušajte opet.";
+			} else {//AKo smo dobili specificnu poruku od servera, npr da nije unese naslov pri dodavanju problema.
+				success = tmpMsg;
+			}
 		}
 		sob.setResponseMessage(success);
 		

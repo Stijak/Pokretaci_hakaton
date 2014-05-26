@@ -50,20 +50,20 @@ public class MainActivity extends Activity implements TaskListener {
 	     
 	     Goal mGoal = new Goal();
 	     
-	 //    mGoal.id = "537885897b83fa3e1c000002";
-	   /*  mGoal.title = "Najnoviji test sa DESERTOM";
-	     mGoal.description = "aRadi sa uploadom slike DESERTOM";
-	     mGoal.people = "Mi smo pravi ljudi za vas!";
-	     mGoal.lat = 19.463063;
-	     mGoal.lon = 44.591535;
-	     mGoal.location_name = "Radi sa uploadom slike bez slike DESERTOM";
+	     mGoal.id = "537139bc7b83fadce3000003";
+//	     mGoal.title = "Najnoviji test sa DESERTOM";
+//	     mGoal.description = "aRadi sa uploadom slike DESERTOM";
+//	     mGoal.people = "Mi smo pravi ljudi za vas!";
+//	     mGoal.lat = 19.463063;
+//	     mGoal.lon = 44.591535;
+	     mGoal.location_name = "Stavljam cudnu lokaciju sad";
 	     mGoal.image = null;
-	     mGoal.categories = new ArrayList<String>();
-	     mGoal.categories.add("ruglo");
-	     mGoal.categories.add("vandalizam");
-	     mGoal.categories.add("nemoral");
+//	     mGoal.categories = new ArrayList<String>();
+//	     mGoal.categories.add("ruglo");
+//	     mGoal.categories.add("vandalizam");
+//	     mGoal.categories.add("nemoral");
 	     Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.NEW_GOAL, mGoal);
-	     newGoal.executeTask(getApplicationContext(), this);*/
+	     newGoal.executeTask(getApplicationContext(), this);
 	     
 	    /* Task goalById =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, "5376ce2d7b83fa1a64000000");
 	     goalById.executeTask(getApplicationContext(), this);  */                       

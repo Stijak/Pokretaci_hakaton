@@ -64,20 +64,22 @@ public class GoalFetcher extends Task {
 			List<Goal> goals;
 			
 			switch(mFetchType) {
-				case Goal.GOAL_FETCH_TYPE.BY_GOAL_ID: 
+				case Goal.GOAL_FETCH_TYPE.BY_GOAL_ID: 	
 					goals = MainParser.parseParticularGoal(JSONresponse);
+					
+					//Dohvati komentare
+					for(int i = 0; i < goals.size(); i++) {
+						httpResponse = apache.getRequest(Config.GOAL_ACTIVITIES_URL.replace(Config.PARAM, goals.get(i).id));
+						JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
+						goals.get(i).comments = MainParser.parseCommentsForGoal(JSONresponse);
+					}
+					
+					
 					break;
+				
 				default: 
 					goals = MainParser.parseGoals(JSONresponse);
 					break;
-			}
-			
-			
-			
-			for(int i = 0; i < goals.size(); i++) {
-				httpResponse = apache.getRequest(Config.GOAL_ACTIVITIES_URL.replace(Config.PARAM, goals.get(i).id));
-				JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
-				goals.get(i).comments = MainParser.parseCommentsForGoal(JSONresponse);
 			}
 			
 			List<Object> lob = new ArrayList<Object>(goals);

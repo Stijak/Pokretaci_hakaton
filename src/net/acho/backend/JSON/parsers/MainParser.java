@@ -373,6 +373,11 @@ public class MainParser {
 		JSONArray jar, tmpJar;
 		Goal tmpGoal = new Goal();
 		
+		if(problem.optJSONObject("_id") == null) {
+			//Najverovatnije nije poslat neki parametar
+			return null;
+		}
+		
 		tmpGoal.id = problem.optJSONObject("_id").getString("$id");
 		tmpGoal.title = problem.optString("title");
 		tmpGoal.description = problem.optString("description");

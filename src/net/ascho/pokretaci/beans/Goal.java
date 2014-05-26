@@ -24,7 +24,7 @@ public class Goal {
 	 * @deprecated
 	 */
 	public String supportersList;
-	public double lon, lat;
+	public double lon = 0.0d, lat = 0.0d;
 	public int discussions_count, supporters_count;
 	public List<String> categories = new ArrayList<String>();
 	public Activist creator;

@@ -62,7 +62,6 @@ public class GoogleLogin extends LoginTask {
 	@Override
 	protected ServerResponseObject performLogin() throws GooglePlayServicesAvailabilityException, ClientProtocolException, UserRecoverableAuthException, IOException, GoogleAuthException, Exception {
 		
-		TransportObject tob;
 	//	try {
 			//Acquire token
 			if(checkIfAlreadyLoggedIn()) { //Vec je ulogovan
@@ -72,6 +71,7 @@ public class GoogleLogin extends LoginTask {
 				activists.add(Activist.getUserProfile());
 				List<Object> lob = new ArrayList<Object>(activists);
 				sro.setActionSuccess(true);
+				sro.setResponseMessage("Ulogovali ste se.");
 				sro.setData(lob);
 				return sro;
 			} else {
@@ -148,12 +148,11 @@ public class GoogleLogin extends LoginTask {
 		if(checkIfAlreadyLoggedIn()) {
 			getUserProfile();
 			sro.setActionSuccess(true);
+			sro.setResponseMessage("Ulogovali ste se.");
 			activists.add(Activist.getUserProfile());
 		} else {
 			activists.add(null);
 		}
-		
-		
 		
 		List<Object> lob = new ArrayList<Object>(activists);
 		sro.setData(lob);
@@ -203,15 +202,13 @@ public class GoogleLogin extends LoginTask {
 		String JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 		
 		MainParser.parseUserProfile(JSONresponse);
+		
 		httpResponse = apache.getRequest(Config.GOAL_DATA_FOR_USER_URL.replace(Config.PARAM, Activist.getUserProfile().id));
 		JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
 		
 		List<Goal> goals = MainParser.parseGoals(JSONresponse);
-		
-		
-		Activist a = Activist.getUserProfile();
 		Activist.getUserProfile().setUserGoals(goals);
-		a = Activist.getUserProfile();
+
 	
 	}
     
