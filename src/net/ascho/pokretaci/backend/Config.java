@@ -53,6 +53,6 @@ public class Config {
 	
 	public static final String COMMENT_ACTION_URL = BASE_URL + "";
 	
-	
-	public static final int RETRY_DELAY = 300, RETRY_ATTEMPTS = 4, RESPONSE_TIMEOUT = 4000, READ_TIMEOUT = 3000; 
+	//Retry delay se mnozi sa faktorom 2 u svakom retry attempty i dodaje, zato ga ne treba staviti previse velikim
+	public static final int RETRY_DELAY = 450, RETRY_ATTEMPTS = 4, RESPONSE_TIMEOUT = 4000, READ_TIMEOUT = 6000; 
 }
