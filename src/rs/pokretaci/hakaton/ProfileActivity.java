@@ -118,24 +118,17 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}*/
 
-		/*Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
-		all.executeTask(getApplicationContext(), this);*/
-		
-		
+		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+		all.executeTask(getApplicationContext(), this);
 		
 		Intent intent = getIntent();
 		TextView text = (TextView) findViewById(R.id.profile_name);
 		text.setText(intent.getStringExtra(MapActivity.FULL_NAME_EXTRA));
 		mUserId = intent.getStringExtra(MapActivity.ID_EXTRA);
-		
-		//Dohvati goals za korisnika
-		Task userGoals = TaskFactory.geGoalsForUser(mUserId);
-		userGoals.executeTask(getApplicationContext(), this);
-		
 		mProfileStats = (TextView) findViewById(R.id.profile_stats);
 		ImageView profileImage = (ImageView) findViewById(R.id.image);
 		String avatarExtra = intent.getStringExtra(MapActivity.AVATAR_EXTRA);
-		if (Activist.getUserProfile().avatar != null) Picasso.with(this).load(avatarExtra).into(profileImage);
+		if (avatarExtra != null) Picasso.with(this).load(avatarExtra).placeholder(R.drawable.avatar).into(profileImage);
 	}
 
 	@Override
