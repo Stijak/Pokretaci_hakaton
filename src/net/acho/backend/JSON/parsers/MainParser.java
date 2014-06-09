@@ -558,7 +558,7 @@ public class MainParser {
 		boolean status = job.getBoolean("success");
 		
 		if(status) {
-			return "Više ne podržavate ovaj problem";
+			return "Vi�e ne podr�avate ovaj problem";
 		} else {
 			return null;
 		}
@@ -590,7 +590,7 @@ public class MainParser {
 		boolean status = job.getJSONObject("success").getBoolean("status");
 		
 		if(status) {
-			return "Problem uspešno podržan!";
+			return "Problem uspe�no podr�an!";
 		} else {
 			return null;
 		}
@@ -620,7 +620,7 @@ public class MainParser {
 		int status = job.getInt("success");
 		
 		if(status == 1) {
-			return "Hvala Vam na prijavi, neko od admina će pogledati ovaj problem";
+			return "Hvala Vam na prijavi, neko od admina ce pogledati ovaj problem";
 		} else {
 			return null;
 		}
