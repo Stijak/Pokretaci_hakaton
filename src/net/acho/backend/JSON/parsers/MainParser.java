@@ -96,6 +96,9 @@ public class MainParser {
 		if(tempObject == null)
 			return null;
 		
+		if(tempObject.optJSONObject("_id") == null) {
+			return null;
+		}
 		activist.id = tempObject.optJSONObject("_id").getString("$id");
 		
 		activist.first_name = tempObject.optString("name");
@@ -122,7 +125,9 @@ public class MainParser {
 		
 		
 		tempObject = user;
-		
+		if(tempObject.optJSONObject("_id") == null) {
+			return null;
+		}
 		activist.id = tempObject.optJSONObject("_id").getString("$id");
 		
 		activist.first_name = tempObject.optString("name");
@@ -201,7 +206,7 @@ public class MainParser {
 	    		
 	    		return goals;
 		} else {
-			return null;
+			return goals;
 		}
 		
 	}
@@ -269,15 +274,18 @@ public class MainParser {
 	    	} 
 		} else {
 	    		
-	    		tmpJar = tmpJob.getJSONArray("data");
-	    		//JSONArray array = job.names();
-		    	for (int i = 0; i < tmpJar.length(); i++) {
-		    		tmpGoal =  new Goal();
-		    		//String name = array.getString(i);
-		    		JSONObject problem = tmpJar.getJSONObject(i);
-		    		
-		    		goals.add(parseGoal(problem));
-	    	}
+	    		tmpJar = tmpJob.optJSONArray("data");
+	    		if(tmpJar != null) {
+	    			//JSONArray array = job.names();
+			    	for (int i = 0; i < tmpJar.length(); i++) {
+			    		tmpGoal =  new Goal();
+			    		//String name = array.getString(i);
+			    		JSONObject problem = tmpJar.getJSONObject(i);
+			    		
+			    		goals.add(parseGoal(problem));
+			    	}
+	    		}
+	    		
 		}
 		
     	return goals;

@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 
 
 
+
+import net.ascho.pokretaci.backend.Config;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -77,7 +80,7 @@ public class ApacheClient {
 			
 		}
 		//Default params
-		setTimeout(5000, 6000);
+		setTimeout(Config.RESPONSE_TIMEOUT, Config.RESPONSE_TIMEOUT);
 		HttpClientParams.setRedirecting(mHttpParams, false);	
 		if (mHttpClient.getParams() != mHttpParams) {
 			mHttpClient.setParams(mHttpParams);

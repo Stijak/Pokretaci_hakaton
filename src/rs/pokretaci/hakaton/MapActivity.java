@@ -16,6 +16,7 @@ import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskFactory;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.cookies.CookieManager;
+import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
 import net.ascho.pokretaci.backend.util.Util;
 import net.ascho.pokretaci.beans.Activist;
@@ -58,6 +59,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -126,10 +128,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ApacheClient.getInstance().setCookieStore(
-				CookieManager.getInstance().restoreCookiesFromSharedPreferences(
-						getApplicationContext()
-						));
 		setContentView(R.layout.map_layout);
 		//mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
 		//mWelcomeMessage.setClickable(true);
@@ -139,8 +137,36 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		Task googleLogin = new GoogleLogin(email, MapActivity.this);
 		googleLogin.executeTask(getApplicationContext(), this);
 		//new DownloadLocationsTask().execute();
-		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
-		//all.executeTask(getApplicationContext(), this);
+//		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+		Task all = TaskFactory.getAllGoals();
+		all.executeTask(getApplicationContext(), this);
+
+		
+		
+		/*Goal mGoal = new Goal();
+	     
+	     mGoal.id = "537139bc7b83fadce3000003";
+	  //   mGoal.title = "Najnoviji test sa DESERTOM 22";
+	     mGoal.description = "Edit bez slike da li brise staru sliku";
+	     mGoal.people = "Mi smo pravi ljudi za vas!";
+	     mGoal.lat = 19.463063;
+	     mGoal.lon = 44.591535;
+	     mGoal.location_name = "Stavljam cudnu lokaciju sad";
+	     mGoal.image = "http://fgdgdfgd";
+	     mGoal.categories = new ArrayList<String>();
+	     mGoal.categories.add("ruglo");
+	     mGoal.categories.add("vandalizam");
+	     mGoal.categories.add("nemoral");
+	     Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.EDIT_GOAL, mGoal);
+	     newGoal.executeTask(getApplicationContext(), this);*/
+		
+		ApacheClient.getInstance().setCookieStore(
+				CookieManager.getInstance().restoreCookiesFromSharedPreferences(
+						getApplicationContext()
+						));
+
+		
+		//Ovo gore dohvati prvi mail iz niza, ali bi kao trebali prikazati korsiniku sve akkaunte pa da jedan izabere
 
 	}
 	
