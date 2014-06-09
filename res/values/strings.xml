@@ -76,5 +76,9 @@
     <string name="dangerous">Opasno</string>
     <string name="submiting">Upload u toku</string>
     <string name="submit_sucess">Program je uspešno submitovan na server</string>
+    
+    <string name="submit_goal_marker_title">Lokacija problema</string>
+    <string name="submit_goal_marker_details">Postavite marker na željenu lokaciju</string>
+    <string name="submit_goal_location">Podesi lokaciju</string>
 
 </resources>

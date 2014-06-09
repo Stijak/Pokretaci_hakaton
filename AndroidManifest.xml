@@ -47,6 +47,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="rs.pokretaci.hakaton.SetMarkerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="rs.pokretaci.hakaton.SubmitProblem"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <Button
+        android:background="@drawable/resi_problem"
+        android:text="@string/submit_goal_location"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="20sp"
+        android:layout_margin="40dp"
+        android:onClick="setLocation"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textColor="#FFFFFF"
+        />
+
+</RelativeLayout>
