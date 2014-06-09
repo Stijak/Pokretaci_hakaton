@@ -140,7 +140,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		googleLogin.executeTask(getApplicationContext(), this);
 		//new DownloadLocationsTask().execute();
 		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
-		all.executeTask(getApplicationContext(), this);
+		//all.executeTask(getApplicationContext(), this);
 
 	}
 	
