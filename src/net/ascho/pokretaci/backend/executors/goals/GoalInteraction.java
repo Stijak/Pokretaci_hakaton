@@ -2,6 +2,7 @@ package net.ascho.pokretaci.backend.executors.goals;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -125,15 +126,10 @@ public class GoalInteraction extends Task {
 
 						
 					    
-					    /**
-					     * Probaj sa ovim kodom posto je isti kao onaj dole koji radi osim sto ne ucitava sliku iz assetsa
-					     * 
-					     * InputStream fis = new FileInputStream(mGoal.image);
-					     * builder.addBinaryBody("image", fis, ContentType.create(contentType), file.getName());
-					     * 
-					     * 
-					     */
 					    
+					     InputStream fis = new FileInputStream(mGoal.image);
+					     builder.addBinaryBody("image", fis, ContentType.create(contentType), file.getName());
+					   
 						
 						
 					} else {
@@ -148,10 +144,10 @@ public class GoalInteraction extends Task {
 				 	 * 
 				 	 * 
 				 	 * Ovaj kod ucita sliku iz assetsa i uradi upload lepo i isti je kao onaj gore sto bi trebao da probas :)
-				 	 */
+				 	 
 				    InputStream fis =getContext().getAssets().open("desert.jpg");
 				    builder.addBinaryBody("image", fis, ContentType.create("jpg"), "desert.jpg");
-				 
+				 	*/
 				 if(mGoal.id != null) {
 //					 nvps.add(new BasicNameValuePair("id", mGoal.id));
 					 builder.addTextBody("id", mGoal.id);
