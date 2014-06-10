@@ -109,18 +109,48 @@ public class GoalInteraction extends Task {
 				 if(mGoal.image != null) {
 					//ako je upitanju url sa servera ne treba nista da se uradi
 					if(!mGoal.image.startsWith("http") && !mGoal.image.startsWith("www")) {
+						
+						
 						File file = new File(mGoal.image);
 						String contentType = Util.getContentType(mGoal.image);
-					    builder.addBinaryBody("image", file, ContentType.create(contentType), file.getName());
-					    Log.d("dkosad", "slika ne pocinje sa http");
+						
+						/**
+						 * Ovo je stari kod koji je bio u aplikaciji
+						 * 
+						 * 
+					     * builder.addBinaryBody("image", file, ContentType.create(contentType), file.getName());
+						 * 
+						 * 
+						 */
+
+						
+					    
+					    /**
+					     * Probaj sa ovim kodom posto je isti kao onaj dole koji radi osim sto ne ucitava sliku iz assetsa
+					     * 
+					     * InputStream fis = new FileInputStream(mGoal.image);
+					     * builder.addBinaryBody("image", fis, ContentType.create(contentType), file.getName());
+					     * 
+					     * 
+					     */
+					    
+						
+						
 					} else {
-						Log.d("dkosad", "iskulirao");
+						Log.d("dkosad", "ne treba da radi upload");
 					}
 					
-//					StringBuilder buf=new StringBuilder();
-//				    InputStream json=getContext().getAssets().open("desert.jpg");
-				//    builder.addBinaryBody("image", json, ContentType.create("jpg"), "desert.jpg");
 				 }
+				 
+				
+				 	/**
+				 	 * ********************************************
+				 	 * 
+				 	 * 
+				 	 * Ovaj kod ucita sliku iz assetsa i uradi upload lepo i isti je kao onaj gore sto bi trebao da probas :)
+				 	 */
+				    InputStream fis =getContext().getAssets().open("desert.jpg");
+				    builder.addBinaryBody("image", fis, ContentType.create("jpg"), "desert.jpg");
 				 
 				 if(mGoal.id != null) {
 //					 nvps.add(new BasicNameValuePair("id", mGoal.id));
