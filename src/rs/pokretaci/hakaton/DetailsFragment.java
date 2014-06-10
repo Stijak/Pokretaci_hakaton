@@ -7,6 +7,7 @@ import net.ascho.pokretaci.beans.Goal;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +45,13 @@ public class DetailsFragment extends Fragment {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("rs.pokretaci.hakaton", "DetailsFragment onCreate");
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
+		Log.d("rs.pokretaci.hakaton", "DetailsFragment onCreateView");
 		View view = inflater.inflate(R.layout.details_fragment, container, false);
 		mTitle = (TextView) view.findViewById(R.id.details_title);
 		mDescription = (TextView) view.findViewById(R.id.details_content);

@@ -14,6 +14,7 @@ import java.util.Locale;
 
 
 
+
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskFactory;
@@ -35,20 +36,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import rs.pokretaci.hakaton.R;
 
 public class ProblemDetailsActivity extends FragmentActivity implements ActionBar.TabListener, TaskListener {
+	private static final String INTENT_EXTRA = "INTENT EXTRA";
 	private ViewPager mViewPager;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private Intent mCallingIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent callingIntent = this.getIntent();
-		
-		if (callingIntent != null) {
-			String goalId = callingIntent.getStringExtra(MapActivity.ID_EXTRA);
+		mCallingIntent = getIntent();
+		if (savedInstanceState != null) mCallingIntent = (Intent) savedInstanceState.getParcelable(INTENT_EXTRA);
+		if (savedInstanceState != null) Log.d("rs.pokretaci.hakaton", savedInstanceState.toString());
+		Log.d("rs.pokretaci.hakaton", mCallingIntent.toString());
+		if (mCallingIntent != null) {
+			String goalId = mCallingIntent.getStringExtra(MapActivity.ID_EXTRA);
 			if (goalId != null) {
+				Log.d("rs.pokretaci.hakaton",goalId);
 				Task newestGoals =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_GOAL_ID, goalId);
 				newestGoals.executeTask(getApplicationContext(), this);
 			}
@@ -91,6 +98,7 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+		outState.putParcelable(INTENT_EXTRA, mCallingIntent);
 	}
 
 	/**
@@ -168,6 +176,7 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 		if (taskResponse != null && taskResponse.isResponseValid()) {
 			Goal goal = (Goal) taskResponse.getData().get(0);
 			DetailsFragment df = (DetailsFragment) mSectionsPagerAdapter.getItem(0);
+			if (goal==null) return;
 			df.setContent(goal);
 			CommentsFragment cf = (CommentsFragment) mSectionsPagerAdapter.getItem(1);
 			cf.setComments(goal.getComments());
