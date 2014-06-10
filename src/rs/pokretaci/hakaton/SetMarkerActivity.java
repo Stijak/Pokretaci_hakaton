@@ -28,17 +28,17 @@ public class SetMarkerActivity extends Activity implements ConnectionCallbacks, 
 		Intent intent = getIntent();
 		LatLng position = intent.getParcelableExtra(SubmitProblem.LOCATION_EXTRA);
 		if (position != null) {
-			setMarkerAndMap(position);
+			setMarkerAndMap(position, 16);
 		}
 	}
 	
-	private void setMarkerAndMap (LatLng position) {
+	private void setMarkerAndMap (LatLng position, int zoomlevel) {
 		
 		GoogleMap map = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
 
 		map.setMyLocationEnabled(true);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoomlevel));
 
 		mMarker = map.addMarker(new MarkerOptions()
 		.title(getString(R.string.submit_goal_marker_title))
@@ -76,16 +76,22 @@ public class SetMarkerActivity extends Activity implements ConnectionCallbacks, 
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
-
+		if (mMarker != null) return;
+		LatLng belgrade = new LatLng(44.769010, 20.479202);
+		setMarkerAndMap(belgrade, 12);
 	}
 
 	@Override
 	public void onConnected(Bundle arg0) {
 		if (mMarker != null) return;
 		Location location = mLocationClient.getLastLocation();
-		LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
-		setMarkerAndMap(position);
+		if (location == null) {
+			LatLng belgrade = new LatLng(44.769010, 20.479202);
+			setMarkerAndMap(belgrade, 12);
+		} else {
+			LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+			setMarkerAndMap(position, 16);
+		}
 
 	}
 	
