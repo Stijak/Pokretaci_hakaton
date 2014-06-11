@@ -23,6 +23,7 @@ public class CommentsFragment extends ListFragment implements OnClickListener {
 	private CommentAdapter mCommentAdapter;
 	private List<Comment> mComments = new ArrayList<Comment>();
 	private EditText mCommentEdit;
+	Button mLeaveCommentButton;
 	private boolean mEditCommentShown = false;
 	
 	
@@ -45,8 +46,8 @@ public class CommentsFragment extends ListFragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.comments_fragment, container, false);
-		Button leaveCommentButton = (Button) v.findViewById(R.id.leave_comment_button);
-		leaveCommentButton.setOnClickListener(this);
+		mLeaveCommentButton = (Button) v.findViewById(R.id.leave_comment_button);
+		mLeaveCommentButton.setOnClickListener(this);
 		mCommentEdit = (EditText) v.findViewById(R.id.comment_edit);
 		return v;
 	}
@@ -55,6 +56,7 @@ public class CommentsFragment extends ListFragment implements OnClickListener {
 	public void onClick(View v) {
 		if (!mEditCommentShown) {
 			mCommentEdit.setVisibility(View.VISIBLE);
+			mLeaveCommentButton.setText(getString(R.string.send_comment));
 		} else {
 			//sendCommentToServer
 		}
