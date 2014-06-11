@@ -217,9 +217,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				R.layout.drawer_list_item, mDrawwerList));
 		//mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(false);
+		
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -231,17 +229,22 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				R.string.drawer_close  /* "close drawer" description for accessibility */
 				) {
 			public void onDrawerClosed(View view) {
+				super.onDrawerClosed(view);
 				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
 				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 		};
 		//mDrawerList.setOnItemClickListener(listener); //TODO
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+				getActionBar().setDisplayHomeAsUpEnabled(true);
+				getActionBar().setHomeButtonEnabled(true);
 	}
 	
 	private void initDrawer2() {
@@ -262,6 +265,13 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		 public void onDrawerClosed(View view) {
 		 //getActionBar().setSubtitle("open");
 		 }
+		 @Override
+		    public void onDrawerSlide(View drawerView, float slideOffset)
+		    {
+		        super.onDrawerSlide(drawerView, slideOffset);
+		        mDrawerLayout.bringChildToFront(drawerView);
+		        mDrawerLayout.requestLayout();
+		    }
 		
 		 /** Called when a drawer has settled in a completely open state. */
 		 public void onDrawerOpened(View drawerView) {
@@ -271,7 +281,8 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		 };
 		
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+		 getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
 	}
 
 
