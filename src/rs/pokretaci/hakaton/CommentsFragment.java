@@ -10,15 +10,20 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 
 
-public class CommentsFragment extends ListFragment {
+public class CommentsFragment extends ListFragment implements OnClickListener {
 	private CommentAdapter mCommentAdapter;
 	private List<Comment> mComments = new ArrayList<Comment>();
+	private EditText mCommentEdit;
+	private boolean mEditCommentShown = false;
 	
 	
 	@Override
@@ -36,10 +41,24 @@ public class CommentsFragment extends ListFragment {
 		mCommentAdapter.notifyDataSetChanged();
 	}
 	
-	/*@Override
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.comments_fragment, container, false);
-	}*/
+		View v = inflater.inflate(R.layout.comments_fragment, container, false);
+		Button leaveCommentButton = (Button) v.findViewById(R.id.leave_comment_button);
+		leaveCommentButton.setOnClickListener(this);
+		mCommentEdit = (EditText) v.findViewById(R.id.comment_edit);
+		return v;
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (!mEditCommentShown) {
+			mCommentEdit.setVisibility(View.VISIBLE);
+		} else {
+			//sendCommentToServer
+		}
+		
+	}
 
 }

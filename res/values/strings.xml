@@ -52,6 +52,10 @@
     <string name="submited_problems">Prijavljeni problemi</string>
     <string name="supported_problems">Podržani problemi</string>
     <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
+    <!-- Comments -->
+    <string name="leave_comment">KOMENTAR</string>
+    <string name="leave_comment_hing">Napiši komentar</string>
+    <string name="send_comment">POŠALJI</string>
 
     <!-- Submit Problem -->
     <string name="address">Adresa</string>

@@ -263,6 +263,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		 R.drawable.ic_drawer, R.string.drawer_open,
 		 R.string.drawer_close) {
 		 public void onDrawerClosed(View view) {
+			 super.onDrawerClosed(view);
 		 //getActionBar().setSubtitle("open");
 		 }
 		 @Override
@@ -275,6 +276,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		
 		 /** Called when a drawer has settled in a completely open state. */
 		 public void onDrawerOpened(View drawerView) {
+			 super.onDrawerOpened(drawerView);
 		 //getActionBar().setSubtitle("close");
 		 }
 		
