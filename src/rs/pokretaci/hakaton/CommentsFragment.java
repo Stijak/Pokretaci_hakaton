@@ -9,16 +9,19 @@ import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.executors.goals.CommentInteraction;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
+import net.ascho.pokretaci.beans.Activist;
 import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
 import rs.pokretaci.hakaton.customviews.CommentAdapter;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +34,7 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 	private CommentAdapter mCommentAdapter;
 	private String mGoalId;
 	private List<Comment> mComments = new ArrayList<Comment>();
+	private Comment mMyComment;
 	private EditText mCommentEdit;
 	Button mLeaveCommentButton;
 	private boolean mEditCommentShown = false;
@@ -72,6 +76,10 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 		} else {
 			Comment comment = new Comment();
 			comment.content = mCommentEdit.getText().toString();
+			
+			comment.commenter = Activist.UserProfile;
+			comment.parsed_date = "upravo sada";
+			mMyComment = comment;
 			if (comment.content.length() < 5) {
 				Toast.makeText(getActivity(), R.string.comment_too_short, Toast.LENGTH_SHORT).show();
 				return;
@@ -89,6 +97,15 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 		if (taskResponse != null) {
 			if (taskResponse.isResponseValid()) {
 				Toast.makeText(getActivity(), R.string.submit_sucess, Toast.LENGTH_SHORT).show();
+				mComments.add(mMyComment);
+				mCommentAdapter.notifyDataSetChanged();
+				
+				mCommentEdit.setVisibility(View.GONE);
+				mLeaveCommentButton.setText(getString(R.string.leave_comment));
+				mEditCommentShown = false;
+				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+					      Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(mCommentEdit.getWindowToken(), 0);
 			} else {
 				Toast.makeText(getActivity(), R.string.submit_failure, Toast.LENGTH_LONG).show();
 			}
