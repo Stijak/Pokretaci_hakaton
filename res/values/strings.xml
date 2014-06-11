@@ -4,27 +4,6 @@
     <string name="app_name">Pokretači</string>
     <string name="actionbar_title">Pokretači</string>
 
-    <!-- MenuItem titles -->
-    <!--
-         <string name="menuTitle_startRecording">Start</string>
-    <string name="menuTitle_stopRecording">Stop</string>
-    <string name="menuTitle_load">Load</string>
-    <string name="menuTitle_save">Save</string>
-    <string name="menuTitle_takePicture">Take Picture</string>
-    <string name="menuTitle_enableGPS">Enable GPS</string>
- 
-    <string name="pictureFail">Picture Not Taken…</string>
-    <string name="pictureSuccess">Picture Taken</string>
-    
-    <string name="latLngPathFileName">walkabout.dat</string>
-    <string name="saveSuccess">Saved.</string>
-    <string name="saveFailed">Save Failed…</string>
-    <string name="saveNoData">Nothing to save…</string>
-    <string name="loadSuccess">Loaded.</string>
-    <string name="loadFailed">Load Failed…</string>
-    <string name="loadNoFile">Nothing to load…</string>
-    -->
-
     <string name="welcome_message">BUDI POKRETAČ, A NE PASIVNI POSMATRAČ!\r\n\r\nOvaj sajt i app su nastali kao inicijativa Srbije u pokretu da pomogne građanima da REŠE PROBLEM u svom okruženju, organizovanjem zajednice koju taj problem pogađa.\r\nŠto veći broj građana preuzme odgovornost da napravi akciju koja će proizvesti makar malu promenu u zajednici, Srbija će biti bolje mesto za život.</string>
     <string name="resi_problem">REŠI PROBLEM</string>
 
@@ -47,15 +26,17 @@
     <string name="page_comments">Komentari</string>
     <string name="support">Podržavam</string>
     <string name="join">Priključi se</string>
+    
+    <!-- Comments -->
+    <string name="leave_comment">KOMENTAR</string>
+    <string name="leave_comment_hing">Napiši komentar</string>
+    <string name="send_comment">POŠALJI</string>
+    <string name="comment_too_short">Komentar je suviše kratak</string>
 
     <!-- ProfileActivity -->
     <string name="submited_problems">Prijavljeni problemi</string>
     <string name="supported_problems">Podržani problemi</string>
     <string name="profile_stats">Prijavljenih problema: %1$d\r\nPodržanih problema:%2$d</string>
-    <!-- Comments -->
-    <string name="leave_comment">KOMENTAR</string>
-    <string name="leave_comment_hing">Napiši komentar</string>
-    <string name="send_comment">POŠALJI</string>
 
     <!-- Submit Problem -->
     <string name="address">Adresa</string>

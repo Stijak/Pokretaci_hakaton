@@ -78,42 +78,6 @@ public class SubmitProblem extends Activity implements TaskListener {
 		}
 	}
 
-	private class LongOperation extends AsyncTask<Void, Void, Void> {
-		private ProgressDialog dialog;
-		@Override
-		protected Void doInBackground(Void... params) {
-			try {
-				Thread.sleep(800);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			if (dialog != null) {
-				if (dialog.isShowing()) {
-					dialog.dismiss();
-				}
-			}
-			Toast.makeText(SubmitProblem.this, R.string.submit_sucess, Toast.LENGTH_LONG).show();
-			SubmitProblem.this.finish();
-		}
-
-
-
-		@Override
-		protected void onPreExecute() {
-			dialog = ProgressDialog.show(SubmitProblem.this, "", SubmitProblem.this.getString(R.string.submiting) , true);
-
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-		}
-	}
 
 	public void submitProblem(View v) {
 		//new LongOperation().execute();
@@ -227,6 +191,7 @@ public class SubmitProblem extends Activity implements TaskListener {
 		if (taskResponse != null) {
 			if (taskResponse.isResponseValid()) {
 				Toast.makeText(SubmitProblem.this, R.string.submit_sucess, Toast.LENGTH_SHORT).show();
+				this.finish();
 			} else {
 				Toast.makeText(SubmitProblem.this, R.string.submit_failure, Toast.LENGTH_LONG).show();
 			}

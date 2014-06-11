@@ -179,7 +179,7 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 			if (goal==null) return;
 			df.setContent(goal);
 			CommentsFragment cf = (CommentsFragment) mSectionsPagerAdapter.getItem(1);
-			cf.setComments(goal.getComments());
+			cf.setComments(goal.id, goal.getComments());
 			
 		}
 
