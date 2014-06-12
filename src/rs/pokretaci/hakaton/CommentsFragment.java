@@ -95,7 +95,7 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 	public void onResponse(ServerResponseObject taskResponse) {
 		if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
 		if (taskResponse != null) {
-			if (taskResponse.isResponseValid()) {
+			if (taskResponse.isResponseValid() && taskResponse.isActionSuccessful()) {
 				Toast.makeText(getActivity(), R.string.submit_sucess, Toast.LENGTH_SHORT).show();
 				mComments.add(mMyComment);
 				mCommentAdapter.notifyDataSetChanged();

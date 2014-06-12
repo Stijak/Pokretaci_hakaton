@@ -208,7 +208,7 @@ public class SubmitProblem extends Activity implements TaskListener {
 	public void onResponse(ServerResponseObject taskResponse) {
 		if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
 		if (taskResponse != null) {
-			if (taskResponse.isResponseValid()) {
+			if (taskResponse.isResponseValid() && taskResponse.isActionSuccessful()) {
 				Toast.makeText(SubmitProblem.this, R.string.submit_sucess, Toast.LENGTH_SHORT).show();
 				this.finish();
 			} else {

@@ -168,7 +168,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 			m_vwMap.setMyLocationEnabled(true);
 			m_vwMap.setOnInfoWindowClickListener(this);
 			PokretaciInfoWindowAdapter adapter = new PokretaciInfoWindowAdapter(this);
-			//m_vwMap.setInfoWindowAdapter(adapter);
+			m_vwMap.setInfoWindowAdapter(adapter);
 		}
 
 	}
