@@ -78,25 +78,7 @@ public class SubmitProblem extends Activity implements TaskListener {
 		}
 	}
 
-	public static String xmlEscapeText(String t) {
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < t.length(); i++){
-			char c = t.charAt(i);
-			switch(c){
-			case '<': sb.append("&lt;"); break;
-			case '>': sb.append("&gt;"); break;
-			case '\"': sb.append("&quot;"); break;
-			case '&': sb.append("&amp;"); break;
-			case '\'': sb.append("&apos;"); break;
-			default:
-				if(c>0x7e) {
-					sb.append("&#"+((int)c)+";");
-				}else
-					sb.append(c);
-			}
-		}
-		return sb.toString();
-	}
+
 
 	public void submitProblem(View v) {
 		//new LongOperation().execute();
@@ -106,22 +88,22 @@ public class SubmitProblem extends Activity implements TaskListener {
 		CheckBox box;
 		
 		edit = (EditText) findViewById(R.id.title);
-		goal.title = xmlEscapeText(edit.getText().toString());
+		goal.title = edit.getText().toString();
 		if (goal.title.equals("")) return;
 		
 		edit = (EditText) findViewById(R.id.description);
-		goal.description = xmlEscapeText(edit.getText().toString());
+		goal.description = edit.getText().toString();
 		if (goal.description.equals("")) return;
 		
 		edit = (EditText) findViewById(R.id.people);
-		goal.people = xmlEscapeText(edit.getText().toString());
+		goal.people = edit.getText().toString();
 		
 		if (mLocation == null) return;
 		goal.lat = mLocation.longitude; //longitude and latitude are switched in Goal
 		goal.lon = mLocation.latitude;
 		
 		edit = (EditText) findViewById(R.id.location_name);
-		goal.location_name = xmlEscapeText(edit.getText().toString());
+		goal.location_name = edit.getText().toString();
 		
 		goal.image = mCurrentPhotoPath;
 		goal.categories = new ArrayList<String>();

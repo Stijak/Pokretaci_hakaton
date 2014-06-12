@@ -33,12 +33,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -58,7 +61,6 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
@@ -81,13 +83,8 @@ import rs.pokretaci.hakaton.R;
 import rs.pokretaci.hakaton.customviews.ExpendableDrawerAdapter;
 import rs.pokretaci.hakaton.customviews.PokretaciInfoWindowAdapter;
 
-/**
- * Activity that contains an interactive Google Map fragment. Users can record
- * a traveled path, mark the map with information and take pictures that become
- * associated with the map. 
- */
 public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClickListener, TaskListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
-	//drawer demo
+	//drawer
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ExpandableListView mDrawerList2;
@@ -121,6 +118,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	public final static String FULL_NAME_EXTRA = "FULL_NAME_EXTRA";
 	public final static String AVATAR_EXTRA = "AVATAR_EXTRA";
 
+	/** Preferences */
+	private static final String USERNAME_ACCOUNT_EMAIL = "USERNAME_ACCOUNT_EMAIL";
+
 	
 
 	@Override
@@ -135,13 +135,55 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		//mWelcomeMessage.setClickable(true);
 		initLayout();
 		initDrawer2();
-		String email = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext())[0];
-		Task googleLogin = new GoogleLogin(email, MapActivity.this);
-		googleLogin.executeTask(getApplicationContext(), this);
-		//new DownloadLocationsTask().execute();
+		
+		loginWithGoogleAccountAndFetchInitialData();
+		
+
+	}
+	
+
+	private void loginWithGoogleAccountAndFetchInitialData() {
+		SharedPreferences prefs = getPreferences(MODE_PRIVATE); 
+		String loginAccount = prefs.getString(USERNAME_ACCOUNT_EMAIL, null);
+		if (loginAccount != null) { //user has already logged in with this account
+			addressChosen(loginAccount);
+		} else {
+			final String[] accounts = Util.getAccountNames(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE, getApplicationContext());
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.choose_account);//.setMessage(R.string.choose_account_details);
+			builder.setCancelable(true);
+			builder.setItems(accounts, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+					String chosenAccount = accounts[which];
+					editor.putString(USERNAME_ACCOUNT_EMAIL, chosenAccount);
+					editor.apply();
+					addressChosen(chosenAccount);
+				}
+			});
+			builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					addressChosen(null);					
+				}
+				
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
+
+	}
+	
+	private void addressChosen(String email) {
+		if (email != null) {
+			Task googleLogin = new GoogleLogin(email, MapActivity.this);
+			googleLogin.executeTask(getApplicationContext(), this);
+		}
+		//rest of initilization
 		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
 		all.executeTask(getApplicationContext(), this);
-
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent event) {
@@ -204,48 +246,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	}
 
 
-	private void initDrawer() {
-		mTitle = mDrawerTitle = getTitle();
-		mDrawwerList = getResources().getStringArray(R.array.drawer_array);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// set a custom shadow that overlays the main content when the drawer opens
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-		// set up the drawer's list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mDrawwerList));
-		//mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		
-
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(
-				this,                  /* host Activity */
-				mDrawerLayout,         /* DrawerLayout object */
-				R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-				R.string.drawer_open,  /* "open drawer" description for accessibility */
-				R.string.drawer_close  /* "close drawer" description for accessibility */
-				) {
-			public void onDrawerClosed(View view) {
-				super.onDrawerClosed(view);
-				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-			}
-		};
-		//mDrawerList.setOnItemClickListener(listener); //TODO
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-				getActionBar().setDisplayHomeAsUpEnabled(true);
-				getActionBar().setHomeButtonEnabled(true);
-	}
 	
 	private void initDrawer2() {
 		setGroupData();
@@ -396,24 +396,35 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				taskResponse.getExceptionMsg(); // i dalje sta dizajner kaze :P
 
 				//Ali ako je bio google login task poveravaj sledece
-				Exception e = taskResponse.getException();
+				final Exception e = taskResponse.getException();
 				if(e instanceof GooglePlayServicesAvailabilityException) {
 
 					GooglePlayServicesAvailabilityException gEx = (GooglePlayServicesAvailabilityException) e;
 
 					Dialog alert = GooglePlayServicesUtil.getErrorDialog(gEx.getConnectionStatusCode(), this, GoogleLogin.GOOGLE_AUTH_REQUEST_CODE);
-					if(alert != null) { //Od ovog exceptiona mozemo da se oporavimo
+					if (alert != null) { //Od ovog exceptiona mozemo da se oporavimo
 						alert.show();
 					} else { //Ovde nzn obavestimo ga da ne moze samo da gleda ciljeve a da se ne loguje
 						//neki dialog ili toast ("Vas uredjaj ne poseduje GooglePlayServices i nazalost vas ne mozemo ulogovati kroz aplikaciju. I dalje mozete koristiti aplikaciju ali ne mozete postavljati nove probleme...");
 					}
-				}  else if(e instanceof UserRecoverableAuthException) {
-					UserRecoverableAuthException ue = (UserRecoverableAuthException) e;
-					//Od ovog exceptiona mozemo da se oporavimo
-					startActivityForResult(ue.getIntent(), GoogleLogin.GOOGLE_AUTH_REQUEST_CODE);
-				}
+				}  else if (e instanceof UserRecoverableAuthException) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setTitle(R.string.choose_account_confirmation);//.setMessage(R.string.choose_account_details);
+					builder.setCancelable(false);
+					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
-				Log.d("rs.pokretaci.hakaton", "Nepoznata excepcija " + e.toString());
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							UserRecoverableAuthException ue = (UserRecoverableAuthException) e;
+							//Od ovog exceptiona mozemo da se oporavimo
+							startActivityForResult(ue.getIntent(), GoogleLogin.GOOGLE_AUTH_REQUEST_CODE);
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
+				} else {
+					Toast.makeText(this, R.string.communication_error, Toast.LENGTH_LONG).show();
+				}
 			}
 		} else {
 			Log.d("rs.pokretaci.hakaton", "TaskResponse je null");

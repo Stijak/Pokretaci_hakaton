@@ -3,10 +3,13 @@
 
     <string name="app_name">Pokretači</string>
     <string name="actionbar_title">Pokretači</string>
-
+    <string name="ok">OK</string>
     <string name="welcome_message">BUDI POKRETAČ, A NE PASIVNI POSMATRAČ!\r\n\r\nOvaj sajt i app su nastali kao inicijativa Srbije u pokretu da pomogne građanima da REŠE PROBLEM u svom okruženju, organizovanjem zajednice koju taj problem pogađa.\r\nŠto veći broj građana preuzme odgovornost da napravi akciju koja će proizvesti makar malu promenu u zajednici, Srbija će biti bolje mesto za život.</string>
     <string name="resi_problem">REŠI PROBLEM</string>
-
+    <string name="choose_account">Izaberite nalog</string>
+    <string name="choose_account_confirmation">Potrebno je da odobrite našoj aplikaciji login sa vašim google nalogom.</string>
+	<string name="communication_error">Greška u komunikaciji</string>
+    
     <string-array name="drawer_array">
         <item>O nama</item>
         <item>Kategorije problema</item>
@@ -26,7 +29,7 @@
     <string name="page_comments">Komentari</string>
     <string name="support">Podržavam</string>
     <string name="join">Priključi se</string>
-    
+
     <!-- Comments -->
     <string name="leave_comment">KOMENTAR</string>
     <string name="leave_comment_hing">Napiši komentar</string>
@@ -62,7 +65,6 @@
     <string name="submiting">Upload u toku</string>
     <string name="submit_sucess">Problem je uspešno poslat na server</string>
     <string name="submit_failure">Došlo je do greške</string>
-    
     <string name="submit_goal_marker_title">Lokacija problema</string>
     <string name="submit_goal_marker_details">Dugim klikom prevucite marker na željenu lokaciju</string>
     <string name="submit_goal_location">Podesi lokaciju</string>
