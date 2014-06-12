@@ -80,7 +80,7 @@ public class ApacheClient {
 			
 		}
 		//Default params
-		setTimeout(Config.RESPONSE_TIMEOUT, Config.RESPONSE_TIMEOUT);
+		setTimeout(Config.RESPONSE_TIMEOUT, Config.READ_TIMEOUT);
 		HttpClientParams.setRedirecting(mHttpParams, false);	
 		if (mHttpClient.getParams() != mHttpParams) {
 			mHttpClient.setParams(mHttpParams);

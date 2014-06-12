@@ -5,16 +5,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
         android:layout_above="@+id/new_comment_linear"
-        android:layout_marginRight="8dp"
-        android:orientation="vertical" >
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
 
         <ListView
             android:id="@id/android:list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:divider="#DDDDDD"
+            android:dividerHeight="10px"
             android:drawSelectorOnTop="false" />
 
         <TextView
@@ -45,13 +48,13 @@
             android:layout_height="80dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:visibility="gone"
             android:layout_marginTop="10dp"
             android:background="#CCCCCC"
             android:gravity="top"
             android:hint="@string/leave_comment_hing"
             android:inputType="textMultiLine"
-            android:padding="3dp" />
+            android:padding="3dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/leave_comment_button"

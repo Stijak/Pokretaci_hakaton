@@ -92,8 +92,7 @@ public class GoalInteraction extends Task {
 				
 				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			    builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-			    
-			    //builder.setCharset(Charset.forName("UTF-8"));
+			 //   builder.setCharset(Charset.forName("UTF-8"));
 				/*
 				 * Radi pri insertu goal-a ali samo sa jednim topicom? Sjebe se pri update.
 				 * 
@@ -172,19 +171,19 @@ public class GoalInteraction extends Task {
 					 
 					 //Builder Opcija
 					if(mGoal.title != null) { 
-						builder.addTextBody("title", mGoal.title);
+						builder.addTextBody("title", mGoal.title, ContentType.create("text/plain", Charset.forName( "UTF-8" )) );
 					}
 					
 					if(mGoal.description != null) {
-						builder.addTextBody("description", mGoal.description);
+						builder.addTextBody("description", mGoal.description, ContentType.create("text/plain", Charset.forName( "UTF-8" )));
 					}
 					
 					if(mGoal.people != null) {
-						builder.addTextBody("people", mGoal.people);
+						builder.addTextBody("people", mGoal.people, ContentType.create("text/plain", Charset.forName( "UTF-8" )));
 					}
 					 
 					if(mGoal.location_name != null) {
-						builder.addTextBody("location[name]", mGoal.location_name);
+						builder.addTextBody("location[name]", mGoal.location_name,ContentType.create("text/plain", Charset.forName( "UTF-8" )));
 					}
 					
 					if(mGoal.lon != 0.0d && mGoal.lat != 0.0d) {
@@ -193,15 +192,23 @@ public class GoalInteraction extends Task {
 					}
 					
 					 if(!topics.isEmpty()) {
-						 builder.addTextBody("topics", topics);
+						 builder.addTextBody("topics", topics, ContentType.create("text/plain", Charset.forName( "UTF-8" )));
 					 }
 					
 					 HttpEntity reqEntity = builder.build();
 					 
+					 
+					/* HttpResponse httpResponse2 = apache.getRequest(Config.CHECK_LOGIN_URL);
+						String JSONresponse2 = Util.inputStreamToString(httpResponse2.getEntity().getContent());
+						Log.d("POSTAVLJEN PROBLEM logged in ", JSONresponse2);*/
 					//httpResponse = apache.postRequest(url, new UrlEncodedFormEntity(nvps));
 					httpResponse = apache.postRequest(url, reqEntity);
 					JSONresponse = Util.inputStreamToString(httpResponse.getEntity().getContent());
+					Log.d("POSTAVLJEN PROBLEM", JSONresponse);
 					JSONObject job = new JSONObject(JSONresponse);
+					
+					//ApacheClient apache = ApacheClient.getInstance();
+					
 					try {
 						Goal goal = MainParser.parseGoal(job.getJSONObject("data"));
 						//Ako je doslo do greske
