@@ -224,7 +224,16 @@ public class SubmitProblem extends Activity implements TaskListener {
 				Toast.makeText(SubmitProblem.this, R.string.submit_sucess, Toast.LENGTH_SHORT).show();
 				this.finish();
 			} else {
-				Toast.makeText(SubmitProblem.this, R.string.submit_failure, Toast.LENGTH_LONG).show();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(R.string.submit_failure);
+				builder.setCancelable(false);
+				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
 			}
 		}
 	}
