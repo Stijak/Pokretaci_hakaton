@@ -68,5 +68,7 @@
     <string name="submit_goal_marker_title">Lokacija problema</string>
     <string name="submit_goal_marker_details">Dugim klikom prevucite marker na željenu lokaciju</string>
     <string name="submit_goal_location">Podesi lokaciju</string>
+    <string name="you_must_submit_location">Morate prvo podesiti lokaciju</string>
+    <string name="you_must_have_title_and_description">Morate popuniti naziv inicijative i opis problema</string>
 
 </resources>

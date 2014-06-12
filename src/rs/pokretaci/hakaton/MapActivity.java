@@ -409,7 +409,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 					}
 				}  else if (e instanceof UserRecoverableAuthException) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.setTitle(R.string.choose_account_confirmation);//.setMessage(R.string.choose_account_details);
+					builder.setMessage(R.string.choose_account_confirmation);//.setMessage(R.string.choose_account_details);
 					builder.setCancelable(false);
 					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 

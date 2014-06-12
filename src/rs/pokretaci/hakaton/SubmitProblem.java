@@ -12,13 +12,17 @@ import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.cookies.CookieManager;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
+import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
 import net.ascho.pokretaci.beans.Goal;
 
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -89,16 +93,42 @@ public class SubmitProblem extends Activity implements TaskListener {
 		
 		edit = (EditText) findViewById(R.id.title);
 		goal.title = edit.getText().toString();
-		if (goal.title.equals("")) return;
 		
 		edit = (EditText) findViewById(R.id.description);
 		goal.description = edit.getText().toString();
-		if (goal.description.equals("")) return;
+		if (goal.description.equals("") || goal.title.equals("")) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.you_must_have_title_and_description);
+			builder.setCancelable(false);
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+			return;
+		}
 		
 		edit = (EditText) findViewById(R.id.people);
 		goal.people = edit.getText().toString();
 		
-		if (mLocation == null) return;
+		if (mLocation == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.you_must_submit_location);//.setMessage(R.string.choose_account_details);
+			builder.setCancelable(false);
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					setMarker(null);
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+			return;
+		}
 		goal.lat = mLocation.longitude; //longitude and latitude are switched in Goal
 		goal.lon = mLocation.latitude;
 		
