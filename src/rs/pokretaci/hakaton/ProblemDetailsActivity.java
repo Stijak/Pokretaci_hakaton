@@ -15,6 +15,7 @@ import java.util.Locale;
 
 
 
+
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskFactory;
@@ -37,6 +38,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 import rs.pokretaci.hakaton.R;
 
 public class ProblemDetailsActivity extends FragmentActivity implements ActionBar.TabListener, TaskListener {
@@ -173,16 +175,19 @@ public class ProblemDetailsActivity extends FragmentActivity implements ActionBa
 
 	@Override
 	public void onResponse(ServerResponseObject taskResponse) {
-		if (taskResponse != null && taskResponse.isResponseValid()) {
-			Goal goal = (Goal) taskResponse.getData().get(0);
-			DetailsFragment df = (DetailsFragment) mSectionsPagerAdapter.getItem(0);
-			if (goal==null) return;
-			df.setContent(goal);
-			CommentsFragment cf = (CommentsFragment) mSectionsPagerAdapter.getItem(1);
-			cf.setComments(goal.id, goal.getComments());
+		if (taskResponse != null) {
+			if (taskResponse.isResponseValid()) {
+				Goal goal = (Goal) taskResponse.getData().get(0);
+				DetailsFragment df = (DetailsFragment) mSectionsPagerAdapter.getItem(0);
+				if (goal==null) return;
+				df.setContent(goal);
+				CommentsFragment cf = (CommentsFragment) mSectionsPagerAdapter.getItem(1);
+				cf.setComments(goal.id, goal.getComments());
+			} else {
+				Toast.makeText(this, R.string.communication_error, Toast.LENGTH_LONG).show();
+			}
+		} else {
 			
 		}
-
-
 	}
 }

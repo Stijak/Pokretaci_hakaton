@@ -27,7 +27,8 @@
     <!-- Problem details -->
     <string name="page_details">Pregled problema</string>
     <string name="page_comments">Komentari</string>
-    <string name="support">Podržavam</string>
+    <string name="support">Podrži</string>
+    <string name="i_support">Podržavam</string>
     <string name="join">Priključi se</string>
 
     <!-- Comments -->
@@ -64,7 +65,7 @@
     <string name="dangerous">Opasno</string>
     <string name="submiting">Upload u toku</string>
     <string name="submit_sucess">Problem je uspešno poslat na server</string>
-    <string name="submit_failure">Došlo je do greške</string>
+    <string name="submit_failure">Došlo je do greške...</string>
     <string name="submit_goal_marker_title">Lokacija problema</string>
     <string name="submit_goal_marker_details">Dugim klikom prevucite marker na željenu lokaciju</string>
     <string name="submit_goal_location">Podesi lokaciju</string>

@@ -17,6 +17,7 @@ import java.util.Locale;
 
 
 
+
 import net.ascho.pokretaci.backend.beans.ServerResponseObject;
 import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskFactory;
@@ -52,6 +53,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import rs.pokretaci.hakaton.R;
 
 public class ProfileActivity extends FragmentActivity implements ActionBar.TabListener, TaskListener {
@@ -225,6 +227,8 @@ public class ProfileActivity extends FragmentActivity implements ActionBar.TabLi
 
 
 				Log.d("rs.pokretaci.hakaton", "Nepoznata excepcija " + e.toString());
+				
+				Toast.makeText(this, R.string.communication_error, Toast.LENGTH_LONG).show();
 			}
 		} else {
 			Log.d("rs.pokretaci.hakaton", "TaskResponse je null");
