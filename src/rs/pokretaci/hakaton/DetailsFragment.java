@@ -81,6 +81,7 @@ public class DetailsFragment extends Fragment implements OnClickListener, TaskLi
 	
 	@Override
 	public void onClick(View v) {
+		if (mGoal == null) return;
 		int action = Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL;
 		if (mGoal.supported) action = Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL;
 		Task newGoal = new GoalInteraction(action, mGoal);
