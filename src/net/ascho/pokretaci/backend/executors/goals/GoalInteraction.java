@@ -61,7 +61,7 @@ public class GoalInteraction extends Task {
 		
 		String url = buildInteractionUrl();
 		Log.d("odgovor", "goal interaction url: " + url);
-		String JSONresponse;
+		String JSONresponse = null;
 		HttpResponse httpResponse;
 		List<Goal> goals = new ArrayList<Goal>();
 		String success = null;
@@ -246,6 +246,8 @@ public class GoalInteraction extends Task {
 			}
 		}
 		sob.setResponseMessage(success);
+		sob.setLoggedIn(MainParser.parseAuthLoggedIn(JSONresponse));
+		
 		
 		return sob;
 	}

@@ -15,7 +15,7 @@ public class Config {
 	 * $param = google_token
 	 */
 	public static final String LOGIN_BASE_URL = BASE_URL + "auth/google/" + PARAM + "/access";
-	public static final String LOGOUT_URL = BASE_URL + "logout";
+	public static final String LOGOUT_URL = BASE_URL + "auth/logout";
 	public static final String CHECK_LOGIN_URL = BASE_URL + "api/activists/logged";
 	/**
 	 * $param = user_id
@@ -54,5 +54,5 @@ public class Config {
 	public static final String COMMENT_ACTION_URL = BASE_URL + "";
 	
 	
-	public static final int RETRY_DELAY = 450, RETRY_ATTEMPTS = 6, RESPONSE_TIMEOUT = 15000, READ_TIMEOUT = 30000; 
+	public static final int RETRY_DELAY = 250, RETRY_ATTEMPTS = 3, RESPONSE_TIMEOUT = 15000, READ_TIMEOUT = 30000; 
 }

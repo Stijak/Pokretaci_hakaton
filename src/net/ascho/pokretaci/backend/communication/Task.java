@@ -83,11 +83,12 @@ public abstract class Task {
 					
 					@Override
 					public Object work(Object... data) throws IOException, Exception {
+						
 						return executeWork();
 					}
 				};
 				
-				return (ServerResponseObject) sec.work();
+				return (ServerResponseObject) sec.communicate();
 				
 			} catch (Exception e) {
 			//	e.printStackTrace();

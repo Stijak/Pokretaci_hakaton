@@ -73,6 +73,7 @@ public class GoogleLogin extends LoginTask {
 				sro.setActionSuccess(true);
 				sro.setResponseMessage("Ulogovali ste se.");
 				sro.setData(lob);
+				sro.setLoggedIn(true);
 				return sro;
 			} else {
 				mToken = GoogleAuthUtil.getToken(getContext(), mEmail, mScope);
@@ -150,13 +151,15 @@ public class GoogleLogin extends LoginTask {
 			sro.setActionSuccess(true);
 			sro.setResponseMessage("Ulogovali ste se.");
 			activists.add(Activist.getUserProfile());
+			sro.setLoggedIn(true);
 		} else {
 			activists.add(null);
 		}
 		
 		List<Object> lob = new ArrayList<Object>(activists);
 		sro.setData(lob);
-
+//		sro.setLoggedIn(MainParser.parseAuthLoggedIn(JSONresponse));
+		
 		return sro;
 		
 /*		URL url = new URL("https://www.googleapis.com/oauth2/v1/userinfo?access_token="

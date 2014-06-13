@@ -4,6 +4,7 @@ import net.ascho.pokretaci.backend.executors.goals.CommentInteraction;
 import net.ascho.pokretaci.backend.executors.goals.GoalFetcher;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
+import net.ascho.pokretaci.backend.executors.login.LogOutTask;
 import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
 import net.ascho.pokretaci.beans.Goal.GOAL_FETCH_TYPE;
@@ -35,7 +36,13 @@ import android.app.Activity;
  */
 public final class TaskFactory {
 	
-
+	/**
+	 * Log out korisnika
+	 * @return
+	 */
+	public static final Task logOutTask() {
+		return new LogOutTask();
+	}
 	
 /*	private static final Task createLoginTask() {
 		return null;

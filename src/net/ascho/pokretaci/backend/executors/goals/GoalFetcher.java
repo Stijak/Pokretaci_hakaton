@@ -85,6 +85,7 @@ public class GoalFetcher extends Task {
 			List<Object> lob = new ArrayList<Object>(goals);
 			sob.setData(lob);
 			sob.setActionSuccess(true);
+			sob.setLoggedIn(MainParser.parseAuthLoggedIn(JSONresponse));
 			
 			return sob;
 			

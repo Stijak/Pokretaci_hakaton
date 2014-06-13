@@ -2,6 +2,8 @@ package net.ascho.pokretaci.backend.communication;
 
 import java.io.IOException;
 
+import android.util.Log;
+
 public abstract class ServerCommunicator {
 
 	public static final String SERVER_NOT_RESPONDING_MESSAGE="Server not responding error. ";
@@ -20,6 +22,7 @@ public abstract class ServerCommunicator {
 		
 		while (attempts++ < mMaxAttemptCnt) {
 			try {
+				Log.d("ServerCommunicator", "broj pokusaja za operaciju: " + attempts);
 				return work(data);
 				
 			} catch (IOException e) {

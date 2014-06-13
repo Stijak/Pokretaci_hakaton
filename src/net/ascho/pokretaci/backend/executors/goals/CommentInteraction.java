@@ -43,7 +43,7 @@ public class CommentInteraction extends Task {
 		
 		String url = buildInteractionUrl();
 		Log.d("odgovor", "goal interaction url: " + url);
-		String JSONresponse;
+		String JSONresponse = null;
 		HttpResponse httpResponse;
 		List<Comment> comments = new ArrayList<Comment>();
 		
@@ -73,6 +73,7 @@ public class CommentInteraction extends Task {
 		sob.setData(lob);
 		sob.setActionSuccess(true);
 		sob.setResponseMessage("Komentar postavljen.");
+		sob.setLoggedIn(MainParser.parseAuthLoggedIn(JSONresponse));
 		
 		return sob;
 		

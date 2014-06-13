@@ -625,7 +625,28 @@ public class MainParser {
 			return null;
 		}
 	}
-
+	
+	/**
+	 * Posto svaka akcija vraca "auth":{"status":true,"logged_in":true/false}} unutar svog odgovora, ovo je 
+	 * pomocna funkcija koja parsira taj deo.
+	 * @param json
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static final boolean parseAuthLoggedIn(String json) {
+		try {
+			JSONObject job = new JSONObject(json);
+			job = job.getJSONObject("auth");
+			return job.optBoolean("logged_in");
+		} catch(Exception e) {
+			return false;
+		}
+		
+	}
+	
+	public static final String parseLogOut(String json) {
+		return null;
+	}
 
 	
 }

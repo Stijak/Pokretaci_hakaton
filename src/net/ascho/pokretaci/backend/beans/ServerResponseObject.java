@@ -41,6 +41,13 @@ public class ServerResponseObject {
 	 */
 	private String responseMessage;
 	
+	/**
+	 * Da li je ulogovan korisnik
+	 */
+	private boolean loggedIn = false;
+	
+	
+
 	private List<Object> mData = null; 
 	
 	
@@ -151,5 +158,18 @@ public class ServerResponseObject {
 	 */
 	public String getResonseMessage() {
 		return responseMessage;
+	}
+	
+	/**
+	 * Da li je korisnik ulogovan
+	 * @return
+	 */
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 }
