@@ -432,6 +432,14 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 
 	}
+	
+	@Override
+	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+		if (requestCode == GoogleLogin.GOOGLE_AUTH_REQUEST_CODE && resultCode != Activity.RESULT_CANCELED) {
+			m_vwMap.clear();
+			loginWithGoogleAccountAndFetchInitialData();
+		}
+	}
 
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
