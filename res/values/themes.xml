@@ -5,13 +5,11 @@
            parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/PokretaciActionBar</item>
         
-        <item name="actionBarStyle">@style/PokretaciActionBar</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="PokretaciActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@drawable/header</item>
-        <item name="background">@drawable/header</item>
     </style>
 </resources>
