@@ -8,10 +8,13 @@ import net.ascho.pokretaci.backend.communication.Task;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.executors.goals.GoalInteraction;
 import net.ascho.pokretaci.beans.Goal;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +39,7 @@ public class DetailsFragment extends Fragment implements OnClickListener, TaskLi
 	private ProgressDialog mDialog;
 	
 	private Goal mGoal;
+	private boolean mUserLoggedIn = false;
 	
 	Transformation transformation = new Transformation() {
 
@@ -59,6 +63,8 @@ public class DetailsFragment extends Fragment implements OnClickListener, TaskLi
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		mUserLoggedIn = prefs.getBoolean(MapActivity.USER_LOGGED_IN, false);
 		Log.d("rs.pokretaci.hakaton", "DetailsFragment onCreate");
 	}
 	
@@ -81,6 +87,10 @@ public class DetailsFragment extends Fragment implements OnClickListener, TaskLi
 	
 	@Override
 	public void onClick(View v) {
+		if (!mUserLoggedIn) {
+			MapActivity.showNotLoggedInError(getActivity());
+			return;
+		}
 		if (mGoal == null) return;
 		int action = Goal.GOAL_INTERACTION_TYPE.SUPPORT_GOAL;
 		if (mGoal.supported) action = Goal.GOAL_INTERACTION_TYPE.UNSUPPORT_GOAL;

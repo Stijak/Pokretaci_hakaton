@@ -9,12 +9,19 @@
     <string name="choose_account">Izaberite nalog</string>
     <string name="choose_account_confirmation">Potrebno je da odobrite našoj aplikaciji login sa vašim google nalogom.</string>
 	<string name="communication_error">Greška u komunikaciji</string>
+	<string name="not_logged_in_error_dialog">Za ovu operaciju je potrebno da ste ulogovani.</string>
     
+	<!-- Drawer positions are hardcoded, and if you change this
+	you also need to change ExpandableListView.OnGroupClickListener.onGroupClick() and EpandableListView.OnChildClickListener.onChildClick() -->
     <string-array name="drawer_array">
         <item>O nama</item>
         <item>Kategorije problema</item>
         <item>Moj profil</item>
+        <item>Promena login statusa</item>
     </string-array>
+    <string name="drawer_item_3_login">Uloguj se</string>
+    <string name="drawer_item_3_logout">Izloguj se</string>
+    
     <string-array name="drawer_array_child_category">
         <item>Svi problemi</item>
         <item>Najpopularniji</item>
@@ -64,7 +71,7 @@
     <string name="ugly">Ruglo</string>
     <string name="dangerous">Opasno</string>
     <string name="submiting">Upload u toku</string>
-    <string name="submit_sucess">Problem je uspešno poslat na server</string>
+    <string name="submit_sucess">Komanda je uspješno izvršena</string>
     <string name="submit_failure">Došlo je do greške...</string>
     <string name="submit_goal_marker_title">Lokacija problema</string>
     <string name="submit_goal_marker_details">Dugim klikom prevucite marker na željenu lokaciju</string>

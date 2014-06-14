@@ -77,7 +77,7 @@ public class ExpendableDrawerAdapter extends BaseExpandableListAdapter {
 		}
 		TextView text = (TextView) convertView.findViewById(R.id.text);
 		text.setText(groupItem.get(groupPosition)); 
-		convertView.setTag(groupItem.get(groupPosition));
+		convertView.setTag(groupPosition);
 		return convertView;
 	}
 

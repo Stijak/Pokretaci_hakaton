@@ -13,9 +13,12 @@ import net.ascho.pokretaci.beans.Activist;
 import net.ascho.pokretaci.beans.Comment;
 import net.ascho.pokretaci.beans.Goal;
 import rs.pokretaci.hakaton.customviews.CommentAdapter;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +39,11 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 	private List<Comment> mComments = new ArrayList<Comment>();
 	private Comment mMyComment;
 	private EditText mCommentEdit;
-	Button mLeaveCommentButton;
+	private Button mLeaveCommentButton;
 	private boolean mEditCommentShown = false;
 	private ProgressDialog mDialog;
+	
+	private boolean mUserLoggedIn = false;
 	
 	
 	@Override
@@ -46,6 +51,9 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 		super.onCreate(savedInstanceState);
 		mCommentAdapter = new CommentAdapter(this.getActivity(), mComments);
 		this.setListAdapter(mCommentAdapter);
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());;
+		mUserLoggedIn = prefs.getBoolean(MapActivity.USER_LOGGED_IN, false);
 		//this.setListAdapter(new ArrayAdapter(this.getActivity(), R.layout.comment_item, EXAMPLE_DATA));
 		//this.setEmptyText("No comments");
 	}
@@ -69,6 +77,10 @@ public class CommentsFragment extends ListFragment implements OnClickListener, T
 
 	@Override
 	public void onClick(View v) {
+		if (!mUserLoggedIn) {
+			MapActivity.showNotLoggedInError(getActivity());
+			return;
+		}
 		if (!mEditCommentShown) {
 			mCommentEdit.setVisibility(View.VISIBLE);
 			mLeaveCommentButton.setText(getString(R.string.send_comment));

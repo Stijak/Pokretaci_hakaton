@@ -17,6 +17,7 @@ import net.ascho.pokretaci.backend.communication.TaskFactory;
 import net.ascho.pokretaci.backend.communication.TaskListener;
 import net.ascho.pokretaci.backend.cookies.CookieManager;
 import net.ascho.pokretaci.backend.executors.login.GoogleLogin;
+import net.ascho.pokretaci.backend.executors.login.LogOutTask;
 import net.ascho.pokretaci.backend.util.Util;
 import net.ascho.pokretaci.beans.Activist;
 import net.ascho.pokretaci.beans.Goal;
@@ -39,6 +40,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +48,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -90,26 +93,23 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	private ExpandableListView mDrawerList2;
 	private ActionBarDrawerToggle mDrawerToggle;
 	//private TextView mWelcomeMessage;
-	
-	
+	private ExpendableDrawerAdapter mDrawerAdapter;
 	private ArrayList<String> mGroupItem = new ArrayList<String>();
 	private ArrayList<Object> mChildItem = new ArrayList<Object>();
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mDrawwerList;
-	private Activist mMyProfile;
 
 	/** The interactive Google Map fragment. */
-	private GoogleMap m_vwMap;
+	private GoogleMap mMap;
 	private HashMap<Marker, Goal> mMarkerProblemIds = new HashMap<Marker, Goal>();
-
+	private boolean mUserLoggedIn = false;
 
 	private MapFragment mapFragment;
 
 
 
-
+	private static final int LOGGED_IN_MENU_POSITION = 3;
 	/** Request codes for starting new Activities. */
 	private static final int ENABLE_GPS_REQUEST_CODE = 1;
 	private static final int PICTURE_REQUEST_CODE = 2;
@@ -120,6 +120,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 	/** Preferences */
 	private static final String USERNAME_ACCOUNT_EMAIL = "USERNAME_ACCOUNT_EMAIL";
+	protected static final String USER_LOGGED_IN = "USER_LOGGED_IN";
 
 	
 
@@ -133,17 +134,33 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		setContentView(R.layout.map_layout);
 		//mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
 		//mWelcomeMessage.setClickable(true);
-		initLayout();
+		initMapFragment();
 		initDrawer2();
 		
 		loginWithGoogleAccountAndFetchInitialData();
-		
+	}
+	
+	private void logOut() {
+		addressChosen(null);
+	}
+	
+	protected static void showNotLoggedInError(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setMessage(R.string.not_logged_in_error_dialog);
+		builder.setCancelable(false);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 
 	private void loginWithGoogleAccountAndFetchInitialData() {
-		SharedPreferences prefs = getPreferences(MODE_PRIVATE); 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);; 
 		String loginAccount = prefs.getString(USERNAME_ACCOUNT_EMAIL, null);
 		if (loginAccount != null) { //user has already logged in with this account
 			addressChosen(loginAccount);
@@ -155,11 +172,7 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 			builder.setCancelable(true);
 			builder.setItems(accounts, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-					String chosenAccount = accounts[which];
-					editor.putString(USERNAME_ACCOUNT_EMAIL, chosenAccount);
-					editor.apply();
-					addressChosen(chosenAccount);
+					addressChosen(accounts[which]);
 				}
 			});
 			builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -177,12 +190,28 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	}
 	
 	private void addressChosen(String email) {
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		if (email != null) {
 			Task googleLogin = new GoogleLogin(email, MapActivity.this);
 			googleLogin.executeTask(getApplicationContext(), this);
+			mUserLoggedIn = true;
+			mGroupItem.set(LOGGED_IN_MENU_POSITION, getString(R.string.drawer_item_3_logout));
+			
+			editor.putString(USERNAME_ACCOUNT_EMAIL, email);
+		} else {
+			Task logOut = new LogOutTask();
+			logOut.executeTask(getApplicationContext(), this);
+			mUserLoggedIn = false;
+			mGroupItem.set(LOGGED_IN_MENU_POSITION, getString(R.string.drawer_item_3_login));
+			
+			editor.remove(USERNAME_ACCOUNT_EMAIL);
 		}
+		editor.putBoolean(USER_LOGGED_IN, mUserLoggedIn);
+		editor.apply();
+		mDrawerAdapter.notifyDataSetChanged();
 		//rest of initilization
-		Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+		if (mMap != null) mMap.clear();
+		Task all =  TaskFactory.getAllGoals();
 		all.executeTask(getApplicationContext(), this);
 	}
 	
@@ -198,19 +227,23 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	}
 
 	public void solveProblem(View v) {
-		Intent i = new Intent(this, SubmitProblem.class);
-		startActivity(i); 
+		if (mUserLoggedIn) {
+			Intent i = new Intent(this, SubmitProblem.class);
+			startActivity(i);
+		} else {
+			showNotLoggedInError(this);
+		}
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (m_vwMap == null) {
-			m_vwMap = mapFragment.getMap();
-			m_vwMap.setMyLocationEnabled(true);
-			m_vwMap.setOnInfoWindowClickListener(this);
+		if (mMap == null) {
+			mMap = mapFragment.getMap();
+			mMap.setMyLocationEnabled(true);
+			mMap.setOnInfoWindowClickListener(this);
 			PokretaciInfoWindowAdapter adapter = new PokretaciInfoWindowAdapter(this);
-			m_vwMap.setInfoWindowAdapter(adapter);
+			mMap.setInfoWindowAdapter(adapter);
 		}
 
 	}
@@ -253,8 +286,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList2 = (ExpandableListView) findViewById(R.id.left_drawer);
-
-		mDrawerList2.setAdapter(new ExpendableDrawerAdapter(this, mGroupItem, mChildItem));
+		
+		mDrawerAdapter = new ExpendableDrawerAdapter(this, mGroupItem, mChildItem);
+		mDrawerList2.setAdapter(mDrawerAdapter);
 
 		mDrawerList2.setOnChildClickListener(this);
 		mDrawerList2.setOnGroupClickListener(this);
@@ -325,10 +359,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 
 	/**
-	 * Initializes all other data for the application.
+	 * Initializes map
 	 */
-	private void initLayout() {
-		setContentView(R.layout.map_layout);
+	private void initMapFragment() {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		GoogleMapOptions mapOptions = new GoogleMapOptions();
@@ -350,7 +383,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		intent.putExtra(ID_EXTRA, mMarkerProblemIds.get(marker).id);
 		//intent.putExtra("EXTRA_ID", "SOME DATAS");
 		startActivity(intent);
-
 	}
 
 	@Override
@@ -369,7 +401,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 				if (list.size() == 0) return;
 				if (list.get(0) instanceof Activist) { //login task
 					Log.d("rs.pokretaci.hakaton", "Uspješno ulogovani");
-					mMyProfile = (Activist) list.get(0);
 				} else {
 					List<Goal> goals = (List<Goal>) list;
 					for (Goal goal: goals) {
@@ -386,8 +417,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 						if (goal.mapPinType()==Goal.GOAL_STATES.SUPPORTED_GOAL) icon = R.drawable.supported_goal_pin;
 						else if (goal.mapPinType() == Goal.GOAL_STATES.USER_GOAL) icon = R.drawable.user_pin;
 						else if (goal.mapPinType() ==  Goal.GOAL_STATES.RESOLVED_GOAL) icon = R.drawable.resolved_goal_pin;
+						if (!mUserLoggedIn) icon = R.drawable.new_goal_pin; //If user is logged out
 						MarkerOptions mo = new MarkerOptions().title(title).snippet(authorName).position(location).icon(BitmapDescriptorFactory.fromResource(icon));//u zavisnosti od vrste pina
-						Marker marker = m_vwMap.addMarker(mo);
+						Marker marker = mMap.addMarker(mo);
 						mMarkerProblemIds.put(marker, goal);
 					}
 				}
@@ -436,7 +468,6 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 	@Override
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
 		if (requestCode == GoogleLogin.GOOGLE_AUTH_REQUEST_CODE && resultCode != Activity.RESULT_CANCELED) {
-			m_vwMap.clear();
 			loginWithGoogleAccountAndFetchInitialData();
 		}
 	}
@@ -449,9 +480,17 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		mWelcomeMessage.invalidate();
 		break;
 		case 1: return false;
-		case 2: getMyProfile();
+		case 2: if (mUserLoggedIn) {
+			getMyProfile();
+		} else {
+			showNotLoggedInError(this);
+		}
 		break;
-		case 3:  ;
+		case LOGGED_IN_MENU_POSITION:  if (mUserLoggedIn) {
+			logOut();
+		} else {
+			loginWithGoogleAccountAndFetchInitialData();
+		}
 		break;
 		default: 
 		}
@@ -471,18 +510,18 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		m_vwMap.clear();
+		mMap.clear();
 		if (childPosition == 0) {
-			Task all =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.ALL_GOALS, Goal.GOAL_FILTER.TRENDING);
+			Task all =  TaskFactory.getAllGoals();
 			all.executeTask(getApplicationContext(), this);
 		} else if (childPosition == 1) {
-			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.TRENDING);
+			Task trending =  TaskFactory.getGoalsByFilter(Goal.GOAL_FILTER.TRENDING);
 			trending.executeTask(getApplicationContext(), this);
 		} else if (childPosition == 2) {
-			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.NEWEST);
+			Task trending =  TaskFactory.getGoalsByFilter(Goal.GOAL_FILTER.NEWEST);
 			trending.executeTask(getApplicationContext(), this);
 		} else if (childPosition ==3) {
-			Task trending =  TaskFactory.goalFetchTask(Goal.GOAL_FETCH_TYPE.BY_FILTER, Goal.GOAL_FILTER.MOST_DISCUSSED);
+			Task trending =  TaskFactory.getGoalsByFilter(Goal.GOAL_FILTER.MOST_DISCUSSED);
 			trending.executeTask(getApplicationContext(), this);
 		}
 		mDrawerLayout.closeDrawers();
