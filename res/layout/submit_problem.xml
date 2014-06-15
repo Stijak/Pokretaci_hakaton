@@ -106,6 +106,7 @@
             android:orientation="horizontal" >
 
             <CheckBox
+                android:id="@+id/cables"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -118,6 +119,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/trafic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -130,6 +132,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/construction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -148,6 +151,7 @@
             android:orientation="horizontal" >
 
             <CheckBox
+                android:id="@+id/improvement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -160,6 +164,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/flora_and_fauna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -172,6 +177,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -203,6 +209,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/criminal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -247,6 +254,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
+                android:id="@+id/dangerous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

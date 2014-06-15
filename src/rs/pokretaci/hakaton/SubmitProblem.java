@@ -147,6 +147,31 @@ public class SubmitProblem extends Activity implements TaskListener {
 		box = (CheckBox) findViewById(R.id.nemoral);
 		if (box.isChecked()) goal.categories.add("nemoral");
 		
+		box = (CheckBox) findViewById(R.id.cables);
+		if (box.isChecked()) goal.categories.add("žice&cevi");
+		
+		box = (CheckBox) findViewById(R.id.trafic);
+		if (box.isChecked()) goal.categories.add("saobraćaj");
+		
+		box = (CheckBox) findViewById(R.id.construction);
+		if (box.isChecked()) goal.categories.add("gradnja");
+		
+		box = (CheckBox) findViewById(R.id.improvement);
+		if (box.isChecked()) goal.categories.add("unapređenje");
+		
+		box = (CheckBox) findViewById(R.id.flora_and_fauna);
+		if (box.isChecked()) goal.categories.add("flora&fauna");
+		
+		box = (CheckBox) findViewById(R.id.sport);
+		if (box.isChecked()) goal.categories.add("sport&rekreacija");
+		
+		box = (CheckBox) findViewById(R.id.criminal);
+		if (box.isChecked()) goal.categories.add("kriminal");
+		
+		box = (CheckBox) findViewById(R.id.dangerous);
+		if (box.isChecked()) goal.categories.add("opasno");
+		
+		
 		Task newGoal = new GoalInteraction(Goal.GOAL_INTERACTION_TYPE.NEW_GOAL, goal);
 		newGoal.executeTask(getApplicationContext(), this);
 		mDialog = ProgressDialog.show(SubmitProblem.this, "", SubmitProblem.this.getString(R.string.submiting) , true);

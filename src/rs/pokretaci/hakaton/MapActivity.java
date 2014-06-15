@@ -317,8 +317,9 @@ public class MapActivity extends Activity implements GoogleMap.OnInfoWindowClick
 		 };
 		
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
-		 getActionBar().setDisplayHomeAsUpEnabled(true);
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
 			getActionBar().setHomeButtonEnabled(true);
+			getActionBar().setDisplayShowTitleEnabled(false);
 	}
 
 

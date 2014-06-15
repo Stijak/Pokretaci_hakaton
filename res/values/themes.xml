@@ -11,5 +11,6 @@
     <style name="PokretaciActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@drawable/header</item>
+        <item name="android:icon">@drawable/drower_button</item>
     </style>
 </resources>
